@@ -430,6 +430,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
     }
 
+    public bool IsInterfaceUnlocked => !Options.LockInterface;
+
     #endregion
 
     #region Public Methods
@@ -466,6 +468,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             }
 
             return;
+        }
+
+        // Do not save timer when edited.
+        if (Timer.StartTime.HasValue && Timer.StartTime.Value != default)
+        {
+            TimerManager.Instance.Remove(Timer);
         }
 
         TimerManager.Instance.Add(newTimer);
@@ -1027,7 +1035,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private void InitializeUpdateButton()
     {
         PropertyChangedEventManager.AddHandler(UpdateManager.Instance, UpdateManagerPropertyChanged, string.Empty);
-        UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates && (Mode == TimerWindowMode.Input || !Options.LockInterface);
+        EnableUpdateButton();
     }
 
     /// <summary>
@@ -1035,12 +1043,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     /// <param name="sender">The <see cref="UpdateManager"/>.</param>
     /// <param name="e">The event data.</param>
-    private void UpdateManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        Dispatcher.BeginInvoke(() =>
-            UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates && (Mode == TimerWindowMode.Input || !Options.LockInterface)
-        );
-    }
+    private void UpdateManagerPropertyChanged(object sender, PropertyChangedEventArgs e) =>
+        Dispatcher.BeginInvoke(EnableUpdateButton);
+
+    private void EnableUpdateButton() =>
+        UpdateButton.IsEnabled = UpdateManager.Instance.HasUpdates && (Mode == TimerWindowMode.Input || !Options.LockInterface);
 
     #endregion
 
@@ -1351,7 +1358,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         if (Timer.State is TimerState.Stopped or TimerState.Expired)
         {
-            TimerManager.Instance.Remove(Timer);
+            TimerManager.Instance.StopAndRemove(Timer);
         }
     }
 
@@ -1489,6 +1496,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     private void NewTimerCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        if (Options.LockInterface)
+        {
+            return;
+        }
+
         New();
     }
 
@@ -1856,6 +1868,34 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         {
             TimerTextBox.SelectAll();
         }
+    }
+
+    /// <summary>
+    /// Invokes when key is pressed while <see cref="TimerWindow"/> is focused.
+    /// </summary>
+    /// <param name="sender">This <see cref="TimerWindow"/>.</param>
+    /// <param name="e">The event data.</param>
+    private void WindowPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (Options.LockInterface)
+        {
+            return;
+        }
+
+        TextBox? focus = e.Key switch
+        {
+            Key.F2 => TitleTextBox,
+            Key.F4 => TimerTextBox,
+            _ => null
+        };
+
+        if (focus is null)
+        {
+            return;
+        }
+
+        SwitchToInputMode(focus);
+        e.Handled = true;
     }
 
     /// <summary>

@@ -14,6 +14,7 @@
         Closed="WindowClosed"
         MouseDown="WindowMouseDown"
         MouseDoubleClick="WindowMouseDoubleClick"
+        PreviewKeyDown="WindowPreviewKeyDown"
         ToolTip="{Binding TimeToolTip, Mode=OneWay, RelativeSource={RelativeSource Self}}"
         ToolTipService.IsEnabled="{Binding ShowTimeToolTip, Mode=OneWay, RelativeSource={RelativeSource Self}}">
     <Window.Style>
@@ -258,12 +259,14 @@
             <StackPanel x:Name="ControlsPanel" Margin="20 0" VerticalAlignment="Center">
                 <AdornerDecorator>
                     <local:SizeToFitTextBox x:Name="TitleTextBox"
+                                        UndoLimit="100"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
                                         FontFamily="Segoe UI"
                                         KeyDown="TitleTextBoxKeyDown"
                                         MaxFontSize="24"
                                         MinFontSize="0.5"
+                                        IsHitTestVisible="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=IsInterfaceUnlocked, Mode=OneTime}"
                                         PreviewMouseDown="TitleTextBoxPreviewMouseDown"
                                         PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
                                         Style="{StaticResource TitleTextBoxStyle}"
@@ -271,12 +274,14 @@
                                         TextChanged="TitleTextBoxTextChanged"/>
                 </AdornerDecorator>
                 <local:SizeToFitTextBox x:Name="TimerTextBox"
+                                        UndoLimit="60"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
                                         FontFamily="Segoe UI Light, Segoe UI"
                                         Margin="0 1 0 4"
                                         MaxFontSize="36"
                                         MinFontSize="0.5"
+                                        IsHitTestVisible="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=IsInterfaceUnlocked, Mode=OneTime}"
                                         PreviewMouseDown="TimerTextBoxPreviewMouseDown"
                                         PreviewGotKeyboardFocus="TimerTextBoxPreviewGotKeyboardFocus"
                                         TextAlignment="Center"/>
