@@ -1,6 +1,6 @@
 ﻿name: build
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 env:
   NAME: Hourglass
@@ -57,7 +57,7 @@ jobs:
     # Upload artifacts
 
     - name: Publish ${{env.NAME}} ${{env.CONFIG}} Installer
-      uses: actions/upload-artifact@v4.4.3
+      uses: actions/upload-artifact@v4.5.0
       with:
         name: ${{env.NAME}}Installer
         path: |
@@ -66,7 +66,7 @@ jobs:
         retention-days: ${{env.RETENTION_DAYS}}
 
     - name: Publish ${{env.NAME}} ${{env.CONFIG_PORTABLE}}
-      uses: actions/upload-artifact@v4.4.3
+      uses: actions/upload-artifact@v4.5.0
       with:
         name: ${{env.NAME}}Portable
         path: |
@@ -77,7 +77,7 @@ jobs:
         retention-days: ${{env.RETENTION_DAYS}}
 
     - name: Publish ${{env.NAUDIO}}
-      uses: actions/upload-artifact@v4.4.3
+      uses: actions/upload-artifact@v4.5.0
       with:
         name: ${{env.NAUDIO_ARTIFACT}}
         path: |
