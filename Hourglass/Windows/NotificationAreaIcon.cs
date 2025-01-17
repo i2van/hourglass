@@ -152,14 +152,17 @@ public class NotificationAreaIcon : IDisposable
 
     private Icon CreateOverlayIcon(bool silent, bool paused, bool expired)
     {
-        const int diameter          = 8;
         const int circleBorderWidth = 1;
+        const int defaultIconWidth  = 16;
 
-        const int pauseWidth        = 1;
-        const int pause1LeftOffset  = 2;
-        const int pause2LeftOffset  = 4;
-        const int pauseTopOffset    = 2;
-        const int pauseBottomOffset = 4;
+        int iconWidth = SystemInformation.SmallIconSize.Width;
+
+        int diameter          = iconWidth / 2;
+        int pauseWidth        = (int)Math.Round(iconWidth / (double)defaultIconWidth);
+        int pause1LeftOffset  = iconWidth / 8;
+        int pause2LeftOffset  = iconWidth / 4;
+        int pauseTopOffset    = iconWidth / 8;
+        int pauseBottomOffset = iconWidth / 4;
 
         Color circlePenColor = Color.FromArgb(unchecked((int)0xFF303030));
         Brush circleBrush    = expired ? Brushes.Crimson : Brushes.White;
