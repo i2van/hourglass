@@ -197,5 +197,17 @@ namespace Hourglass.Properties {
                 this["CheckForUpdates"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowUpdateLink {
+            get {
+                return ((bool)(this["ShowUpdateLink"]));
+            }
+            set {
+                this["ShowUpdateLink"] = value;
+            }
+        }
     }
 }

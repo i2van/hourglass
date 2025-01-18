@@ -39,6 +39,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [What command-line arguments does the Hourglass accept?](#what-command-line-arguments-does-the-hourglass-accept)
 - [How to launch the Hourglass on Windows startup?](#how-to-launch-the-hourglass-on-windows-startup)
 - [How to speed up the Portable Hourglass startup?](#how-to-speed-up-the-portable-hourglass-startup)
+- [How to find the Hourglass settings?](#how-to-find-the-hourglass-settings)
 - [How to disable the Hourglass updates?](#how-to-disable-the-hourglass-updates)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
 - [What should I do if there is no notification sound?](#what-should-i-do-if-there-is-no-notification-sound)
@@ -422,17 +423,7 @@ ngen-Hourglass.bat install
 ngen-Hourglass.bat uninstall
 ```
 
-## How to disable the Hourglass updates?
-
-1. Open the `Hourglass.config` or `user.config` file. See [here](#what-should-i-do-if-the-hourglass-does-not-start) how to locate the **Hourglass** settings.
-2. Set `CheckForUpdates` to `False`.
-
-## What should I do if the Hourglass does not start?
-
-> [!IMPORTANT]
-> The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%USERPROFILE%\AppData\Local\Temp` folder). File mask is the `Hourglass-Crash*.txt`.
-
-If the **Hourglass** does not start or fails silently, delete the **Hourglass** settings.
+## How to find the Hourglass settings?
 
 The **Hourglass** settings can be located by the following command (to run it press `Win`+`R` and copy-paste command below):
 
@@ -443,6 +434,23 @@ cmd /k dir "C:\Users\%USERNAME%\AppData\Local\Chris_Dziemborowicz*"
 The settings are stored into the corresponding `hourglass.EXE` subdirectories in the `user.config` file.
 
 The **Hourglass Portable** keeps settings next to the executable in the `Hourglass.config` file.
+
+## How to disable the Hourglass updates?
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set `CheckForUpdates` to `False`.
+4. Launch the **Hourglass**.
+
+> [!NOTE]
+> To hide **Update** link in the timer window without disabling updates set `ShowUpdateLink` to `False`.
+
+## What should I do if the Hourglass does not start?
+
+> [!IMPORTANT]
+> The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%USERPROFILE%\AppData\Local\Temp` folder). File mask is the `Hourglass-Crash*.txt`.
+
+If the **Hourglass** does not start or fails silently, delete the **Hourglass** [settings](#how-to-find-the-hourglass-settings).
 
 ## What should I do if there is no notification sound?
 

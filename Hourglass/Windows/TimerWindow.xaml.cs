@@ -1052,7 +1052,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         UpdateButton.IsEnabled = IsUpdateButtonEnabled && (Mode == TimerWindowMode.Input || !Options.LockInterface);
 
     private bool IsUpdateButtonEnabled =>
-        UpdateManager.Instance.HasUpdates;
+        UpdateManager.Instance.HasUpdates && Settings.Default.ShowUpdateLink;
 
     #endregion
 
