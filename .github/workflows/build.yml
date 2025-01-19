@@ -62,7 +62,7 @@ jobs:
         name: ${{env.NAME}}Installer
         path: |
           ${{env.NAME}}.Bundle/bin/${{env.CONFIG}}/${{env.NAME}}Installer.exe
-        compression-level: ${{env.COMPRESSION_LEVEL}}
+        compression-level: 0
         retention-days: ${{env.RETENTION_DAYS}}
 
     - name: Publish ${{env.NAME}} ${{env.CONFIG_PORTABLE}}
