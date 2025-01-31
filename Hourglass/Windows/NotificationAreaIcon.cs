@@ -757,24 +757,31 @@ public class NotificationAreaIcon : IDisposable
     /// </summary>
     public void RefreshIcon()
     {
-        bool silent  = TimerManager.Instance.SilentMode;
-        bool paused  = TimerManager.GetPausableTimers(TimerState.Paused ).Any();
-        bool expired = TimerManager.GetTimersByState (TimerState.Expired).Any();
-
-        _notifyIcon.Icon = true switch
+        try
         {
-            _ when paused && expired =>
-                GetIcon(_silentPausedExpiredIcon, _pausedExpiredIcon),
-            _ when expired =>
-                GetIcon(_silentExpiredIcon, _expiredIcon),
-            _ when paused =>
-                GetIcon(_silentPausedIcon, _pausedIcon),
-            _ =>
-                silent ? _silentIcon.Value : _normalIcon
-        };
+            bool silent  = TimerManager.Instance.SilentMode;
+            bool paused  = TimerManager.GetPausableTimers(TimerState.Paused ).Any();
+            bool expired = TimerManager.GetTimersByState (TimerState.Expired).Any();
 
-        Icon GetIcon(Lazy<Icon> silentIcon, Lazy<Icon> normalIcon) =>
-            (silent ? silentIcon : normalIcon).Value;
+            _notifyIcon.Icon = true switch
+            {
+                _ when paused && expired =>
+                    GetIcon(_silentPausedExpiredIcon, _pausedExpiredIcon),
+                _ when expired =>
+                    GetIcon(_silentExpiredIcon, _expiredIcon),
+                _ when paused =>
+                    GetIcon(_silentPausedIcon, _pausedIcon),
+                _ =>
+                    silent ? _silentIcon.Value : _normalIcon
+            };
+
+            Icon GetIcon(Lazy<Icon> silentIcon, Lazy<Icon> normalIcon) =>
+                (silent ? silentIcon : normalIcon).Value;
+        }
+        catch
+        {
+            // Notification icon does not exist.
+        }
     }
 
     /// <summary>
