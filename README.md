@@ -40,6 +40,15 @@ Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhour
 
 - Adds the **Hourglass** executable path to the [Windows App Paths](https://learn.microsoft.com/en-us/windows/win32/shell/app-registration#using-the-app-paths-subkey), so the **Hourglass** [command-line](https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt) is available out of the box.
 
+#### WinGet
+
+The **Hourglass** can be installed using [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget/):
+
+```shell
+winget source update
+winget install -e --id i2van.hourglass
+```
+
 ### Portable
 
 #### Ngen Support
