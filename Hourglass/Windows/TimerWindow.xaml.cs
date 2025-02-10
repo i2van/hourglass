@@ -141,13 +141,15 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     public static readonly RoutedCommand FullScreenCommand = new();
 
-    public static readonly KeyGesture NewTimerKeyGesture   = new(Key.N, ModifierKeys.Control);
-    public static readonly KeyGesture PauseKeyGesture      = new(Key.P, ModifierKeys.Control);
-    public static readonly KeyGesture ResumeKeyGesture     = PauseKeyGesture;
-    public static readonly KeyGesture StartKeyGesture      = new(Key.Enter, ModifierKeys.None);
-    public static readonly KeyGesture StopKeyGesture       = new(Key.S, ModifierKeys.Control);
-    public static readonly KeyGesture RestartKeyGesture    = new(Key.R, ModifierKeys.Control);
-    public static readonly KeyGesture FullScreenKeyGesture = new(Key.F11, ModifierKeys.None);
+    public static readonly KeyGesture NewTimerKeyGesture    = new(Key.N, ModifierKeys.Control);
+    public static readonly KeyGesture PauseKeyGestureSpace  = new(Key.Space);
+    public static readonly KeyGesture PauseKeyGesture       = new(Key.P, ModifierKeys.Control);
+    public static readonly KeyGesture ResumeKeyGestureSpace = PauseKeyGestureSpace;
+    public static readonly KeyGesture ResumeKeyGesture      = PauseKeyGesture;
+    public static readonly KeyGesture StartKeyGesture       = new(Key.Enter, ModifierKeys.None);
+    public static readonly KeyGesture StopKeyGesture        = new(Key.S, ModifierKeys.Control);
+    public static readonly KeyGesture RestartKeyGesture     = new(Key.R, ModifierKeys.Control);
+    public static readonly KeyGesture FullScreenKeyGesture  = new(Key.F11, ModifierKeys.None);
 
     public static int LastActivatedID { get; set; }
 
@@ -1539,7 +1541,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void PauseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (Options.LockInterface)
+        if (TimerIsNonPausable)
         {
             return;
         }
@@ -1555,7 +1557,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void ResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (Options.LockInterface)
+        if (TimerIsNonPausable)
         {
             return;
         }
@@ -1571,7 +1573,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void PauseResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (Options.LockInterface)
+        if (TimerIsNonPausable)
         {
             return;
         }
@@ -1587,6 +1589,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             ResumeButton.Unfocus();
         }
     }
+
+    private bool TimerIsNonPausable =>
+        Options.LockInterface || !Timer.SupportsPause;
 
     /// <summary>
     /// Invoked when the <see cref="StopCommand"/> is executed.

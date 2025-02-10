@@ -52,6 +52,8 @@
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="local:TimerWindow.NewTimerCommand" Gesture="{x:Static local:TimerWindow.NewTimerKeyGesture}"/>
+        <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="{x:Static local:TimerWindow.ResumeKeyGestureSpace}"/>
+        <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="{x:Static local:TimerWindow.PauseKeyGestureSpace}"/>
         <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="{x:Static local:TimerWindow.ResumeKeyGesture}"/>
         <KeyBinding Command="local:TimerWindow.PauseResumeCommand" Gesture="{x:Static local:TimerWindow.PauseKeyGesture}"/>
         <KeyBinding Command="local:TimerWindow.StartCommand" Gesture="{x:Static local:TimerWindow.StartKeyGesture}"/>

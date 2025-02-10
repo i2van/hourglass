@@ -235,7 +235,7 @@ To remove the **Hourglass** icon from the notification area and restore any hidd
 | Shortcut                  | Action                 |
 | ------------------------- | ---------------------- |
 | `Ctrl`+`N`                | Create a new timer     |
-| `Ctrl`+`P`                | Pause/resume the timer |
+| `Space` <br/> `Ctrl`+`P`  | Pause/resume the timer |
 | `Ctrl`+`S`                | Stop the timer         |
 | `Ctrl`+`R`                | Restart the timer      |
 | `F11` <br/> `Alt`+`Enter` <br/> `Double Click`     | Toggle full screen     |
