@@ -6,7 +6,7 @@
 
 This project is the modified [simple countdown timer for Windows](https://github.com/dziemborowicz/hourglass). The changes were made to the original **Hourglass** can be found [here](#hourglass-changes). The latest **Hourglass** installer or portable distribution can be downloaded [here](https://github.com/i2van/hourglass/releases/latest).
 
-Visit the [original Hourglass site](https://chris.dziemborowicz.com/apps/hourglass) to learn more. The **Hourglass** FAQ can be found [here](https://github.com/i2van/hourglass/blob/develop/FAQ.md).
+Visit the [original Hourglass site](https://chris.dziemborowicz.com/apps/hourglass) to learn more. The **Hourglass** FAQ can be found [here](https://github.com/i2van/hourglass/blob/main/FAQ.md).
 
 ## Hourglass Command-line Example
 
@@ -28,7 +28,7 @@ creates
   - initially minimized: [`-w`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--window-state) `minimized`
   - has the time left and the timer name displayed in the title: [`-i`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--window-title) `left+title`
 
-Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--help) to display the **Hourglass** [command-line reference](https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt) or select **Command-line usage** from the notification area context menu.
+Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--help) to display the **Hourglass** [command-line reference](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) or select **Command-line usage** from the notification area context menu.
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhour
 
 ### Installer
 
-- Adds the **Hourglass** executable path to the [Windows App Paths](https://learn.microsoft.com/en-us/windows/win32/shell/app-registration#using-the-app-paths-subkey), so the **Hourglass** [command-line](https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt) is available out of the box.
+- Adds the **Hourglass** executable path to the [Windows App Paths](https://learn.microsoft.com/en-us/windows/win32/shell/app-registration#using-the-app-paths-subkey), so the **Hourglass** [command-line](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) is available out of the box.
 
 #### WinGet
 
@@ -82,7 +82,7 @@ ngen-Hourglass.bat uninstall
 - Renamed option `--prompt-on-exit` to [`--prompt-on-close`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--prompt-on-close)
 - New option [`--save-timer-on-closing`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--save-timer-on-closing), `-sc`, `/sc`
 
-See [command-line usage](https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt) for details.
+See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) for details.
 
 ### UI
 
@@ -145,7 +145,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/develop/Hourgla
 - The timer window pops up on the current virtual desktop.
 - The mouse double-click on progress border toggles full screen.
 - The sound file can be placed to the `%LOCALAPPDATA%\Hourglass` or `%LOCALAPPDATA%\Hourglass\Sounds` directories. It can be the symbolic link created by the `mklink` system command.
-- [NAudioHourglassPack](https://github.com/i2van/hourglass/blob/develop/FAQ.md#what-should-i-do-if-there-is-no-notification-sound) can be used for playing sounds on Windows with no [Windows Media Player](https://en.wikipedia.org/wiki/Windows_Media_Player) installed.
+- [NAudioHourglassPack](https://github.com/i2van/hourglass/blob/main/FAQ.md#what-should-i-do-if-there-is-no-notification-sound) can be used for playing sounds on Windows with no [Windows Media Player](https://en.wikipedia.org/wiki/Windows_Media_Player) installed.
 - The `.ogg` sound file format is supported.
 
 ### Misc

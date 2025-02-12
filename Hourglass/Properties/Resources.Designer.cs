@@ -1128,7 +1128,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/i2van/hourglass/blob/develop/FAQ.md.
+        ///   Looks up a localized string similar to https://github.com/i2van/hourglass/blob/main/FAQ.md.
         /// </summary>
         public static string FAQUrl {
             get {
@@ -2807,7 +2807,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt.
+        ///   Looks up a localized string similar to https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt.
         /// </summary>
         public static string UsageUrl {
             get {

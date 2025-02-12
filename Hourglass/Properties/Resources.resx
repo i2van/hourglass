@@ -1428,11 +1428,11 @@ $</value>
     <comment>Notification area text if no timers</comment>
   </data>
   <data name="FAQUrl" xml:space="preserve">
-    <value>https://github.com/i2van/hourglass/blob/develop/FAQ.md</value>
+    <value>https://github.com/i2van/hourglass/blob/main/FAQ.md</value>
     <comment>FAQ URL</comment>
   </data>
   <data name="UsageUrl" xml:space="preserve">
-    <value>https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt</value>
+    <value>https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt</value>
     <comment>Command-line usage URL</comment>
   </data>
   <data name="ReadmeUrl" xml:space="preserve">

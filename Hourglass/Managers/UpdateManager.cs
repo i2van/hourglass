@@ -35,7 +35,7 @@ public sealed class UpdateManager : Manager, INotifyPropertyChanged
     /// The URL for the XML file containing information about the latest version of the app.
     /// </summary>
 #pragma warning disable S1075
-    private const string UpdateCheckUrl = "https://raw.githubusercontent.com/i2van/hourglass/develop/latest.xml";
+    private const string UpdateCheckUrl = "https://raw.githubusercontent.com/i2van/hourglass/main/latest.xml";
 #pragma warning restore S1075
 
     /// <summary>

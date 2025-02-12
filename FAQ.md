@@ -388,13 +388,13 @@ To create a shortcut, `Right Click` on your Desktop or the folder where you want
 
 Then click **Next**, give your shortcut a name and click **Finish** to create the shortcut.
 
-You can also specify additional [command-line](https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt) arguments to set other options for the timer.
+You can also specify additional [command-line](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) arguments to set other options for the timer.
 
 ## What command-line arguments does the Hourglass accept?
 
 You can launch the **Hourglass** and immediately start a timer by running `Hourglass.exe "<duration or date and time>"`. For example, to launch the **Hourglass** and start a 5-minute timer, run `Hourglass.exe "5 minutes"`.
 
-You can also set any option that you can set using the user interface by specifying additional command-line arguments. To view a full list of command-line arguments, run `Hourglass.exe --help` or click [here](https://github.com/i2van/hourglass/blob/develop/Hourglass/Resources/Usage.txt).
+You can also set any option that you can set using the user interface by specifying additional command-line arguments. To view a full list of command-line arguments, run `Hourglass.exe --help` or click [here](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt).
 
 ## How to launch the Hourglass on Windows startup?
 
