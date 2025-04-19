@@ -881,6 +881,8 @@ public sealed class CommandLineArguments
                     List<string> inputArgs = [arg, ..remainingArgs];
                     remainingArgs.Clear();
 
+                    Settings.Default.Prefer24HourTime = argumentsBasedOnMostRecentOptions.Prefer24HourTime; // Required for parsing.
+
                     IEnumerable<TimerStart> timerStart = GetTimerStartValue(inputArgs, argumentsBasedOnMostRecentOptions.MultiTimers).ToArray();
 
                     argumentsBasedOnMostRecentOptions.TimerStart = timerStart;
