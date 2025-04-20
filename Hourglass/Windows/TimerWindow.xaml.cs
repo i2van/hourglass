@@ -746,9 +746,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
                 // Stop editing and un-focuses buttons if focused
                 return UnfocusAll();
-        }
 
-        return false;
+            default:
+                return false;
+        }
     }
 
     /// <summary>
