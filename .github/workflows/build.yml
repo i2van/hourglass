@@ -1,5 +1,9 @@
 ﻿name: build
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on: [push, pull_request, workflow_dispatch]
 
 env:
