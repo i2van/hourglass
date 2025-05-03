@@ -96,4 +96,7 @@
     <None Include="Resources\TrayIcon.ico" />
     <None Include="Resources\Usage.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hourglass.NAudio\Hourglass.NAudio.csproj" />
+  </ItemGroup>
 </Project>
