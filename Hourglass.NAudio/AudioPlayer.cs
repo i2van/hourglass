@@ -3,11 +3,9 @@
 using NAudio.Vorbis;
 using NAudio.Wave;
 
-using Hourglass.Windows.Audio;
-
 namespace Hourglass.NAudio;
 
-public class AudioPlayer: IAudioPlayer
+public class AudioPlayer : IDisposable
 {
     private readonly WaveOutEvent _waveOutEvent = new();
 

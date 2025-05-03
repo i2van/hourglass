@@ -18,7 +18,7 @@ internal static class AudioPlayerSelector
         {
             try
             {
-                return (IAudioPlayer)Activator.CreateInstanceFrom(
+                return new HourglassAudioPlayer(Activator.CreateInstanceFrom(
                     nAudioAssemblyPath,
                     $"{nAudio}.AudioPlayer",
                     false,
@@ -26,7 +26,7 @@ internal static class AudioPlayerSelector
                     null,
                     [stoppedEventHandler],
                     null,
-                    null).Unwrap();
+                    null).Unwrap());
             }
             catch
             {
@@ -35,5 +35,40 @@ internal static class AudioPlayerSelector
         }
 
         return new AudioPlayer(stoppedEventHandler);
+    }
+
+    private class HourglassAudioPlayer : IAudioPlayer
+    {
+        private readonly IDisposable _disposable;
+
+        private readonly Action<string> _open;
+        private readonly Action _play;
+        private readonly Action _stop;
+
+        public HourglassAudioPlayer(object obj)
+        {
+            _disposable = (IDisposable)obj;
+
+            var type = obj.GetType();
+
+            _open = CreateDelegate<Action<string>>(nameof(Open));
+            _play = CreateDelegate<Action>(nameof(Play));
+            _stop = CreateDelegate<Action>(nameof(Stop));
+
+            T CreateDelegate<T>(string methodName) where T: Delegate =>
+                (T)Delegate.CreateDelegate(typeof(T), type.GetMethod(methodName)!);
+        }
+
+        public void Open(string uri) =>
+            _open(uri);
+
+        public void Play() =>
+            _play();
+
+        public void Stop() =>
+            _stop();
+
+        public void Dispose() =>
+            _disposable.Dispose();
     }
 }

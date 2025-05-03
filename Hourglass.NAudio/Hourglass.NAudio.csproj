@@ -18,9 +18,6 @@
     <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hourglass\Hourglass.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NAudio.Vorbis.Latest" Version="1.5.1" />
   </ItemGroup>
