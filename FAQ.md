@@ -463,3 +463,5 @@ The supported formats are:
 - `.mp3`
 - `.ogg`
 - `.wav`
+
+You can also optionally [speed up the **Hourglass** startup](#how-to-speed-up-the-portable-hourglass-startup) afterwards.

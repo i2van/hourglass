@@ -14,8 +14,6 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Hourglass.Bundle", "Hourgla
 		{45E7F177-CA65-468A-B528-330A13D931D4} = {45E7F177-CA65-468A-B528-330A13D931D4}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hourglass.NAudio", "Hourglass.NAudio\Hourglass.NAudio.csproj", "{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Portable|Any CPU = Debug Portable|Any CPU
@@ -120,30 +118,6 @@ Global
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Release|x86.ActiveCfg = Release|x86
 		{F1D002C9-CFC9-40FB-84AF-96E7AEC26E0B}.Release|x86.Build.0 = Release|x86
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug Portable|Any CPU.ActiveCfg = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug Portable|Any CPU.Build.0 = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug Portable|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug Portable|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug Portable|x86.ActiveCfg = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug Portable|x86.Build.0 = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Debug|x86.Build.0 = Debug|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release Portable|Any CPU.ActiveCfg = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release Portable|Any CPU.Build.0 = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release Portable|Mixed Platforms.Build.0 = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release Portable|x86.ActiveCfg = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release Portable|x86.Build.0 = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release|x86.ActiveCfg = Release|Any CPU
-		{F125E1F8-BC1A-4525-9A49-A0189AC91C2C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

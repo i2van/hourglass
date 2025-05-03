@@ -4,52 +4,34 @@ namespace Hourglass.Windows.Audio;
 
 internal static class AudioPlayerSelector
 {
+    private static Func<EventHandler, IAudioPlayer>? _createFunc;
+
     public static IAudioPlayer Create(EventHandler stoppedEventHandler)
     {
+        if (_createFunc is not null)
+        {
+            return _createFunc(stoppedEventHandler);
+        }
+
+        IAudioPlayer player;
+
         try
         {
-            return new HourglassAudioPlayer(new NAudio.AudioPlayer(stoppedEventHandler));
+            player = CreateNAudioPlayer(stoppedEventHandler);
+            _createFunc = CreateNAudioPlayer;
         }
         catch
         {
-            // Ignored.
+            player = CreateAudioPlayer(stoppedEventHandler);
+            _createFunc = CreateAudioPlayer;
         }
 
-        return new AudioPlayer(stoppedEventHandler);
-    }
+        return player;
 
-    private class HourglassAudioPlayer : IAudioPlayer
-    {
-        private readonly IDisposable _disposable;
+        static IAudioPlayer CreateAudioPlayer(EventHandler stoppedEventHandler) =>
+            new AudioPlayer(stoppedEventHandler);
 
-        private readonly Action<string> _open;
-        private readonly Action _play;
-        private readonly Action _stop;
-
-        public HourglassAudioPlayer(object obj)
-        {
-            _disposable = (IDisposable)obj;
-
-            var type = obj.GetType();
-
-            _open = CreateDelegate<Action<string>>(nameof(Open));
-            _play = CreateDelegate<Action>(nameof(Play));
-            _stop = CreateDelegate<Action>(nameof(Stop));
-
-            T CreateDelegate<T>(string methodName) where T: Delegate =>
-                (T)Delegate.CreateDelegate(typeof(T), type.GetMethod(methodName)!);
-        }
-
-        public void Open(string uri) =>
-            _open(uri);
-
-        public void Play() =>
-            _play();
-
-        public void Stop() =>
-            _stop();
-
-        public void Dispose() =>
-            _disposable.Dispose();
+        static IAudioPlayer CreateNAudioPlayer(EventHandler stoppedEventHandler) =>
+            new NAudioPlayer(stoppedEventHandler);
     }
 }

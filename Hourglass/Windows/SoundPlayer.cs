@@ -130,9 +130,9 @@ public sealed class SoundPlayer : IDisposable
                 _audioPlayer.Play();
             }
         }
-        catch// (Exception ex) when (ex.CanBeHandled())
+        catch (Exception ex) when (ex.CanBeHandled())
         {
-            throw;
+            // Ignore.
         }
     }
 

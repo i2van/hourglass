@@ -8,7 +8,6 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
   NAME: Hourglass
-  NAUDIO: Hourglass.NAudio
   NAUDIO_ARTIFACT: NAudioHourglassPack
   CONFIG: Release
   CONFIG_PORTABLE: Release Portable
@@ -80,23 +79,24 @@ jobs:
         compression-level: ${{env.COMPRESSION_LEVEL}}
         retention-days: ${{env.RETENTION_DAYS}}
 
-    - name: Publish ${{env.NAUDIO}}
+    - name: Publish ${{env.NAUDIO_ARTIFACT}}
       uses: actions/upload-artifact@v4.6.2
       with:
         name: ${{env.NAUDIO_ARTIFACT}}
         path: |
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/Hourglass.NAudio.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/Microsoft.Win32.Registry.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/NAudio.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/NAudio.Core.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/NAudio.Vorbis.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/NAudio.Wasapi.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/NAudio.WinMM.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/NVorbis.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/System.Buffers.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/System.Memory.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/System.Numerics.Vectors.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/System.Runtime.CompilerServices.Unsafe.dll
-          ${{env.NAUDIO}}/bin/${{env.CONFIG}}/${{env.FW}}/System.ValueTuple.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/ngen-${{env.NAME}}.bat
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/Hourglass.NAudio.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/Microsoft.Win32.Registry.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/NAudio.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/NAudio.Core.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/NAudio.Vorbis.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/NAudio.Wasapi.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/NAudio.WinMM.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/NVorbis.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/System.Buffers.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/System.Memory.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/System.Numerics.Vectors.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/System.Runtime.CompilerServices.Unsafe.dll
+          ${{env.NAME}}/bin/${{env.CONFIG_PORTABLE}}/${{env.FW}}/System.ValueTuple.dll
         compression-level: ${{env.COMPRESSION_LEVEL}}
         retention-days: ${{env.RETENTION_DAYS}}
