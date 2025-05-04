@@ -96,4 +96,8 @@
     <None Include="Resources\TrayIcon.ico" />
     <None Include="Resources\Usage.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Vorbis.Latest" Version="1.5.1" />
+  </ItemGroup>
 </Project>

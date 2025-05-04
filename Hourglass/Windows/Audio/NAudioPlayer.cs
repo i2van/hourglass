@@ -3,17 +3,15 @@
 using NAudio.Vorbis;
 using NAudio.Wave;
 
-using Hourglass.Windows.Audio;
+namespace Hourglass.Windows.Audio;
 
-namespace Hourglass.NAudio;
-
-public class AudioPlayer: IAudioPlayer
+internal class NAudioPlayer : IAudioPlayer
 {
     private readonly WaveOutEvent _waveOutEvent = new();
 
     private WaveStream? _audioFile;
 
-    public AudioPlayer(EventHandler stoppedEventHandler) =>
+    public NAudioPlayer(EventHandler stoppedEventHandler) =>
         _waveOutEvent.PlaybackStopped += (s, e) => stoppedEventHandler(s, e);
 
     public void Open(string uri)

@@ -1,39 +1,37 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
-
-using Hourglass.Extensions;
 
 namespace Hourglass.Windows.Audio;
 
 internal static class AudioPlayerSelector
 {
+    private static Func<EventHandler, IAudioPlayer>? _createFunc;
+
     public static IAudioPlayer Create(EventHandler stoppedEventHandler)
     {
-        const string nAudio = "Hourglass.NAudio";
-
-        var nAudioAssemblyPath = Path.Combine(AssemblyExtensions.GetExecutableDirectoryName(), $"{nAudio}.dll");
-
-        if (File.Exists(nAudioAssemblyPath))
+        if (_createFunc is not null)
         {
-            try
-            {
-                return (IAudioPlayer)Activator.CreateInstanceFrom(
-                    nAudioAssemblyPath,
-                    $"{nAudio}.AudioPlayer",
-                    false,
-                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance,
-                    null,
-                    [stoppedEventHandler],
-                    null,
-                    null).Unwrap();
-            }
-            catch
-            {
-                // Ignored.
-            }
+            return _createFunc(stoppedEventHandler);
         }
 
-        return new AudioPlayer(stoppedEventHandler);
+        IAudioPlayer player;
+
+        try
+        {
+            player = CreateNAudioPlayer(stoppedEventHandler);
+            _createFunc = CreateNAudioPlayer;
+        }
+        catch
+        {
+            player = CreateAudioPlayer(stoppedEventHandler);
+            _createFunc = CreateAudioPlayer;
+        }
+
+        return player;
+
+        static IAudioPlayer CreateAudioPlayer(EventHandler stoppedEventHandler) =>
+            new AudioPlayer(stoppedEventHandler);
+
+        static IAudioPlayer CreateNAudioPlayer(EventHandler stoppedEventHandler) =>
+            new NAudioPlayer(stoppedEventHandler);
     }
 }

@@ -40,7 +40,7 @@ if not exist "%ngenPath%" set ngenPath=%netPath%
 
 echo on
 
-"%ngenPath%\v%netVersion%\ngen.exe" %~1 "%~dp0Hourglass.exe" || goto EXIT
+"%ngenPath%\v%netVersion%\ngen.exe" %~1 "%~dp0Hourglass.exe" > nul || goto EXIT
 @if not exist "%nAudio%" goto EXIT
 "%ngenPath%\v%netVersion%\ngen.exe" %~1 "%nAudio%" || goto EXIT
 
