@@ -126,6 +126,10 @@ You can use `.` instead of `:` as the separator if you prefer:
 - `2:30 pm` - count down until 2:30:00 pm
 - `2:30:15 pm` - count down until 2:30:15 pm
 
+> [!NOTE]
+> The same can be achieved using `until`, `u`, `un`, `till`, `@` prefixes.
+> Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm`.
+
 You can use `.` instead of `:` as the separator if you prefer:
 
 - `2.30 pm` - count down until 2:30:00 pm
@@ -156,8 +160,12 @@ Or you can use the month number instead or a two-digit year, if you prefer:
 - `1/1/2019` - count down until midnight January 1, 2019
 - `01/01/2019` - count down until midnight January 1, 2019
 
-> [!NOTE]
+> [!IMPORTANT]
 > The order of the day, month and year depends on your system settings in some cases.
+
+> [!NOTE]
+> The same can be achieved using `until`, `u`, `un`, `till`, `@` prefixes.
+> Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm`.
 
 **Until weekday** - To start a timer until a specified weekday, enter `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday` or `Sunday`:
 
@@ -205,6 +213,10 @@ You can omit the `at` or `on` separating the date, weekday or tomorrow and the t
 - `2 pm Wednesday` - count down until 2 pm on Wednesday
 - `tomorrow 2 pm` - count down until 2 pm tomorrow
 - `2 pm tomorrow` - count down until 2 pm tomorrow
+
+> [!NOTE]
+> The same can be achieved using `until`, `u`, `un`, `till`, `@` prefixes.
+> Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm`.
 
 ## How do I start a second timer with the Hourglass?
 
