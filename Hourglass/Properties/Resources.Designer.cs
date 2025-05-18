@@ -1643,6 +1643,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sa&amp;ve all timers.
+        /// </summary>
+        public static string SaveAllTimersTaskDialogText {
+            get {
+                return ResourceManager.GetString("SaveAllTimersTaskDialogText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sa&amp;ve this timer on close.
         /// </summary>
         public static string SaveTimerTaskDialogText {

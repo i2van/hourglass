@@ -14,9 +14,11 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Threading;
+
+using KPreisser.UI;
 
 using Extensions;
 using Managers;
@@ -713,15 +715,23 @@ public class NotificationAreaIcon : IDisposable
         TimerWindow? firstTimerWindow = ArrangedWindows
             .FirstOrDefault(static window => window.Options is { LockInterface: false, PromptOnExit: true } && IsTimerRunningFor(window));
 
+        bool shouldSaveTimer = Settings.Default.SaveTimerOnClosing || Settings.Default.OpenSavedTimersOnStartup;
+
         if (firstTimerWindow is not null)
         {
             WindowState windowState = firstTimerWindow.WindowState;
 
             firstTimerWindow.BringToFrontAndActivate();
 
+            TaskDialogCheckBox saveTimerOnClosingTaskDialogCheckBox = new TaskDialogCheckBox(Resources.SaveAllTimersTaskDialogText)
+            {
+                Checked = shouldSaveTimer
+            };
+
             MessageBoxResult result = firstTimerWindow.ShowTaskDialog(
                 Resources.ExitMenuTaskDialogInstruction,
-                Resources.StopAndExitMenuTaskDialogCommand);
+                Resources.StopAndExitMenuTaskDialogCommand,
+                taskDialogCheckBox: saveTimerOnClosingTaskDialogCheckBox);
 
             firstTimerWindow.WindowState = windowState;
 
@@ -729,6 +739,8 @@ public class NotificationAreaIcon : IDisposable
             {
                 return;
             }
+
+            shouldSaveTimer = saveTimerOnClosingTaskDialogCheckBox.Checked;
         }
 
         foreach (Window window in Application.Current.Windows)
@@ -742,6 +754,8 @@ public class NotificationAreaIcon : IDisposable
 
                 timerWindow.DoNotActivateNextWindow = true;
                 timerWindow.DoNotPromptOnExit = true;
+
+                timerWindow.Timer.ShouldBeSaved = shouldSaveTimer;
             }
 
             window.Close();
