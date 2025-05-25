@@ -104,6 +104,8 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - Uses a [Windows Task Dialog](https://learn.microsoft.com/en-us/windows/win32/controls/task-dialogs-overview) instead of a message box ([GitHub](https://github.com/kpreisser/TaskDialog)).
 - The **Command-line usage** dialog can be accessed from the **About** dialog and vice versa.
 - New **Accent** theme which uses [Windows accent color](https://www.google.com/search?q=Windows+accent+color). This theme is a default one.
+- The [Jump List](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#jump-lists) support (disabled by default, see [FAQ](https://github.com/i2van/hourglass/blob/main/FAQ.md#how-to-enable-the-hourglass-jump-list)).
+- The [thumbnail toolbar](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#thumbnail-toolbars) support.
 
 ### Notification Area
 

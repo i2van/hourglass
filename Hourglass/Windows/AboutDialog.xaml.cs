@@ -88,8 +88,16 @@ public sealed partial class AboutDialog
         }
     }
 
+    /// <inheritdoc />
+    protected override void OnActivated(EventArgs e)
+    {
+        Application.Current.ClearJumpList();
+
+        base.OnActivated(e);
+    }
+
     /// <summary>
-    /// Initializes the <see cref="Window.MaxWidth"/> and <see cref="Window.MaxHeight"/> properties.
+    /// Initializes the <see cref="System.Windows.Window.MaxWidth"/> and <see cref="Window.MaxHeight"/> properties.
     /// </summary>
     private void InitializeMaxSize()
     {

@@ -71,7 +71,7 @@ public sealed partial class UsageDialog
         }
         catch (Exception ex)
         {
-            // Might be thrown when running non-elevated Hourglass instance receives request from elevated Hourglass instance.
+            // Might be thrown when running non-elevated Hourglass instance receives request from the elevated Hourglass instance.
             MessageBox.Show(ex.Message, Properties.Resources.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
@@ -79,6 +79,14 @@ public sealed partial class UsageDialog
     private void UsageDialogClosed(object sender, EventArgs e)
     {
         _instance = null;
+    }
+
+    /// <inheritdoc />
+    protected override void OnActivated(EventArgs e)
+    {
+        Application.Current.ClearJumpList();
+
+        base.OnActivated(e);
     }
 
     /// <summary>

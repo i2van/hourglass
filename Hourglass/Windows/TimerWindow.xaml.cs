@@ -43,13 +43,15 @@ public enum TimerWindowMode
 
 public sealed class TimerCommand
 {
-    private readonly Button _button;
     private readonly MenuItem _menuItem;
     private readonly IInvokeProvider? _invokeProvider;
 
+    public Button Button { get; }
+
     public TimerCommand(Button button, KeyGesture? keyGesture = null)
     {
-        _button = button;
+        Button = button;
+
         _invokeProvider = new ButtonAutomationPeer(button).GetPattern(PatternInterface.Invoke) as IInvokeProvider;
 
         _menuItem = new()
@@ -68,7 +70,7 @@ public sealed class TimerCommand
     }
 
     public void Update() =>
-        (_menuItem.IsEnabled, _menuItem.Visibility) = (_button.IsEnabled, _button.Visibility);
+        (_menuItem.IsEnabled, _menuItem.Visibility) = (Button.IsEnabled, Button.Visibility);
 
     public static implicit operator MenuItem (TimerCommand timerCommand) =>
         timerCommand._menuItem;
@@ -215,6 +217,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     #endregion
 
     public IEnumerable<TimerCommand> Commands { get; private set; } = [];
+
+    public sealed record JumpListButton(Button Button, string Text, int Index);
+
+    public IReadOnlyList<JumpListButton> JumpListButtons { get; private set; } = [];
 
     #region Constructors
 
@@ -518,6 +524,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             {
                 BeginExpirationAnimation(true /* glowOnly */);
             }
+
+            this.UpdateJumpList(true);
         }
     }
 
@@ -800,6 +808,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             new(CancelButton),
             new(UpdateButton)
         ];
+
+        JumpListButtons = Commands
+            .Take(5)
+            .Select(static (tc, i) => new JumpListButton(tc.Button, string.Intern(((string)tc.Button.Content).RemoveHotkeyChar()), i))
+            .ToArray();
     }
 
     #region Private Methods (Animations and Sounds)
@@ -1252,6 +1265,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             case TimerState.Stopped:
                 TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
                 TaskbarItemInfo.ProgressValue = 0.0;
+
+                this.UpdateJumpList();
+
                 break;
 
             case TimerState.Running:
@@ -1262,11 +1278,17 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             case TimerState.Paused:
                 TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
                 TaskbarItemInfo.ProgressValue = GetProgressBarValue() / 100.0;
+
+                this.UpdateJumpList();
+
                 break;
 
             case TimerState.Expired:
                 TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
                 TaskbarItemInfo.ProgressValue = 1.0;
+
+                this.UpdateJumpList();
+
                 break;
         }
     }
@@ -1381,6 +1403,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void TimerStateChanged(object sender, EventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         UpdateTimeToolTip();
         UpdateNotificationAreaIcon();
     }
@@ -1392,6 +1416,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void TimerExpired(object sender, EventArgs e)
     {
+        this.UpdateJumpList(true);
+
         if (!TimerManager.Instance.SilentMode)
         {
             BeginExpirationAnimationAndSound();
@@ -1519,6 +1545,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void StartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         TimerStart? timerStart = TimerStart.FromString(TimerTextBox.Text);
         if (timerStart is null)
         {
@@ -1542,6 +1570,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void PauseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         if (TimerIsNonPausable)
         {
             return;
@@ -1558,6 +1588,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void ResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         if (TimerIsNonPausable)
         {
             return;
@@ -1574,6 +1606,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void PauseResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         if (TimerIsNonPausable)
         {
             return;
@@ -1601,6 +1635,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void StopCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         if (Options.LockInterface)
         {
             return;
@@ -1622,6 +1658,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void RestartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         if (Options.LockInterface || !Timer.SupportsRestart)
         {
             return;
@@ -1670,6 +1708,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void UpdateCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         Uri updateUri = UpdateManager.Instance.UpdateUri;
         if (updateUri.Scheme != Uri.UriSchemeHttp && updateUri.Scheme != Uri.UriSchemeHttps)
         {
@@ -1960,7 +2000,14 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         bool isLeftButton = e.ChangedButton == MouseButton.Left;
         if (isLeftButton)
         {
-            DragMove();
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+                // Ignore.
+            }
         }
 
         e.Handled = e.OriginalSource is Panel &&
@@ -1975,7 +2022,13 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void WindowMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (e.OriginalSource.GetType() == typeof(System.Windows.Documents.Run) ||
+        Type originalSourceType = e.OriginalSource.GetType();
+
+        if (e.ChangedButton != MouseButton.Left ||
+            e.ButtonState != MouseButtonState.Pressed ||
+            originalSourceType == typeof(System.Windows.Documents.Run) ||
+            originalSourceType == typeof(Button) ||
+            originalSourceType == typeof(SizeToFitTextBox) ||
             e.OriginalSource.IsTextBoxView())
         {
             return;
@@ -2002,6 +2055,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         if (isMinimized && Settings.Default.ShowInNotificationArea)
         {
+            Application.Current.ClearJumpList();
+
             MinimizeToNotificationArea();
         }
 
@@ -2094,7 +2149,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         BringToFrontAndActivate();
 
-        var saveTimerOnClosingTaskDialogCheckBox = new TaskDialogCheckBox(Properties.Resources.SaveTimerTaskDialogText)
+        TaskDialogCheckBox saveTimerOnClosingTaskDialogCheckBox = new TaskDialogCheckBox(Properties.Resources.SaveTimerTaskDialogText)
         {
             Checked = Settings.Default.SaveTimerOnClosing
         };
@@ -2125,6 +2180,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             UpdateNotificationAreaIcon();
         }
 
+        Application.Current.ClearJumpList();
+
         this.BringNextToFrontAndActivate();
     }
 
@@ -2135,12 +2192,17 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     protected override void OnActivated(EventArgs e)
     {
+        using IDisposable _ = UpdateJumpListAtReturn();
+
         LastActivatedID = ID;
 
         this.ForceUpdateLayout();
 
         base.OnActivated(e);
     }
+
+    private IDisposable UpdateJumpListAtReturn() =>
+        ((Action)this.UpdateJumpList).CreateDisposable();
 
     #endregion
 }

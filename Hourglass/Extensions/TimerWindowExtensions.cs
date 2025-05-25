@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Interop;
+using System.Windows.Shell;
+using System.Windows.Threading;
 
 using Hourglass.Properties;
 using Hourglass.Timing;
@@ -68,6 +72,70 @@ public static class TimerWindowExtensions
         }
     }
 
+    private static bool _jumpListDisabled;
+    private static int _lastUpdatedJumpListID;
+
+    public static void UpdateJumpList(this TimerWindow window) =>
+        window.UpdateJumpList(false);
+
+    public static void UpdateJumpList(this TimerWindow window, bool force)
+    {
+        if (_jumpListDisabled)
+        {
+            return;
+        }
+
+        var jumpList = JumpList.GetJumpList(Application.Current);
+
+        if (jumpList is null)
+        {
+            JumpList.SetJumpList(Application.Current, jumpList = new());
+        }
+
+        if (!Settings.Default.UseJumpList)
+        {
+            _jumpListDisabled = true;
+
+            jumpList.JumpItems.Clear();
+            jumpList.Apply();
+
+            return;
+        }
+
+        if (!force && (TimerWindow.LastActivatedID != window.ID ||
+                       !window.ShowInTaskbar ||
+                       !window.IsVisible))
+        {
+            return;
+        }
+
+        jumpList.JumpItems.Clear();
+
+        var handle = new WindowInteropHelper(window).Handle;
+
+        foreach (var jumpItem in window.JumpListButtons.Where(static jlb => jlb.Button.IsEnabled))
+        {
+            jumpList.JumpItems.Add(new JumpTask
+            {
+                Title = jumpItem.Text,
+                Arguments = CommandLineArguments.CreateJumpListCommandLine(handle, jumpItem.Index),
+                IconResourceIndex = jumpItem.Index+1
+            });
+        }
+
+        window.Dispatcher.Invoke(() => ApplyJumpList(++_lastUpdatedJumpListID), force ? DispatcherPriority.Normal : DispatcherPriority.Background);
+
+        void ApplyJumpList(int jumpListID)
+        {
+            if (_lastUpdatedJumpListID != jumpListID)
+            {
+                return;
+            }
+
+            jumpList.Apply();
+        }
+    }
+
     private static string? Title(TimerWindow window) =>
         window.Timer.Options.Title;
 
@@ -114,18 +182,18 @@ public static class TimerWindowExtensions
             TimeSpan.FromSeconds(Math.Round((timeSpan ?? TimeSpan.Zero).TotalSeconds));
     }
 
-    public static void AddWindowProcHook(this TimerWindow timerWindow)
+    public static void AddWindowProcHook(this TimerWindow window)
     {
-        var handle = new WindowInteropHelper(timerWindow).Handle;
+        var handle = new WindowInteropHelper(window).Handle;
 
         var hwndSource = HwndSource.FromHwnd(handle);
         hwndSource?.AddHook(WindowProc);
 
-        timerWindow.Closed += TimerWindowClosed;
+        window.Closed += TimerWindowClosed;
 
         void TimerWindowClosed(object sender, EventArgs e)
         {
-            timerWindow.Closed -= TimerWindowClosed;
+            window.Closed -= TimerWindowClosed;
 
             // ReSharper disable AccessToDisposedClosure
             hwndSource?.RemoveHook(WindowProc);
@@ -145,13 +213,19 @@ public static class TimerWindowExtensions
                 handled = WmGetMinMaxInfo(hwnd, lParam);
             }
 
+            if (msg == CommandLineArguments.JumpListMsg)
+            {
+                ExecuteJumpCommand(wParam.ToInt32());
+                handled = true;
+            }
+
             return IntPtr.Zero;
         }
 
         bool WmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
-            if (timerWindow.WindowState == WindowState.Normal ||
-                timerWindow.IsFullScreen)
+            if (window.WindowState == WindowState.Normal ||
+                window.IsFullScreen)
             {
                 return false;
             }
@@ -191,6 +265,19 @@ public static class TimerWindowExtensions
 
             [DllImport("user32.dll")]
             static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+        }
+
+        void ExecuteJumpCommand(int commandIndex)
+        {
+            try
+            {
+                var button = window.JumpListButtons[commandIndex];
+                (new ButtonAutomationPeer(button.Button).GetPattern(PatternInterface.Invoke) as IInvokeProvider)?.Invoke();
+            }
+            catch
+            {
+                // Ignore.
+            }
         }
     }
 

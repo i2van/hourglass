@@ -1054,7 +1054,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         {
             MenuItem timerMenuItem = new()
             {
-                Header = MakeFirstCharHotkey(timerStart.OriginalInput),
+                Header = timerStart.OriginalInput.MakeFirstCharHotkey(),
                 Tag = timerStart
             };
             timerMenuItem.Click += RecentInputMenuItemClick;
@@ -1193,7 +1193,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     /// <returns>Timer string representation.</returns>
     private static string GetHeaderForTimer(Timer timer)
     {
-        return MakeFirstCharHotkey(timer.ToString());
+        return timer.ToString().MakeFirstCharHotkey();
     }
 
     /// <summary>
@@ -1449,7 +1449,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         Label label = new()
         {
-            Content = MakeFirstCharHotkey($"{(string.IsNullOrWhiteSpace(theme.Name) ? Properties.Resources.ContextMenuUnnamedTheme : theme.Name)}"),
+            Content = $"{(string.IsNullOrWhiteSpace(theme.Name) ? Properties.Resources.ContextMenuUnnamedTheme : theme.Name)}".MakeFirstCharHotkey(),
             Margin = new(0)
         };
 
@@ -1544,20 +1544,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             themeManagerWindow.SetTimerWindow(_timerWindow);
             themeManagerWindow.BringToFrontAndActivate();
         }
-    }
-
-    /// <summary>
-    /// Makes first character a hotkey.
-    /// </summary>
-    /// <param name="text">Text.</param>
-    /// <returns>Text where fist character is a hotkey.</returns>
-    private static string MakeFirstCharHotkey(string text)
-    {
-        const char hotkeyChar = '_';
-
-        return string.IsNullOrWhiteSpace(text) || text[0] == hotkeyChar
-            ? text
-            : $"{hotkeyChar}{text}";
     }
 
     #endregion
