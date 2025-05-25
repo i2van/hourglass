@@ -8,9 +8,11 @@ namespace Hourglass;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -26,6 +28,11 @@ using Windows;
 public sealed class CommandLineArguments
 {
     #region Properties
+
+    public static readonly uint JumpListMsg = RegisterWindowMessage("Hourglass-604573a4-061e-49ee-91aa-29d62f7657a1");
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    private static extern uint RegisterWindowMessage(string lpString);
 
     /// <summary>
     /// Gets the command-line usage for this application.
@@ -227,6 +234,55 @@ public sealed class CommandLineArguments
     #endregion
 
     #region Public Methods
+
+    private const string JumpListCommand = "jump-list";
+
+    /// <summary>
+    /// Creates a command-line argument string for a jump list entry task.
+    /// </summary>
+    /// <param name="handle">
+    /// The handle of the window associated with the jump list entry.
+    /// </param>
+    /// <param name="index">
+    /// The index of the jump list entry task.
+    /// </param>
+    /// <returns>
+    /// A formatted command-line argument string for the jump list entry task.
+    /// </returns>
+    public static string CreateJumpListCommandLine(IntPtr handle, int index) =>
+        $"{JumpListCommand} {handle.ToString("X")} {index:X}";
+
+    /// <summary>
+    /// Processes a command from the jump list.
+    /// </summary>
+    /// <param name="args">The command-line arguments passed to the application.</param>
+    /// <returns>
+    /// <see langword="true"/> if the command was successfully processed; otherwise, <see langword="false"/>.
+    /// </returns>
+    /// <remarks>
+    /// This method expects the command-line arguments to contain exactly three elements,
+    /// where the first element must be "jump-list". If the arguments do not meet this
+    /// requirement, the method returns <see langword="false"/>.
+    /// </remarks>
+    public static bool ProcessJumpListCommand(string[] args)
+    {
+        if (args.Length != 3 || args.FirstOrDefault() != JumpListCommand)
+        {
+            return false;
+        }
+
+        SendMessage(StringToIntPtr(args[1]), JumpListMsg, StringToIntPtr(args[2]), IntPtr.Zero);
+
+        return true;
+
+        static IntPtr StringToIntPtr(string arg) =>
+            IntPtr.Size == 8
+                ? new IntPtr(long.Parse(arg, NumberStyles.HexNumber))
+                : new IntPtr(int.Parse(arg, NumberStyles.HexNumber));
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint wMsg, IntPtr wParam, IntPtr lParam);
+    }
 
     /// <summary>
     /// Parses command-line arguments.
