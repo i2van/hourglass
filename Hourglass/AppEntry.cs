@@ -50,6 +50,11 @@ public sealed class AppEntry : WindowsFormsApplicationBase
     [STAThread]
     public static void Main(string[] args)
     {
+        if (CommandLineArguments.ProcessJumpListCommand(args))
+        {
+            return;
+        }
+
         AppEntry appEntry = new();
         appEntry.Run(args);
     }
@@ -87,6 +92,8 @@ public sealed class AppEntry : WindowsFormsApplicationBase
         {
             if (!AppManager.Instance.Disposed)
             {
+                Application.Current.ClearJumpList();
+
                 AppManager.Instance.Persist();
                 AppManager.Instance.Dispose();
             }
