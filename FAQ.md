@@ -41,6 +41,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to speed up the Portable Hourglass startup?](#how-to-speed-up-the-portable-hourglass-startup)
 - [How to find the Hourglass settings?](#how-to-find-the-hourglass-settings)
 - [How to disable the Hourglass updates?](#how-to-disable-the-hourglass-updates)
+- [How to disable the Hourglass jump list?](#how-to-disable-the-hourglass-jump-list)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
 - [What should I do if there is no notification sound?](#what-should-i-do-if-there-is-no-notification-sound)
 
@@ -456,6 +457,16 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 
 > [!NOTE]
 > To hide **Update** link in the timer window without disabling updates set `ShowUpdateLink` to `False`.
+
+## How to disable the Hourglass [jump list](https://superuser.com/a/496062/1889134)?
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set `UseJumpList` to `False`.
+4. Launch the **Hourglass**.
+
+> [!IMPORTANT]
+> Jump list tasks do not work when the **Hourglass** is run under **Administrator**.
 
 ## What should I do if the Hourglass does not start?
 

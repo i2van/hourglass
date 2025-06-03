@@ -81,6 +81,14 @@ public sealed partial class UsageDialog
         _instance = null;
     }
 
+    /// <inheritdoc />
+    protected override void OnActivated(EventArgs e)
+    {
+        Application.Current.ClearJumpList();
+
+        base.OnActivated(e);
+    }
+
     /// <summary>
     /// Invoked when the window is laid out, rendered, and ready for interaction.
     /// </summary>
