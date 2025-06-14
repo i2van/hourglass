@@ -91,7 +91,7 @@ public sealed class ErrorManager : Manager
         }
         finally
         {
-            Application.Current.Shutdown(1);
+            Application.Current?.Shutdown(1);
         }
     }
 

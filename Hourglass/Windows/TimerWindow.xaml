@@ -64,6 +64,11 @@
         <KeyBinding Command="local:TimerWindow.FullScreenCommand" Gesture="{x:Static local:TimerWindow.FullScreenKeyGesture}"/>
     </Window.InputBindings>
     <Window.Resources>
+        <BitmapImage x:Key="StartThumbImage" UriSource="/Resources/StartIcon.ico"/>
+        <BitmapImage x:Key="PauseThumbImage" UriSource="/Resources/PauseIcon.ico"/>
+        <BitmapImage x:Key="ResumeThumbImage" UriSource="/Resources/ResumeIcon.ico"/>
+        <BitmapImage x:Key="StopThumbImage" UriSource="/Resources/StopIcon.ico"/>
+        <BitmapImage x:Key="RestartThumbImage" UriSource="/Resources/RestartIcon.ico"/>
         <local:RegexMatchConverter x:Key="RegexMatchConverter"/>
         <Style TargetType="{x:Type ProgressBar}">
             <Setter Property="Template">
@@ -252,7 +257,45 @@
         </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo/>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfoCollection>
+                    <ThumbButtonInfo
+                        DismissWhenClicked="True"
+                        Command="local:TimerWindow.StartCommand"
+                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[0].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Visibility="{Binding ElementName=StartButton, Path=Visibility, Mode=OneWay}"
+                        ImageSource="{StaticResource ResourceKey=StartThumbImage}"/>
+                    <ThumbButtonInfo
+                        Command="local:TimerWindow.PauseCommand"
+                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[1].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Visibility="{Binding ElementName=PauseButton, Path=Visibility, Mode=OneWay}"
+                        ImageSource="{StaticResource ResourceKey=PauseThumbImage}"/>
+                    <ThumbButtonInfo
+                        Command="local:TimerWindow.ResumeCommand"
+                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[2].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Visibility="{Binding ElementName=ResumeButton, Path=Visibility, Mode=OneWay}"
+                        ImageSource="{StaticResource ResourceKey=ResumeThumbImage}"/>
+                    <ThumbButtonInfo
+                        DismissWhenClicked="True"
+                        Command="local:TimerWindow.StopCommand"
+                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[3].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Visibility="{Binding ElementName=StopButton, Path=Visibility, Mode=OneWay}"
+                        ImageSource="{StaticResource ResourceKey=StopThumbImage}"/>
+                    <ThumbButtonInfo
+                        DismissWhenClicked="True"
+                        Command="local:TimerWindow.RestartCommand"
+                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[4].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Visibility="{Binding ElementName=RestartButton, Path=Visibility, Mode=OneWay}"
+                        ImageSource="{StaticResource ResourceKey=RestartThumbImage}"/>
+                </ThumbButtonInfoCollection>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <Grid>
         <ProgressBar x:Name="ProgressBar"/>

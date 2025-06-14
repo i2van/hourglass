@@ -1,0 +1,10 @@
+[FILENAMES]
+Exe=..\Hourglass.exe
+SaveAs=..\Hourglass.exe
+Log=..\MergeIcons.log
+[COMMANDS]
+-add StartIcon.ico, ICONGROUP,32513,
+-add PauseIcon.ico, ICONGROUP,32514,
+-add ResumeIcon.ico, ICONGROUP,32515,
+-add StopIcon.ico, ICONGROUP,32516,
+-add RestartIcon.ico, ICONGROUP,32517,

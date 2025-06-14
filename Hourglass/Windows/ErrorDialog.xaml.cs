@@ -35,6 +35,8 @@ public sealed partial class ErrorDialog
     /// <param name="details">Details of the error, such as a call stack. (Optional.)</param>
     public void ShowDialog(string title, string? message = null, string? details = null)
     {
+        Application.Current.ClearJumpList();
+
         TitleTextBlock.Text = title;
 
         MessageTextBox.Text = message ?? string.Empty;

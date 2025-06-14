@@ -21,7 +21,7 @@ jobs:
 
     steps:
 
-    # Set up
+    # Set up msbuild
 
     - name: Setup msbuild
       uses: microsoft/setup-msbuild@v2
@@ -34,7 +34,7 @@ jobs:
     # Restore
 
     - name: Restore ${{env.NAME}}.sln
-      run: dotnet restore ${{env.NAME}}.sln /p:DisableWarnForInvalidRestoreProjects="true"
+      run: dotnet restore ${{env.NAME}}.sln /p:DisableWarnForInvalidRestoreProjects=true /p:BuildWithNetFrameworkHostedCompiler=true
 
     # Build
 
