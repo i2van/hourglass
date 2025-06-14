@@ -211,11 +211,14 @@ public static class TimerWindowExtensions
             if (msg == 0x0024 /* WM_GETMINMAXINFO */)
             {
                 handled = WmGetMinMaxInfo(hwnd, lParam);
+
+                return IntPtr.Zero;
             }
 
             if (msg == CommandLineArguments.JumpListMsg)
             {
                 ExecuteJumpCommand(wParam.ToInt32());
+
                 handled = true;
             }
 

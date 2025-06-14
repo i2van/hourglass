@@ -198,7 +198,7 @@ public sealed class CommandLineArguments
     /// <summary>
     /// Gets the window's <see cref="Window.WindowState"/> before the window was minimized.
     /// </summary>
-    public WindowState RestoreWindowState { get; private set; }
+    public WindowState RestoreWindowState { get; private init; }
 
     /// <summary>
     /// Gets the size and location of the window.
