@@ -64,11 +64,18 @@
         <KeyBinding Command="local:TimerWindow.FullScreenCommand" Gesture="{x:Static local:TimerWindow.FullScreenKeyGesture}"/>
     </Window.InputBindings>
     <Window.Resources>
+        <!-- ReSharper disable Xaml.RedundantResource -->
         <BitmapImage x:Key="StartThumbImage" UriSource="/Resources/StartIcon.ico"/>
+        <BitmapImage x:Key="StartThumbImageGrayed" UriSource="/Resources/StartIconGrayed.ico"/>
         <BitmapImage x:Key="PauseThumbImage" UriSource="/Resources/PauseIcon.ico"/>
+        <BitmapImage x:Key="PauseThumbImageGrayed" UriSource="/Resources/PauseIconGrayed.ico"/>
         <BitmapImage x:Key="ResumeThumbImage" UriSource="/Resources/ResumeIcon.ico"/>
+        <BitmapImage x:Key="ResumeThumbImageGrayed" UriSource="/Resources/ResumeIconGrayed.ico"/>
         <BitmapImage x:Key="StopThumbImage" UriSource="/Resources/StopIcon.ico"/>
+        <BitmapImage x:Key="StopThumbImageGrayed" UriSource="/Resources/StopIconGrayed.ico"/>
         <BitmapImage x:Key="RestartThumbImage" UriSource="/Resources/RestartIcon.ico"/>
+        <BitmapImage x:Key="RestartThumbImageGrayed" UriSource="/Resources/RestartIconGrayed.ico"/>
+        <!-- ReSharper restore Xaml.RedundantResource -->
         <local:RegexMatchConverter x:Key="RegexMatchConverter"/>
         <Style TargetType="{x:Type ProgressBar}">
             <Setter Property="Template">
@@ -255,44 +262,42 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+        <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter"/>
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfoCollection>
                     <ThumbButtonInfo
-                        DismissWhenClicked="True"
                         Command="local:TimerWindow.StartCommand"
-                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Description="{Binding Path=JumpListButtons[0].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Visibility="{Binding ElementName=StartButton, Path=Visibility, Mode=OneWay}"
-                        ImageSource="{StaticResource ResourceKey=StartThumbImage}"/>
+                        CommandTarget="{Binding Path=., Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[0].Text, Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        IsEnabled="{Binding ElementName=StartButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityToBooleanConverter}}"
+                        ImageSource="{Binding Path=StartThumbImage, RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Mode=OneWay}"/>
+                    <ThumbButtonInfo
+                        Command="local:TimerWindow.StopCommand"
+                        CommandTarget="{Binding Path=., Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[3].Text, Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        IsEnabled="{Binding ElementName=StopButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityToBooleanConverter}}"
+                        ImageSource="{Binding Path=StopThumbImage, RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Mode=OneWay}"/>
                     <ThumbButtonInfo
                         Command="local:TimerWindow.PauseCommand"
-                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Description="{Binding Path=JumpListButtons[1].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Visibility="{Binding ElementName=PauseButton, Path=Visibility, Mode=OneWay}"
-                        ImageSource="{StaticResource ResourceKey=PauseThumbImage}"/>
+                        CommandTarget="{Binding Path=., Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[1].Text, Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        IsEnabled="{Binding ElementName=PauseButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityToBooleanConverter}}"
+                        ImageSource="{Binding Path=PauseThumbImage, RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Mode=OneWay}"/>
                     <ThumbButtonInfo
                         Command="local:TimerWindow.ResumeCommand"
-                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Description="{Binding Path=JumpListButtons[2].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Visibility="{Binding ElementName=ResumeButton, Path=Visibility, Mode=OneWay}"
-                        ImageSource="{StaticResource ResourceKey=ResumeThumbImage}"/>
+                        CommandTarget="{Binding Path=., Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[2].Text, Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        IsEnabled="{Binding ElementName=ResumeButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityToBooleanConverter}}"
+                        ImageSource="{Binding Path=ResumeThumbImage, RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Mode=OneWay}"/>
                     <ThumbButtonInfo
-                        DismissWhenClicked="True"
-                        Command="local:TimerWindow.StopCommand"
-                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Description="{Binding Path=JumpListButtons[3].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Visibility="{Binding ElementName=StopButton, Path=Visibility, Mode=OneWay}"
-                        ImageSource="{StaticResource ResourceKey=StopThumbImage}"/>
-                    <ThumbButtonInfo
-                        DismissWhenClicked="True"
                         Command="local:TimerWindow.RestartCommand"
-                        CommandTarget="{Binding Path=., Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Description="{Binding Path=JumpListButtons[4].Text, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
-                        Visibility="{Binding ElementName=RestartButton, Path=Visibility, Mode=OneWay}"
-                        ImageSource="{StaticResource ResourceKey=RestartThumbImage}"/>
+                        CommandTarget="{Binding Path=., Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        Description="{Binding Path=JumpListButtons[4].Text, Mode=OneTime, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                        IsEnabled="{Binding ElementName=RestartButton, Path=Visibility, Mode=OneWay, Converter={StaticResource VisibilityToBooleanConverter}}"
+                        ImageSource="{Binding Path=RestartThumbImage, RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Mode=OneWay}"/>
                 </ThumbButtonInfoCollection>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>

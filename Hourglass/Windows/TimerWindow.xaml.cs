@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
@@ -163,6 +164,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     public int ID { get; } = System.Threading.Interlocked.Increment(ref _id);
 
+    private readonly IDisposable _updateShellIntegration;
+
     /// <summary>
     /// The <see cref="InterfaceScaler"/> for the window.
     /// </summary>
@@ -234,6 +237,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         InitializeAnimations();
         InitializeUpdateButton();
 
+        _updateShellIntegration = ((Action)UpdateShellIntegration).CreateDisposable();
+
         BindTimer();
         SwitchToInputMode();
 
@@ -241,6 +246,19 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         _scaler.Bind(this);
 
         TimerManager.Instance.Add(Timer);
+    }
+
+    private void UpdateShellIntegration()
+    {
+        this.UpdateJumpList();
+
+        PropertyChanged.Notify(this,
+            nameof(StartThumbImage),
+            nameof(StopThumbImage),
+            nameof(PauseThumbImage),
+            nameof(ResumeThumbImage),
+            nameof(RestartThumbImage)
+        );
     }
 
     /// <summary>
@@ -1109,6 +1127,15 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         return Timer.TimeLeftAsPercentage ?? 0.0;
     }
 
+    private object GetThumbImageFor(Button button, [CallerMemberName] string propertyName = "") =>
+        Resources[button.IsEnabled ? propertyName : $"{propertyName}Grayed"];
+
+    public object StartThumbImage   => GetThumbImageFor(StartButton);
+    public object StopThumbImage    => GetThumbImageFor(StopButton);
+    public object PauseThumbImage   => GetThumbImageFor(PauseButton);
+    public object ResumeThumbImage  => GetThumbImageFor(ResumeButton);
+    public object RestartThumbImage => GetThumbImageFor(RestartButton);
+
     /// <summary>
     /// Updates the controls bound to timer properties.
     /// </summary>
@@ -1266,7 +1293,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
                 TaskbarItemInfo.ProgressValue = 0.0;
 
-                this.UpdateJumpList();
+                UpdateShellIntegration();
 
                 break;
 
@@ -1279,7 +1306,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
                 TaskbarItemInfo.ProgressValue = GetProgressBarValue() / 100.0;
 
-                this.UpdateJumpList();
+                UpdateShellIntegration();
 
                 break;
 
@@ -1287,7 +1314,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
                 TaskbarItemInfo.ProgressValue = 1.0;
 
-                this.UpdateJumpList();
+                UpdateShellIntegration();
 
                 break;
         }
@@ -1403,7 +1430,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void TimerStateChanged(object sender, EventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         UpdateTimeToolTip();
         UpdateNotificationAreaIcon();
@@ -1545,7 +1572,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void StartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         TimerStart? timerStart = TimerStart.FromString(TimerTextBox.Text);
         if (timerStart is null)
@@ -1570,7 +1597,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void PauseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         if (TimerIsNonPausable)
         {
@@ -1588,7 +1615,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void ResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         if (TimerIsNonPausable)
         {
@@ -1606,7 +1633,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void PauseResumeCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         if (TimerIsNonPausable)
         {
@@ -1635,7 +1662,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void StopCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         if (Options.LockInterface)
         {
@@ -1658,7 +1685,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void RestartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         if (Options.LockInterface || !Timer.SupportsRestart)
         {
@@ -1708,7 +1735,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void UpdateCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         Uri updateUri = UpdateManager.Instance.UpdateUri;
         if (updateUri.Scheme != Uri.UriSchemeHttp && updateUri.Scheme != Uri.UriSchemeHttps)
@@ -2192,7 +2219,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     protected override void OnActivated(EventArgs e)
     {
-        using IDisposable _ = UpdateJumpListAtReturn();
+        using IDisposable _ = _updateShellIntegration;
 
         LastActivatedID = ID;
 
@@ -2200,9 +2227,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         base.OnActivated(e);
     }
-
-    private IDisposable UpdateJumpListAtReturn() =>
-        ((Action)this.UpdateJumpList).CreateDisposable();
 
     #endregion
 }

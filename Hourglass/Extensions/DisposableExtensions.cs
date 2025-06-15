@@ -11,18 +11,10 @@ internal static class DisposableExtensions
     {
         private readonly Action _action;
 
-        private bool _disposed;
-
         public DisposableAction(Action action) =>
             _action = action;
 
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _disposed = true;
-                _action();
-            }
-        }
+        public void Dispose() =>
+            _action();
     }
 }
