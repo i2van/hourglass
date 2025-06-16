@@ -101,10 +101,15 @@
     <None Include="Resources\License.txt" />
     <None Include="Resources\TrayIcon.ico" />
     <Resource Include="Resources\StartIcon.ico" />
+    <Resource Include="Resources\StartIconGrayed.ico" />
     <Resource Include="Resources\PauseIcon.ico" />
+    <Resource Include="Resources\PauseIconGrayed.ico" />
     <Resource Include="Resources\ResumeIcon.ico" />
+    <Resource Include="Resources\ResumeIconGrayed.ico" />
     <Resource Include="Resources\StopIcon.ico" />
+    <Resource Include="Resources\StopIconGrayed.ico" />
     <Resource Include="Resources\RestartIcon.ico" />
+    <Resource Include="Resources\RestartIconGrayed.ico" />
     <None Include="$(ProjectDir)Resources\*.ico" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Resources\Usage.txt" />
   </ItemGroup>
