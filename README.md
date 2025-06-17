@@ -16,7 +16,7 @@ hourglass -n on -a on -g on -c on -st on -v on -w minimized -i left+title -t "Ti
 
 creates
 
-- 1 hour 23 minutes long timer: `1h23`
+- 1 hour 23 minutes long timer: [`1h23`](https://github.com/i2van/hourglass/blob/main/FAQ.md#what-formats-are-supported-when-entering-a-duration-or-date-and-time)
 - named **Timer 1**: [`-t`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--title) `"Timer 1"`
 - with the notification area icon: [`-n`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--show-in-notification-area) `on`
 - with the timer window:
