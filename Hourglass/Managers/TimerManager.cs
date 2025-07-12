@@ -72,18 +72,14 @@ public sealed class TimerManager : Manager
     public IReadOnlyCollection<Timer> RunningTimers => _timers.Where(static t => t.State == TimerState.Running && IsBoundToWindow(t)).ToArray();
 #pragma warning restore S2365
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         _timers.Clear();
         _timers.AddRange(Settings.Default.Timers);
     }
 
-    /// <summary>
-    /// Persists the state of the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Persist()
     {
         Settings.Default.Timers = _timers

@@ -91,9 +91,7 @@ public sealed class UpdateManager : Manager, INotifyPropertyChanged
     /// </summary>
     public Uri UpdateUri { get; private set; } = null!;
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         if (!Settings.Default.CheckForUpdates)

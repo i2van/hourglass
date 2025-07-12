@@ -40,9 +40,7 @@ public sealed class ErrorManager : Manager
     {
     }
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledException;

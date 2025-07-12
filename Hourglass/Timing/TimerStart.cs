@@ -131,10 +131,7 @@ public sealed class TimerStart
         return _timerStartToken.TryGetEndTime(startTime, out endTime);
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public override string ToString()
     {
         return _timerStartToken.ToString();

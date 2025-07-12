@@ -27,9 +27,7 @@ namespace Hourglass.Properties
     /// </summary>
     public sealed class PortableSettingsProvider : SettingsProvider
     {
-        /// <summary>
-        /// Gets or sets the name of the currently running application.
-        /// </summary>
+        /// <inheritdoc />
         public override string ApplicationName
         {
             get => Assembly.GetExecutingAssembly().GetName().Name;
@@ -38,30 +36,16 @@ namespace Hourglass.Properties
 #pragma warning restore S3237
         }
 
-        /// <summary>
-        /// Gets the friendly name used to refer to the provider during configuration.
-        /// </summary>
+        /// <inheritdoc />
         public override string Name => GetType().FullName!;
 
-        /// <summary>
-        /// Initializes the provider.
-        /// </summary>
-        /// <param name="name">The friendly name of the provider.</param>
-        /// <param name="config">A collection of the name-value pairs representing the provider-specific attributes
-        /// specified in the configuration for this provider.</param>
+        /// <inheritdoc />
         public override void Initialize(string name, NameValueCollection config)
         {
             base.Initialize(ApplicationName, config);
         }
 
-        /// <summary>
-        /// Returns the collection of settings property values for the specified application instance and settings
-        /// property group.
-        /// </summary>
-        /// <param name="context">A <see cref="SettingsContext"/> describing the current application use.</param>
-        /// <param name="collection">A <see cref="SettingsPropertyCollection"/> containing the settings property group
-        /// whose values are to be retrieved.</param>
-        /// <returns>A <see cref="SettingsPropertyValueCollection"/> containing the values for the specified settings property group.</returns>
+        /// <inheritdoc />
         public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
         {
             SettingsPropertyValueCollection settingsPropertyValueCollection = GetSettingsPropertyValueCollection(collection);
@@ -79,12 +63,7 @@ namespace Hourglass.Properties
             return settingsPropertyValueCollection;
         }
 
-        /// <summary>
-        /// Sets the values of the specified group of property settings.
-        /// </summary>
-        /// <param name="context">A <see cref="SettingsContext"/> describing the current application usage.</param>
-        /// <param name="collection">A <see cref="SettingsPropertyValueCollection"/> representing the group of property
-        /// settings to set.</param>
+        /// <inheritdoc />
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
             using XmlWriter writer = GetSettingsDocumentWriter();

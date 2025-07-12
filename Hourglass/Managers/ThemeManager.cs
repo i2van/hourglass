@@ -80,9 +80,7 @@ public sealed class ThemeManager : Manager
 #pragma warning restore IDE0305
 #pragma warning restore S2365
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         _themes.Clear();
@@ -90,9 +88,7 @@ public sealed class ThemeManager : Manager
         AddRange(GetUserProvidedThemes());
     }
 
-    /// <summary>
-    /// Persists the state of the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Persist()
     {
 #pragma warning disable IDE0305

@@ -45,9 +45,7 @@ public sealed class AppManager : Manager
     {
     }
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         foreach (Manager manager in Managers)
@@ -56,9 +54,7 @@ public sealed class AppManager : Manager
         }
     }
 
-    /// <summary>
-    /// Persists the state of the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Persist()
     {
         foreach (Manager manager in Managers.Reverse())
@@ -67,11 +63,7 @@ public sealed class AppManager : Manager
         }
     }
 
-    /// <summary>
-    /// Disposes the manager.
-    /// </summary>
-    /// <param name="disposing">A value indicating whether this method was invoked by an explicit call to <see
-    /// cref="Dispose"/>.</param>
+    /// <inheritdoc />
     protected override void Dispose(bool disposing)
     {
         if (Disposed)

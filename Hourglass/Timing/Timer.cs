@@ -160,10 +160,7 @@ public sealed class Timer : TimerBase
         }
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public override string ToString()
     {
         string resourceName = string.Format(
@@ -191,10 +188,7 @@ public sealed class Timer : TimerBase
                 : TimerStart;
     }
 
-    /// <summary>
-    /// Returns the representation of the <see cref="TimerInfo"/> used for XML serialization.
-    /// </summary>
-    /// <returns>The representation of the <see cref="TimerInfo"/> used for XML serialization.</returns>
+    /// <inheritdoc />
     public override TimerInfo ToTimerInfo()
     {
         TimerInfo timerInfo = base.ToTimerInfo();
@@ -207,9 +201,7 @@ public sealed class Timer : TimerBase
 
     #region Protected Methods (Events)
 
-    /// <summary>
-    /// Invoked before the <see cref="TimerBase.Started"/> event is raised
-    /// </summary>
+    /// <inheritdoc />
     protected override void OnStarted()
     {
         ResetLastEndTime();
@@ -218,9 +210,7 @@ public sealed class Timer : TimerBase
         base.OnStarted();
     }
 
-    /// <summary>
-    /// Invoked before the <see cref="TimerBase.Paused"/> event is raised
-    /// </summary>
+    /// <inheritdoc />
     protected override void OnPaused()
     {
         ResetLastEndTime();
@@ -229,9 +219,7 @@ public sealed class Timer : TimerBase
         base.OnPaused();
     }
 
-    /// <summary>
-    /// Invoked before the <see cref="TimerBase.Resumed"/> event is raised
-    /// </summary>
+    /// <inheritdoc />
     protected override void OnResumed()
     {
         ResetLastEndTime();
@@ -240,9 +228,7 @@ public sealed class Timer : TimerBase
         base.OnResumed();
     }
 
-    /// <summary>
-    /// Invoked before the <see cref="TimerBase.Stopped"/> event is raised
-    /// </summary>
+    /// <inheritdoc />
     protected override void OnStopped()
     {
         ResetLastEndTime();
@@ -251,9 +237,7 @@ public sealed class Timer : TimerBase
         base.OnStopped();
     }
 
-    /// <summary>
-    /// Invoked before the <see cref="TimerBase.Expired"/> event is raised
-    /// </summary>
+    /// <inheritdoc />
     protected override void OnExpired()
     {
         ResetLastEndTime();
@@ -267,9 +251,7 @@ public sealed class Timer : TimerBase
         }
     }
 
-    /// <summary>
-    /// Invoked before the <see cref="TimerBase.Tick"/> event is raised
-    /// </summary>
+    /// <inheritdoc />
     protected override void OnTick()
     {
         UpdateHourglassTimer();

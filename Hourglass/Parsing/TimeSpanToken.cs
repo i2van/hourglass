@@ -54,9 +54,7 @@ public sealed class TimeSpanToken : TimerStartToken
     /// </summary>
     public double Seconds { get; set; }
 
-    /// <summary>
-    /// Gets a value indicating whether the token is valid.
-    /// </summary>
+    /// <inheritdoc />
     protected override bool IsValid =>
         Years >= 0
         && Months >= 0
@@ -66,12 +64,7 @@ public sealed class TimeSpanToken : TimerStartToken
         && Minutes >= 0
         && Seconds >= 0;
 
-    /// <summary>
-    /// Returns the end time for a timer started with this token at a specified time.
-    /// </summary>
-    /// <param name="startTime">The time the timer is started.</param>
-    /// <returns>The end time for a timer started with this token at the specified time.</returns>
-    /// <exception cref="InvalidOperationException">The end time is less than start time.</exception>
+    /// <inheritdoc />
     public override DateTime GetEndTime(DateTime startTime)
     {
         ThrowIfNotValid();
@@ -94,11 +87,7 @@ public sealed class TimeSpanToken : TimerStartToken
         return endTime;
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     protected override string ToString(IFormatProvider provider)
     {
         try
@@ -198,13 +187,7 @@ public sealed class TimeSpanToken : TimerStartToken
         {
         }
 
-        /// <summary>
-        /// Parses a string into a <see cref="TimerStartToken"/>.
-        /// </summary>
-        /// <param name="str">A string representation of a <see cref="TimerStartToken"/>.</param>
-        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <returns>The <see cref="TimerStartToken"/> parsed from the string.</returns>
-        /// <exception cref="FormatException">If <paramref name="str"/> is not a supported representation of a <see cref="TimerStartToken"/>.</exception>
+        /// <inheritdoc />
         protected override TimerStartToken ParseInternal(string str, IFormatProvider provider)
         {
             provider = Resources.ResourceManager.GetEffectiveProvider(provider);

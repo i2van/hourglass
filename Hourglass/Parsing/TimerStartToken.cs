@@ -101,10 +101,7 @@ public abstract class TimerStartToken
         }
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public sealed override string ToString()
     {
         return ToString(CultureInfo.CurrentCulture);

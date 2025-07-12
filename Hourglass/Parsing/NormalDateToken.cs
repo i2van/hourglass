@@ -36,26 +36,13 @@ public sealed class NormalDateToken : DateToken
     /// </summary>
     public int? Day { get; set; }
 
-    /// <summary>
-    /// Gets a value indicating whether the token is valid.
-    /// </summary>
+    /// <inheritdoc />
     public override bool IsValid =>
         DateTimeExtensions.IsValid(Year, Month, Day)
         && (Year.HasValue || Month.HasValue || Day.HasValue)
         && !(Year.HasValue && !Month.HasValue && Day.HasValue);
 
-    /// <summary>
-    /// Returns the next date after <paramref name="minDate"/> that is represented by this token.
-    /// </summary>
-    /// <remarks>
-    /// This method may return a date that is before <paramref name="minDate"/> if there is no date after <paramref
-    /// name="minDate"/> that is represented by this token.
-    /// </remarks>
-    /// <param name="minDate">The minimum date to return. The time part is ignored.</param>
-    /// <param name="inclusive">A value indicating whether the returned date should be on or after rather than
-    /// strictly after <paramref name="minDate"/>.</param>
-    /// <returns>The next date after <paramref name="minDate"/> that is represented by this token.</returns>
-    /// <exception cref="InvalidOperationException">If this token is not valid.</exception>
+    /// <inheritdoc />
     public override DateTime ToDateTime(DateTime minDate, bool inclusive)
     {
         ThrowIfNotValid();
@@ -91,11 +78,7 @@ public sealed class NormalDateToken : DateToken
         return date;
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public override string ToString(IFormatProvider provider)
     {
         try
@@ -194,11 +177,7 @@ public sealed class NormalDateToken : DateToken
         {
         }
 
-        /// <summary>
-        /// Returns a set of regular expressions supported by this parser.
-        /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <returns>A set of regular expressions supported by this parser.</returns>
+        /// <inheritdoc />
         public override IEnumerable<string> GetPatterns(IFormatProvider provider)
         {
             if (provider.IsMonthFirst())
@@ -214,14 +193,7 @@ public sealed class NormalDateToken : DateToken
             return GetPatternsWithDayFirst(provider);
         }
 
-        /// <summary>
-        /// Parses a <see cref="Match"/> into a <see cref="DateToken"/>.
-        /// </summary>
-        /// <param name="match">A <see cref="Match"/> representation of a <see cref="DateToken"/>.</param>
-        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <returns>The <see cref="DateToken"/> parsed from the <see cref="Match"/>.</returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="match"/> or <paramref name="provider"/> is <c>null</c>.</exception>
-        /// <exception cref="FormatException">If the <paramref name="match"/> is not a supported representation of a <see cref="DateToken"/>.</exception>
+        /// <inheritdoc />
         protected override DateToken ParseInternal(Match match, IFormatProvider provider)
         {
             NormalDateToken dateToken = new();

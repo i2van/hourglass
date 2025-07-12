@@ -72,25 +72,13 @@ public sealed class NormalTimeToken : TimeToken
     /// </summary>
     public bool IsMidday => Hour == 12 && Minute == 0 && Second == 0 && HourPeriod == HourPeriod.Pm;
 
-    /// <summary>
-    /// Gets a value indicating whether the token is valid.
-    /// </summary>
+    /// <inheritdoc />
     public override bool IsValid =>
         Hour is >= 1 and <= 12
         && Minute is >= 0 and <= 59
         && Second >= 0 && Minute <= 59;
 
-    /// <summary>
-    /// Returns the next date and time after <paramref name="minDate"/> that is represented by this token.
-    /// </summary>
-    /// <remarks>
-    /// This method may return a date and time that is before <paramref name="minDate"/> if there is no date and
-    /// time after <paramref name="minDate"/> that is represented by this token.
-    /// </remarks>
-    /// <param name="minDate">The minimum date and time to return.</param>
-    /// <param name="datePart">The date part of the date and time to return.</param>
-    /// <returns>The next date and time after <paramref name="minDate"/> that is represented by this token.</returns>
-    /// <exception cref="InvalidOperationException">If this token is not valid.</exception>
+    /// <inheritdoc />
     public override DateTime ToDateTime(DateTime minDate, DateTime datePart)
     {
         ThrowIfNotValid();
@@ -120,11 +108,7 @@ public sealed class NormalTimeToken : TimeToken
         };
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <param name="provider">An <see cref="IFormatProvider"/> to use.</param>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public override string ToString(IFormatProvider provider)
     {
         try
@@ -226,11 +210,7 @@ public sealed class NormalTimeToken : TimeToken
         {
         }
 
-        /// <summary>
-        /// Returns a set of regular expressions supported by this parser.
-        /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <returns>A set of regular expressions supported by this parser.</returns>
+        /// <inheritdoc />
         public override IEnumerable<string> GetPatterns(IFormatProvider provider)
         {
             yield return Resources.ResourceManager.GetString(nameof(Resources.NormalTimeTokenMilitaryTimePattern), provider);
@@ -238,14 +218,7 @@ public sealed class NormalTimeToken : TimeToken
             yield return Resources.ResourceManager.GetString(nameof(Resources.NormalTimeTokenTimeWithoutSeparatorsPattern), provider);
         }
 
-        /// <summary>
-        /// Parses a <see cref="Match"/> into a <see cref="TimeToken"/>.
-        /// </summary>
-        /// <param name="match">A <see cref="Match"/> representation of a <see cref="TimeToken"/>.</param>
-        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <returns>The <see cref="TimeToken"/> parsed from the <see cref="Match"/>.</returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="match"/> or <paramref name="provider"/> is <c>null</c>.</exception>
-        /// <exception cref="FormatException">If the <paramref name="match"/> is not a supported representation of a <see cref="TimeToken"/>.</exception>
+        /// <inheritdoc />
         protected override TimeToken ParseInternal(Match match, IFormatProvider provider)
         {
             NormalTimeToken timeToken = new();

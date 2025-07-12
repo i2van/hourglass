@@ -73,17 +73,10 @@ public sealed class WatermarkAdorner : Adorner
         set => TextBlock.SetForeground(_contentPresenter, value);
     }
 
-    /// <summary>
-    /// Gets the number of visual child elements within this element.
-    /// </summary>
+    /// <inheritdoc />
     protected override int VisualChildrenCount => 1;
 
-    /// <summary>
-    /// Positions child elements and determines a size for the <see cref="WatermarkAdorner"/>.
-    /// </summary>
-    /// <param name="finalSize">The final area within the parent that this element should use to arrange itself and
-    /// its children.</param>
-    /// <returns>The actual size used.</returns>
+    /// <inheritdoc />
     protected override Size ArrangeOverride(Size finalSize)
     {
         _contentPresenter.Arrange(new(finalSize));
@@ -103,12 +96,7 @@ public sealed class WatermarkAdorner : Adorner
         return finalSize;
     }
 
-    /// <summary>
-    /// Returns the child at the specified index from the child elements within the element.
-    /// </summary>
-    /// <param name="index">The zero-based index of the requested child element within the element.</param>
-    /// <returns>The requested child element.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">If the provided index is out of range.</exception>
+    /// <inheritdoc />
     protected override Visual GetVisualChild(int index)
     {
         return index != 0
@@ -116,13 +104,7 @@ public sealed class WatermarkAdorner : Adorner
             : _contentPresenter;
     }
 
-    /// <summary>
-    /// Measures the size in layout required for child elements and determines a size for the
-    /// <see cref="WatermarkAdorner"/>.
-    /// </summary>
-    /// <param name="constraint">The available size that this element can give to child elements. Infinity can
-    /// be specified as a value to indicate that the element will size to whatever content is available.</param>
-    /// <returns>The size that this element determines it needs during layout, based on its calculations of child element sizes.</returns>
+    /// <inheritdoc />
     protected override Size MeasureOverride(Size constraint)
     {
         _contentPresenter.Measure(AdornedElement.RenderSize);

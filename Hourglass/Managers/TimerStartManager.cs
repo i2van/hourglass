@@ -51,18 +51,14 @@ public sealed class TimerStartManager : Manager
     /// </summary>
     public TimerStart LastTimerStart => _timerStarts.Find(static e => e.IsCurrent) ?? TimerStart.Default;
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         _timerStarts.Clear();
         _timerStarts.AddRange(Settings.Default.TimerStarts);
     }
 
-    /// <summary>
-    /// Persists the state of the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Persist()
     {
         Settings.Default.TimerStarts = _timerStarts;

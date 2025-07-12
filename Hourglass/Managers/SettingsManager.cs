@@ -27,9 +27,7 @@ public sealed class SettingsManager : Manager
     {
     }
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         if (Settings.Default.UpgradeRequired)
@@ -40,9 +38,7 @@ public sealed class SettingsManager : Manager
         }
     }
 
-    /// <summary>
-    /// Persists the state of the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Persist()
     {
         Settings.Default.Save();

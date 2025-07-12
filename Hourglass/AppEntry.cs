@@ -59,12 +59,7 @@ public sealed class AppEntry : WindowsFormsApplicationBase
         appEntry.Run(args);
     }
 
-    /// <summary>
-    /// Invoked when the application starts.
-    /// </summary>
-    /// <param name="eventArgs">Contains the command-line arguments of the application and indicates whether the
-    /// application startup should be canceled.</param>
-    /// <returns>A value indicating whether the application should continue starting up.</returns>
+    /// <inheritdoc />
     protected override bool OnStartup(StartupEventArgs eventArgs)
     {
         AppManager.Instance.Initialize();
@@ -100,11 +95,7 @@ public sealed class AppEntry : WindowsFormsApplicationBase
         }
     }
 
-    /// <summary>
-    /// Invoked when a subsequent instance of this application starts.
-    /// </summary>
-    /// <param name="eventArgs">Contains the command-line arguments of the subsequent application instance and indicates
-    /// whether the first application instance should be brought to the foreground.</param>
+    /// <inheritdoc />
     protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
     {
         CommandLineArguments arguments = CommandLineArguments.Parse(eventArgs.CommandLine);

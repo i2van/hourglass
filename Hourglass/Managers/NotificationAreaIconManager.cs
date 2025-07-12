@@ -30,19 +30,13 @@ public sealed class NotificationAreaIconManager : Manager
     /// </summary>
     public NotificationAreaIcon NotifyIcon { get; private set; } = null!;
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         NotifyIcon = new();
     }
 
-    /// <summary>
-    /// Disposes the manager.
-    /// </summary>
-    /// <param name="disposing">A value indicating whether this method was invoked by an explicit call to <see
-    /// cref="Dispose"/>.</param>
+    /// <inheritdoc />
     protected override void Dispose(bool disposing)
     {
         if (Disposed)

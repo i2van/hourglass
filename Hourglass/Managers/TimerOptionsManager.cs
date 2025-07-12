@@ -47,17 +47,13 @@ public sealed class TimerOptionsManager : Manager
         }
     }
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         _mostRecentOptions = Settings.Default.MostRecentOptions;
     }
 
-    /// <summary>
-    /// Persists the state of the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Persist()
     {
         UpdateMostRecentOptions();

@@ -51,10 +51,7 @@ public abstract class TimeToken
     /// <exception cref="InvalidOperationException">If this token is not valid.</exception>
     public abstract DateTime ToDateTime(DateTime minDate, DateTime datePart);
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public sealed override string ToString()
     {
         return ToString(CultureInfo.CurrentCulture);

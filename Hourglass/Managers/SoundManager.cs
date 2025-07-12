@@ -72,9 +72,7 @@ public sealed class SoundManager : Manager
     public IReadOnlyCollection<Sound> UserProvidedSounds => _sounds.Where(static s => !s.IsBuiltIn).ToArray();
 #pragma warning restore S2365
 
-    /// <summary>
-    /// Initializes the class.
-    /// </summary>
+    /// <inheritdoc />
     public override void Initialize()
     {
         _sounds.Clear();
