@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 /Tools/ResourceHacker/ResourceHacker.ini
 /Tools/ResourceHacker/ResourceHacker.log
+
+/Hourglass/Properties/launchSettings.json
