@@ -1056,6 +1056,33 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ([0-9]+)\s*:[^:]+:[^:]+$.
+        /// </summary>
+        public static string DigitalClockHoursSelectionPattern {
+            get {
+                return ResourceManager.GetString("DigitalClockHoursSelectionPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^.+:\s*([0-9]+)\s*:[^:]+$.
+        /// </summary>
+        public static string DigitalClockMinutesSelectionPattern {
+            get {
+                return ResourceManager.GetString("DigitalClockMinutesSelectionPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to :([0-9]+)\s*$.
+        /// </summary>
+        public static string DigitalClockSecondsSelectionPattern {
+            get {
+                return ResourceManager.GetString("DigitalClockSecondsSelectionPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Close.
         /// </summary>
         public static string ErrorDialogCloseButtonContent {
@@ -1137,6 +1164,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ([0-9]+)\s+hours?\s*.
+        /// </summary>
+        public static string HoursSelectionPattern {
+            get {
+                return ResourceManager.GetString("HoursSelectionPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MIT License
         ///
         ///Copyright © 2021 Chris Dziemborowicz, 2024-2025 Ivan Ivon
@@ -1175,6 +1211,15 @@ namespace Hourglass.Properties {
         public static string MinimizeWindowCloseTaskDialogCommand {
             get {
                 return ResourceManager.GetString("MinimizeWindowCloseTaskDialogCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ([0-9]+)\s+minutes?\s*.
+        /// </summary>
+        public static string MinutesSelectionPattern {
+            get {
+                return ResourceManager.GetString("MinutesSelectionPattern", resourceCulture);
             }
         }
         
@@ -1657,6 +1702,15 @@ namespace Hourglass.Properties {
         public static string SaveTimerTaskDialogText {
             get {
                 return ResourceManager.GetString("SaveTimerTaskDialogText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ([0-9]+)\s+seconds?\s*$.
+        /// </summary>
+        public static string SecondsSelectionPattern {
+            get {
+                return ResourceManager.GetString("SecondsSelectionPattern", resourceCulture);
             }
         }
         

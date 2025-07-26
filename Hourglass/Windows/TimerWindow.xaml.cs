@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
@@ -85,6 +86,13 @@ public sealed class TimerCommand
 /// </summary>
 public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWindow
 {
+    private static readonly Regex MinutesSelectionRegex = new(Properties.Resources.MinutesSelectionPattern);
+    private static readonly Regex DigialClockMinutesSelectionRegex = new(Properties.Resources.DigitalClockMinutesSelectionPattern);
+    private static readonly Regex SecondsSelectionRegex = new(Properties.Resources.SecondsSelectionPattern);
+    private static readonly Regex DigialClockSecondsSelectionRegex = new(Properties.Resources.DigitalClockSecondsSelectionPattern);
+    private static readonly Regex HoursSelectionRegex = new(Properties.Resources.HoursSelectionPattern);
+    private static readonly Regex DigialClockHoursSelectionRegex = new(Properties.Resources.DigitalClockHoursSelectionPattern);
+
     #region Commands
 
     public static readonly RoutedCommand NewTimerCommand = new();
@@ -634,10 +642,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         window.Show();
     }
 
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>A string that represents the current object.</returns>
+    /// <inheritdoc />
     public override string ToString()
     {
         if (Timer.State == TimerState.Stopped && Mode == TimerWindowMode.Input)
@@ -662,12 +667,15 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     #region Private Methods (Modes)
 
+    private record Selection(TextBox TextBox, int Start, int Length);
+    private record AllSelection(TextBox TextBox) : Selection(TextBox, 0, TextBox.Text.Length);
+    private record CaretAtEndSelection(TextBox TextBox) : Selection(TextBox, TextBox.Text.Length, 0);
+
     /// <summary>
     /// Sets the window to accept user input to start a new <see cref="Timer"/>.
     /// </summary>
-    /// <param name="textBoxToFocus">The <see cref="TextBox"/> to focus. The default is <see cref="TimerTextBox"/>.
-    /// </param>
-    private void SwitchToInputMode(TextBox? textBoxToFocus = null)
+    /// <param name="selection">The <see cref="Selection"/> to do. The default is the <see cref="AllSelection"/> of the <see cref="TimerTextBox"/>.</param>
+    private void SwitchToInputMode(Selection? selection = null)
     {
         Mode = TimerWindowMode.Input;
 
@@ -675,9 +683,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         AdjustTimerTextBoxText();
 
-        textBoxToFocus ??= TimerTextBox;
-        textBoxToFocus.SelectAll();
-        textBoxToFocus.Focus();
+        selection ??= new AllSelection(TimerTextBox);
+        selection.TextBox.Focus();
+        selection.TextBox.Select(selection.Start, selection.Length);
 
         EndAnimationsAndSounds();
         UpdateBoundControls();
@@ -1837,7 +1845,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         {
             if (Timer.State == TimerState.Expired)
             {
-                SwitchToInputMode(TimerTextBox /* textBoxToFocus */);
+                SwitchToInputMode();
             }
             else
             {
@@ -1861,7 +1869,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
         else if (Mode != TimerWindowMode.Input && Timer.State is TimerState.Stopped or TimerState.Expired)
         {
-            SwitchToInputMode(TitleTextBox /* textBoxToFocus */);
+            SwitchToInputMode(new AllSelection(TitleTextBox));
             e.Handled = true;
         }
         else if (!TitleTextBox.IsFocused)
@@ -1885,7 +1893,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
         else if (Mode != TimerWindowMode.Input && Timer.State is TimerState.Stopped or TimerState.Expired)
         {
-            SwitchToInputMode(TitleTextBox /* textBoxToFocus */);
+            SwitchToInputMode(new AllSelection(TitleTextBox));
             e.Handled = true;
         }
         else
@@ -1965,20 +1973,49 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             return;
         }
 
-        TextBox? focus = e.Key switch
+        bool noModifiers    = Keyboard.Modifiers == ModifierKeys.None;
+        bool shiftModifier  = Keyboard.Modifiers == ModifierKeys.Shift;
+        bool validModifiers = noModifiers || shiftModifier;
+
+        Selection? selection = e.Key switch
         {
-            Key.F2 => TitleTextBox,
-            Key.F4 => TimerTextBox,
+            Key.F2 when noModifiers    => new AllSelection(TitleTextBox),
+            Key.F2 when shiftModifier  => new CaretAtEndSelection(TitleTextBox),
+            Key.F4 when noModifiers    => new AllSelection(TimerTextBox),
+            Key.F4 when shiftModifier  => new CaretAtEndSelection(TimerTextBox),
+            Key.F5 when validModifiers => GetTimerTextBoxSelection(MinutesSelectionRegex, DigialClockMinutesSelectionRegex),
+            Key.F6 when validModifiers => GetTimerTextBoxSelection(SecondsSelectionRegex, DigialClockSecondsSelectionRegex),
+            Key.F7 when validModifiers => GetTimerTextBoxSelection(HoursSelectionRegex,   DigialClockHoursSelectionRegex),
             _ => null
         };
 
-        if (focus is null)
+        if (selection is not null)
         {
-            return;
+            SwitchToInputMode(selection);
+
+            e.Handled = true;
         }
 
-        SwitchToInputMode(focus);
-        e.Handled = true;
+        Selection? GetTimerTextBoxSelection(Regex timeSelectionRegex, Regex digialClockTimeSelectionRegex)
+        {
+            Regex selectionRegex = Timer.Options.DigitalClockTime
+                ? digialClockTimeSelectionRegex
+                : timeSelectionRegex;
+
+            Match match = selectionRegex.Match(TimerTextBox.Text);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            Capture capture = match.Groups[1].Captures[0];
+            int selectionStart = capture.Index;
+            int selectionEnd = capture.Length;
+
+            return shiftModifier
+                ? new Selection(TimerTextBox, selectionStart + selectionEnd, 0)
+                : new Selection(TimerTextBox, selectionStart, selectionEnd);
+        }
     }
 
     /// <summary>

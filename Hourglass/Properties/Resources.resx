@@ -1463,4 +1463,28 @@ $</value>
     <value>WithTitle</value>
     <comment>WithTitle text</comment>
   </data>
+  <data name="MinutesSelectionPattern" xml:space="preserve">
+    <value>([0-9]+)\s+minutes?\s*</value>
+    <comment>The regular expression that matches minutes</comment>
+  </data>
+  <data name="DigitalClockMinutesSelectionPattern" xml:space="preserve">
+    <value>^.+:\s*([0-9]+)\s*:[^:]+$</value>
+    <comment>The regular expression that matches digital clock minutes</comment>
+  </data>
+  <data name="SecondsSelectionPattern" xml:space="preserve">
+    <value>([0-9]+)\s+seconds?\s*$</value>
+    <comment>The regular expression that matches seconds</comment>
+  </data>
+  <data name="DigitalClockSecondsSelectionPattern" xml:space="preserve">
+    <value>:([0-9]+)\s*$</value>
+    <comment>The regular expression that matches digital clock seconds</comment>
+  </data>
+  <data name="HoursSelectionPattern" xml:space="preserve">
+    <value>([0-9]+)\s+hours?\s*</value>
+    <comment>The regular expression that matches hours</comment>
+  </data>
+  <data name="DigitalClockHoursSelectionPattern" xml:space="preserve">
+    <value>([0-9]+)\s*:[^:]+:[^:]+$</value>
+    <comment>The regular expression that matches digital clock hours</comment>
+  </data>
 </root>

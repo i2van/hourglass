@@ -245,15 +245,18 @@ To remove the **Hourglass** icon from the notification area and restore any hidd
 
 ## What are the timer window keyboard shortcuts?
 
-| Shortcut                  | Action                 |
-| ------------------------- | ---------------------- |
-| `Ctrl`+`N`                | Create a new timer     |
-| `Space` <br/> `Ctrl`+`P`  | Pause/resume the timer |
-| `Ctrl`+`S`                | Stop the timer         |
-| `Ctrl`+`R`                | Restart the timer      |
-| `F11` <br/> `Alt`+`Enter` <br/> `Double Click`     | Toggle full screen     |
-| `F2`                      | Edit the title         |
-| `F4`                      | Edit the time          |
+| Shortcut                  | Action                                                     |
+| ------------------------- | ---------------------------------------------------------- |
+| `Ctrl`+`N`                | Create a new timer                                         |
+| `Space` <br/> `Ctrl`+`P`  | Pause/resume the timer                                     |
+| `Ctrl`+`S`                | Stop the timer                                             |
+| `Ctrl`+`R`                | Restart the timer                                          |
+| `F11` <br/> `Alt`+`Enter` <br/> `Double Click`     | Toggle full screen                |
+| `F2`                      | Edit the title; holding `Shift` removes selection          |
+| `F4`                      | Edit the time; holding `Shift` removes selection           |
+| `F5`                      | Edit the time's minutes; holding `Shift` removes selection |
+| `F6`                      | Edit the time's seconds; holding `Shift` removes selection |
+| `F7`                      | Edit the time's hours; holding `Shift` removes selection   |
 
 ## What are the notification area keyboard shortcuts?
 
