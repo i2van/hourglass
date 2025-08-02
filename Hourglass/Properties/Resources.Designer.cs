@@ -1715,7 +1715,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lo_ud beep.
+        ///   Looks up a localized string similar to Loud beep.
         /// </summary>
         public static string SoundManagerLoudBeep {
             get {
@@ -1724,7 +1724,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No_rmal beep.
+        ///   Looks up a localized string similar to Normal beep.
         /// </summary>
         public static string SoundManagerNormalBeep {
             get {
@@ -1733,7 +1733,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Quiet beep.
+        ///   Looks up a localized string similar to Quiet beep.
         /// </summary>
         public static string SoundManagerQuietBeep {
             get {

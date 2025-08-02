@@ -733,15 +733,15 @@ $</value>
     <comment>The separator between the units of a time span (e.g., " " is "5 minutes 30 seconds", " : " is "5 minutes : 30 seconds")</comment>
   </data>
   <data name="SoundManagerLoudBeep" xml:space="preserve">
-    <value>Lo_ud beep</value>
+    <value>Loud beep</value>
     <comment>The string for the loud beep sound</comment>
   </data>
   <data name="SoundManagerNormalBeep" xml:space="preserve">
-    <value>No_rmal beep</value>
+    <value>Normal beep</value>
     <comment>The string for the normal beep sound</comment>
   </data>
   <data name="SoundManagerQuietBeep" xml:space="preserve">
-    <value>_Quiet beep</value>
+    <value>Quiet beep</value>
     <comment>The string for the quiet beep sound</comment>
   </data>
   <data name="ErrorManagerErrorHasBeenWritten" xml:space="preserve">
