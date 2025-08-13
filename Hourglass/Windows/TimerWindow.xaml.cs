@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -260,13 +261,24 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         this.UpdateJumpList();
 
-        PropertyChanged.Notify(this,
-            nameof(StartThumbImage),
-            nameof(StopThumbImage),
-            nameof(PauseThumbImage),
-            nameof(ResumeThumbImage),
-            nameof(RestartThumbImage)
-        );
+        try
+        {
+            PropertyChanged.Notify(this,
+                nameof(StartThumbImage),
+                nameof(StopThumbImage),
+                nameof(PauseThumbImage),
+                nameof(ResumeThumbImage),
+                nameof(RestartThumbImage)
+            );
+        }
+        catch (COMException)
+        {
+            // https://github.com/dotnet/wpf/issues/3067
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.WaitForFullGCComplete();
+            GC.Collect();
+        }
     }
 
     /// <summary>
