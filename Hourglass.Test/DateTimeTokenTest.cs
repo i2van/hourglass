@@ -28,17 +28,13 @@ public sealed class DateTimeTokenTest
     /// cref="ArgumentNullException"/> for <c>null</c> input.
     /// </summary>
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void ParseWithNullInputThrowsArgumentNullException()
     {
         // Arrange
         IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
 
-        // Act
-        DateTimeToken.Parser.Instance.Parse(null /* str */, provider);
-
-        // Assert
-        Assert.Fail("Expected ArgumentNullException.");
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentNullException>(() => DateTimeToken.Parser.Instance.Parse(null /* str */, provider));
     }
 
     /// <summary>
@@ -46,18 +42,14 @@ public sealed class DateTimeTokenTest
     /// cref="FormatException"/> for <see cref="string.Empty"/> input.
     /// </summary>
     [TestMethod]
-    [ExpectedException(typeof(FormatException))]
     public void ParseWithEmptyInputThrowsFormatException()
     {
         // Arrange
         string str = string.Empty;
         IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
 
-        // Act
-        DateTimeToken.Parser.Instance.Parse(str, provider);
-
-        // Assert
-        Assert.Fail("Expected FormatException.");
+        // Act & Assert
+        Assert.ThrowsExactly<FormatException>(() => DateTimeToken.Parser.Instance.Parse(str, provider));
     }
 
     /// <summary>
@@ -65,18 +57,14 @@ public sealed class DateTimeTokenTest
     /// cref="FormatException"/> for a garbage string input.
     /// </summary>
     [TestMethod]
-    [ExpectedException(typeof(FormatException))]
     public void ParseWithGarbageInputThrowsFormatException()
     {
         // Arrange
         string str = "garbage";
         IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
 
-        // Act
-        DateTimeToken.Parser.Instance.Parse(str, provider);
-
-        // Assert
-        Assert.Fail("Expected FormatException.");
+        // Act & Assert
+        Assert.ThrowsExactly<FormatException>(() => DateTimeToken.Parser.Instance.Parse(str, provider));
     }
 
     #endregion
