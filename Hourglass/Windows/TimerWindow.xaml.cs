@@ -247,6 +247,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         _updateShellIntegration = ((Action)UpdateShellIntegration).CreateDisposable();
 
+        if (!Settings.Default.ShowTaskbarThumbButtons)
+        {
+            TaskbarThumbButtons.ThumbButtonInfos.Clear();
+        }
+
         BindTimer();
         SwitchToInputMode();
 
@@ -260,13 +265,16 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         this.UpdateJumpList();
 
-        PropertyChanged.Notify(this,
-            nameof(StartThumbImage),
-            nameof(StopThumbImage),
-            nameof(PauseThumbImage),
-            nameof(ResumeThumbImage),
-            nameof(RestartThumbImage)
-        );
+        if (Settings.Default.ShowTaskbarThumbButtons)
+        {
+            PropertyChanged.Notify(this,
+                nameof(StartThumbImage),
+                nameof(StopThumbImage),
+                nameof(PauseThumbImage),
+                nameof(ResumeThumbImage),
+                nameof(RestartThumbImage)
+            );
+        }
     }
 
     /// <summary>

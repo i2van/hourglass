@@ -42,6 +42,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to find the Hourglass settings?](#how-to-find-the-hourglass-settings)
 - [How to disable the Hourglass updates?](#how-to-disable-the-hourglass-updates)
 - [How to enable the Hourglass Jump List?](#how-to-enable-the-hourglass-jump-list)
+- [How to disable the Hourglass thumbnail toolbar?](#how-to-disable-the-hourglass-thumbnail-toolbar)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
 - [What should I do if there is no notification sound?](#what-should-i-do-if-there-is-no-notification-sound)
 
@@ -468,8 +469,12 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 3. Set `UseJumpList` to `True`.
 4. Launch the **Hourglass**.
 
-> [!IMPORTANT]
-> Jump List tasks do not work when the **Hourglass** is run as an **Administrator**.
+## How to disable the Hourglass [thumbnail toolbar](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#thumbnail-toolbars)?
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set `ShowTaskbarThumbButtons` to `False`.
+4. Launch the **Hourglass**.
 
 ## What should I do if the Hourglass does not start?
 
