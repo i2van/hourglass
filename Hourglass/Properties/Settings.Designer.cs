@@ -221,5 +221,17 @@ namespace Hourglass.Properties {
                 this["UseJumpList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowTaskbarThumbButtons {
+            get {
+                return ((bool)(this["ShowTaskbarThumbButtons"]));
+            }
+            set {
+                this["ShowTaskbarThumbButtons"] = value;
+            }
+        }
     }
 }

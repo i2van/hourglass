@@ -265,7 +265,7 @@
         <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter"/>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo>
+        <TaskbarItemInfo x:Name="TaskbarThumbButtons">
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfoCollection>
                     <ThumbButtonInfo
