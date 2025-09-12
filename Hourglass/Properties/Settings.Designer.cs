@@ -233,5 +233,17 @@ namespace Hourglass.Properties {
                 this["ShowTaskbarThumbButtons"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlwaysCenterWindow {
+            get {
+                return ((bool)(this["AlwaysCenterWindow"]));
+            }
+            set {
+                this["AlwaysCenterWindow"] = value;
+            }
+        }
     }
 }

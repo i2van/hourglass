@@ -2260,6 +2260,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private void OnSourceInitialized(object sender, EventArgs e)
     {
         this.AddWindowProcHook();
+
+        if (Settings.Default.AlwaysCenterWindow)
+        {
+            this.CenterOnScreen();
+        }
     }
 
     protected override void OnActivated(EventArgs e)
