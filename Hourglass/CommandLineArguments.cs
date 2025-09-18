@@ -27,8 +27,6 @@ using Windows;
 /// </summary>
 public sealed class CommandLineArguments
 {
-    #region Properties
-
     public static readonly uint JumpListMsg = RegisterWindowMessage("Hourglass-604573a4-061e-49ee-91aa-29d62f7657a1");
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
@@ -231,10 +229,6 @@ public sealed class CommandLineArguments
     /// </summary>
     public bool ResumeAll { get; private set; }
 
-    #endregion
-
-    #region Public Methods
-
     private const string JumpListCommand = "jump-list";
 
     /// <summary>
@@ -357,10 +351,6 @@ public sealed class CommandLineArguments
             RestoreWindowState,
             IsFullScreen);
     }
-
-    #endregion
-
-    #region Private Methods
 
     /// <summary>
     /// Returns a <see cref="CommandLineArguments"/> instance based on the most recent options.
@@ -1342,8 +1332,6 @@ public sealed class CommandLineArguments
 
         throw new ParseException(message);
     }
-
-    #endregion
 
     /// <summary>
     /// Represents an error during <see cref="GetCommandLineArguments"/>.

@@ -70,8 +70,6 @@ public enum WindowTitleMode
 /// </summary>
 public sealed class TimerOptions : INotifyPropertyChanged
 {
-    #region Constructors
-
     /// <summary>
     /// Initializes a new instance of the <see cref="TimerOptions"/> class.
     /// </summary>
@@ -122,14 +120,10 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Set(info);
     }
 
-    #endregion
-
     /// <summary>
     /// Raised when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    #region Properties
 
     /// <summary>
     /// Gets or sets a user-specified title for the timer.
@@ -515,10 +509,6 @@ public sealed class TimerOptions : INotifyPropertyChanged
         }
     }
 
-    #endregion
-
-    #region Public Methods
-
     /// <summary>
     /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <c>null</c> if the
     /// specified <see cref="TimerOptions"/> is <c>null</c>.
@@ -681,6 +671,4 @@ public sealed class TimerOptions : INotifyPropertyChanged
             LockInterface = LockInterface
         };
     }
-
-    #endregion
 }

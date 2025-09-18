@@ -40,8 +40,6 @@ public enum ThemeType
 /// </summary>
 public sealed class Theme : INotifyPropertyChanged
 {
-    #region Private Members
-
     /// <summary>
     /// The brush used to paint the background color of the window.
     /// </summary>
@@ -91,10 +89,6 @@ public sealed class Theme : INotifyPropertyChanged
     /// The brush used to paint the color of the button text when the user hovers over the button.
     /// </summary>
     private Brush? _buttonHoverBrush;
-
-    #endregion
-
-    #region Constructors
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Theme"/> class.
@@ -242,14 +236,10 @@ public sealed class Theme : INotifyPropertyChanged
     {
     }
 
-    #endregion
-
     /// <summary>
     /// Raised when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    #region Properties
 
     /// <summary>
     /// Gets the default theme.
@@ -574,10 +564,6 @@ public sealed class Theme : INotifyPropertyChanged
     /// </summary>
     public Theme DarkVariant => ThemeManager.Instance.GetDarkVariantForTheme(this);
 
-    #endregion
-
-    #region Public Static Methods
-
     /// <summary>
     /// Returns the theme for the specified identifier, or <c>null</c> if no such theme is loaded.
     /// </summary>
@@ -612,10 +598,6 @@ public sealed class Theme : INotifyPropertyChanged
     {
         return info is not null ? new Theme(info) : null;
     }
-
-    #endregion
-
-    #region Public Methods
 
     /// <summary>
     /// Returns the unique colors used in this theme.
@@ -684,6 +666,4 @@ public sealed class Theme : INotifyPropertyChanged
             IsUserThemeDark = IsUserThemeDark
         };
     }
-
-    #endregion
 }

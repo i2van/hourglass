@@ -21,8 +21,6 @@ using Serialization;
 /// </summary>
 public sealed class Timer : TimerBase
 {
-    #region Constructors
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Timer"/> class.
     /// </summary>
@@ -54,10 +52,6 @@ public sealed class Timer : TimerBase
 
         UpdateHourglassTimer();
     }
-
-    #endregion
-
-    #region Properties
 
     /// <summary>
     /// Gets the configuration data for this timer.
@@ -110,16 +104,12 @@ public sealed class Timer : TimerBase
     /// </summary>
     public bool SupportsRestart => TimerStart?.Type == TimerStartType.TimeSpan;
 
-    #endregion
-
     /// <summary>
     /// Returns a <see cref="Timer"/> for a <see cref="TimerInfo"/>.
     /// </summary>
     /// <param name="timerInfo">A <see cref="TimerInfo"/>.</param>
     /// <returns>The <see cref="Timer"/> for the <see cref="TimerInfo"/>.</returns>
     public static Timer? FromTimerInfo(TimerInfo? timerInfo) => timerInfo is null ? null : new(timerInfo);
-
-    #region Public Methods
 
     /// <summary>
     /// Starts the timer.
@@ -197,10 +187,6 @@ public sealed class Timer : TimerBase
         return timerInfo;
     }
 
-    #endregion
-
-    #region Protected Methods (Events)
-
     /// <inheritdoc />
     protected override void OnStarted()
     {
@@ -257,10 +243,6 @@ public sealed class Timer : TimerBase
         UpdateHourglassTimer();
         base.OnTick();
     }
-
-    #endregion
-
-    #region Private Methods
 
     /// <summary>
     /// Restarts the timer with the current <see cref="TimerStart"/>.
@@ -474,6 +456,4 @@ public sealed class Timer : TimerBase
                 string.Format(Resources.TimerTimeDateTimeFormatString, endTime.ToLongDateString(), endTime.ToLongTimeString()),
         };
     }
-
-    #endregion
 }

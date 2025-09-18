@@ -93,8 +93,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private static readonly Regex HoursSelectionRegex = new(Properties.Resources.HoursSelectionPattern);
     private static readonly Regex DigialClockHoursSelectionRegex = new(Properties.Resources.DigitalClockHoursSelectionPattern);
 
-    #region Commands
-
     public static readonly RoutedCommand NewTimerCommand = new();
 
     /// <summary>
@@ -164,10 +162,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     public static int LastActivatedID { get; set; }
 
-    #endregion
-
-    #region Private Members
-
     private static int _id;
 
     public int ID { get; } = System.Threading.Interlocked.Increment(ref _id);
@@ -225,15 +219,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     private Storyboard _validationErrorStoryboard = null!;
 
-    #endregion
-
     public IEnumerable<TimerCommand> Commands { get; private set; } = [];
 
     public sealed record JumpListButton(Button Button, string Text, int Index);
 
     public IReadOnlyList<JumpListButton> JumpListButtons { get; private set; } = [];
-
-    #region Constructors
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TimerWindow"/> class.
@@ -288,14 +278,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         _timerStartToStartOnLoad = timerStart;
     }
 
-    #endregion
-
     /// <summary>
     /// Raised when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    #region Properties
 
     /// <summary>
     /// Gets the <see cref="WindowSize"/> for the window persisted in the settings.
@@ -475,10 +461,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     }
 
     public bool IsInterfaceUnlocked => !Options.LockInterface;
-
-    #endregion
-
-    #region Public Methods
 
     /// <summary>
     /// Opens the <see cref="TimerWindow"/> if it is not already open and displays a new timer started with the
@@ -671,10 +653,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         return Timer.ToString();
     }
 
-    #endregion
-
-    #region Private Methods (Modes)
-
     private record Selection(TextBox TextBox, int Start, int Length);
     private record AllSelection(TextBox TextBox) : Selection(TextBox, 0, TextBox.Text.Length);
     private record CaretAtEndSelection(TextBox TextBox) : Selection(TextBox, TextBox.Text.Length, 0);
@@ -812,8 +790,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                || UpdateButton.Unfocus();
     }
 
-    #endregion
-
     /// <summary>
     /// Initializes localized resources.
     /// </summary>
@@ -848,8 +824,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             .Select(static (tc, i) => new JumpListButton(tc.Button, string.Intern(((string)tc.Button.Content).RemoveHotkeyChar()), i))
             .ToArray();
     }
-
-    #region Private Methods (Animations and Sounds)
 
     /// <summary>
     /// Initializes the animation members.
@@ -1077,10 +1051,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
     }
 
-    #endregion
-
-    #region Private Methods (Update Button)
-
     /// <summary>
     /// Initializes the update button.
     /// </summary>
@@ -1103,10 +1073,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     private bool IsUpdateButtonEnabled =>
         UpdateManager.Instance.HasUpdates && Settings.Default.ShowUpdateLink;
-
-    #endregion
-
-    #region Private Methods (Timer Binding)
 
     /// <summary>
     /// Binds the <see cref="TimerWindow"/> event handlers and controls to a timer.
@@ -1435,10 +1401,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
     }
 
-    #endregion
-
-    #region Private Methods (Timer Events)
-
     /// <summary>
     /// Invoked when the timer is started, paused, stopped or resumed.
     /// </summary>
@@ -1566,10 +1528,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     private string? GetTimeElapsedPlusTimerTitle(bool titleFirst = false) =>
         GetTimePlusTimerTitle(Timer.TimeElapsedAsString, titleFirst);
-
-    #endregion
-
-    #region Private Methods (Commands)
 
     private void NewTimerCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
@@ -1815,10 +1773,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         IsFullScreen = !IsFullScreen;
     }
-
-    #endregion
-
-    #region Private Methods (Window Events)
 
     /// <summary>
     /// Invoked when the mouse pointer enters the bounds of a <see cref="Button"/>.
@@ -2277,6 +2231,4 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         base.OnActivated(e);
     }
-
-    #endregion
 }

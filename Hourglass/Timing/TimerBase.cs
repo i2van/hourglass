@@ -54,8 +54,6 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// </summary>
     private readonly DispatcherTimer _dispatcherTimer;
 
-    #region Constructors
-
     /// <summary>
     /// Initializes a new instance of the <see cref="TimerBase"/> class.
     /// </summary>
@@ -88,10 +86,6 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
             _dispatcherTimer.Start();
         }
     }
-
-    #endregion
-
-    #region Events
 
     /// <summary>
     /// Raised when the timer is started.
@@ -127,10 +121,6 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// Raised when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    #endregion
-
-    #region Properties
 
     /// <summary>
     /// Gets the <see cref="TimerState"/> of this timer.
@@ -207,10 +197,6 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// Gets a value indicating whether this object has been disposed.
     /// </summary>
     public bool Disposed { get; private set; }
-
-    #endregion
-
-    #region Public Methods
 
     /// <summary>
     /// Starts the timer.
@@ -407,10 +393,6 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
         GC.SuppressFinalize(this);
     }
 
-    #endregion
-
-    #region Protected Methods
-
     /// <summary>
     /// Raises the <see cref="Started"/> event.
     /// </summary>
@@ -495,6 +477,4 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     {
         PropertyChanged.Notify(this, firstPropertyName, propertyNames);
     }
-
-    #endregion
 }

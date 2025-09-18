@@ -43,8 +43,6 @@ public enum RestoreOptions
 /// </summary>
 public static class WindowExtensions
 {
-    #region Public Methods
-
     /// <summary>
     /// Sets the Desktop Window Manager (DWM) non-client rendering attributes on the window to use (or not use)
     /// immersive dark mode. This method has no effect on versions of windows that do not support it.
@@ -233,10 +231,6 @@ public static class WindowExtensions
         }
     }
 
-    #endregion
-
-    #region Private Methods (Restore)
-
     /// <summary>
     /// Restores the size and position of a window.
     /// </summary>
@@ -396,10 +390,6 @@ public static class WindowExtensions
         window.WindowState = WindowState.Maximized;
         window.Loaded -= MaximizeSenderWindow;
     }
-
-    #endregion
-
-    #region Private Methods (Size Manipulation)
 
     /// <summary>
     /// Positions a <see cref="Rect"/> in the center of the screen. If the <see cref="Rect"/> is larger than the
@@ -724,12 +714,6 @@ public static class WindowExtensions
     public static bool IsTextBoxView(this object o) =>
         StringComparer.Ordinal.Equals(o.GetType().FullName, "System.Windows.Controls.TextBoxView");
 
-    #endregion
-
-    #region DllImport
-
     [DllImport("user32.dll")]
     private static extern int GetSystemMetrics(int nIndex);
-
-    #endregion
 }

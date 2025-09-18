@@ -21,8 +21,6 @@ using Timing;
 /// </summary>
 public sealed class SoundPlayer : IDisposable
 {
-    #region Private Members
-
     /// <summary>
     /// A <see cref="System.Media.SoundPlayer"/> that can play *.wav files.
     /// </summary>
@@ -44,8 +42,6 @@ public sealed class SoundPlayer : IDisposable
     /// Indicates whether this object has been disposed.
     /// </summary>
     private bool _disposed;
-
-    #endregion
 
     public SoundPlayer()
     {
@@ -71,8 +67,6 @@ public sealed class SoundPlayer : IDisposable
     /// Gets a value indicating whether the player is playing a sound.
     /// </summary>
     public bool IsPlaying { get; private set; }
-
-    #region Public Methods
 
     /// <summary>
     /// Plays a <see cref="Sound"/> asynchronously.
@@ -175,10 +169,6 @@ public sealed class SoundPlayer : IDisposable
         Dispose(true);
     }
 
-    #endregion
-
-    #region Protected Methods
-
     /// <summary>
     /// Disposes the timer.
     /// </summary>
@@ -221,10 +211,6 @@ public sealed class SoundPlayer : IDisposable
         }
     }
 
-    #endregion
-
-    #region Private Methods
-
     /// <summary>
     /// Invoked when the <see cref="DispatcherTimer"/> interval has elapsed.
     /// </summary>
@@ -251,6 +237,4 @@ public sealed class SoundPlayer : IDisposable
 
         _audioPlayer.Play();
     }
-
-    #endregion
 }

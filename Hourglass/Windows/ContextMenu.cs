@@ -26,8 +26,6 @@ using Timing;
 /// </summary>
 public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 {
-    #region Private Members
-
     /// <summary>
     /// The <see cref="TimerWindow"/> that uses this context menu.
     /// </summary>
@@ -238,8 +236,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     /// </summary>
     private MenuItem _maximizeMenuItem = null!;
 
-    #endregion
-
     /// <summary>
     /// Gets the date and time for the menu being last visible.
     /// </summary>
@@ -305,8 +301,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         // ReSharper restore ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
     }
 
-    #region Private Methods (Lifecycle)
-
     /// <summary>
     /// Invoked when the context menu is opened.
     /// </summary>
@@ -360,10 +354,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         AppManager.Instance.Persist();
     }
-
-    #endregion
-
-    #region Private Methods (Binding)
 
     /// <summary>
     /// Reads the options from the <see cref="TimerOptions"/> and applies them to this menu.
@@ -594,8 +584,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         UpdateOptionsFromMenu();
         UpdateMenuFromOptions();
     }
-
-    #endregion
 
     /// <summary>
     /// Builds or rebuilds the context menu.
@@ -1033,8 +1021,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _timerWindow.New();
     }
 
-    #region Private Methods (Recent Inputs)
-
     /// <summary>
     /// Updates the <see cref="_recentInputsMenuItem"/>.
     /// </summary>
@@ -1111,10 +1097,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     {
         TimerStartManager.Instance.Clear();
     }
-
-    #endregion
-
-    #region Private Methods (Saved Timers)
 
     /// <summary>
     /// Updates the <see cref="_savedTimersMenuItem"/>.
@@ -1338,10 +1320,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         TimerManager.Instance.StopAndRemoveResumableTimers();
     }
 
-    #endregion
-
-    #region Private Methods (Theme)
-
     /// <summary>
     /// Updates the <see cref="_themeMenuItem"/>.
     /// </summary>
@@ -1546,10 +1524,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         }
     }
 
-    #endregion
-
-    #region Private Methods (Sound)
-
     /// <summary>
     /// Updates the <see cref="_soundMenuItem"/>.
     /// </summary>
@@ -1627,8 +1601,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         }
     }
 
-    #endregion
-
     /// <summary>
     /// Invoked when a window title <see cref="MenuItem"/> is clicked.
     /// </summary>
@@ -1641,8 +1613,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             menuItem.IsChecked = ReferenceEquals(menuItem, sender);
         }
     }
-
-    #region Private Methods (Window State)
 
     /// <summary>
     /// Updates the <see cref="_restoreMenuItem"/>, <see cref="_minimizeMenuItem"/>, and
@@ -1704,8 +1674,6 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     {
         _timerWindow.WindowState = WindowState.Maximized;
     }
-
-    #endregion
 
     /// <summary>
     /// Invoked when the "Close" <see cref="MenuItem"/> is clicked.
