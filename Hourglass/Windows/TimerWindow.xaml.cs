@@ -1650,6 +1650,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         StopButton.Unfocus();
 
         UpdateTimeToolTip();
+        UpdateNotificationAreaIcon();
     }
 
     /// <summary>
