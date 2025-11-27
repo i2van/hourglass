@@ -123,15 +123,15 @@ You can use `.` instead of `:` as the separator if you prefer:
 - `5.30` - count down for 5 minutes 30 seconds
 - `7.15.00` - count down for 7 hours 15 minutes
 
+> [!NOTE]
+> - Until date or time can also be set using `until`, `u`, `un`, `till`, `@` prefixes.
+> - Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm` is specified.
+
 **Until time of day** - To start a timer until a specified time of day, enter the time of day in the `h am/pm`, `h:mm am/pm` or `h:mm:ss am/pm` formats:
 
 - `2 pm` - count down until 2:00:00 pm
 - `2:30 pm` - count down until 2:30:00 pm
 - `2:30:15 pm` - count down until 2:30:15 pm
-
-> [!NOTE]
-> The same can be achieved using `until`, `u`, `un`, `till`, `@` prefixes.
-> Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm`.
 
 You can use `.` instead of `:` as the separator if you prefer:
 
@@ -165,10 +165,6 @@ Or you can use the month number instead or a two-digit year, if you prefer:
 
 > [!IMPORTANT]
 > The order of the day, month and year depends on your system settings in some cases.
-
-> [!NOTE]
-> The same can be achieved using `until`, `u`, `un`, `till`, `@` prefixes.
-> Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm`.
 
 **Until weekday** - To start a timer until a specified weekday, enter `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday` or `Sunday`:
 
@@ -216,10 +212,6 @@ You can omit the `at` or `on` separating the date, weekday or tomorrow and the t
 - `2 pm Wednesday` - count down until 2 pm on Wednesday
 - `tomorrow 2 pm` - count down until 2 pm tomorrow
 - `2 pm tomorrow` - count down until 2 pm tomorrow
-
-> [!NOTE]
-> The same can be achieved using `until`, `u`, `un`, `till`, `@` prefixes.
-> Time is processed in accordance with the **Advanced options** / **Prefer 24-hour time when parsing** option when no `am` / `pm`.
 
 ## How do I start a second timer with the Hourglass?
 
