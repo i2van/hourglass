@@ -61,13 +61,15 @@ public abstract class TimerStartToken
             return null;
         }
 
-        str = str!.Trim();
+        string originalStr = str = str!.Trim();
 
         string preferDateTimePattern = Resources.ResourceManager.GetString(nameof(Resources.TimerStartTokenUseDateTimeParserPattern), provider);
         if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
         {
             str = Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions);
-            return FromDateTime(str);
+            TimerStartToken? timerStartToken = FromDateTime(str);
+            timerStartToken?.OriginalInput = originalStr;
+            return timerStartToken;
         }
 
         return FromTimeSpanOrDateTimeString(str);
