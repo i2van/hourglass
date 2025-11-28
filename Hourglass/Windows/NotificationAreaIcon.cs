@@ -723,7 +723,7 @@ public class NotificationAreaIcon : IDisposable
 
             firstTimerWindow.BringToFrontAndActivate();
 
-            TaskDialogCheckBox saveTimerOnClosingTaskDialogCheckBox = new TaskDialogCheckBox(Resources.SaveAllTimersTaskDialogText)
+            TaskDialogCheckBox saveTimerOnClosingTaskDialogCheckBox = new(Resources.SaveAllTimersTaskDialogText)
             {
                 Checked = shouldSaveTimer
             };

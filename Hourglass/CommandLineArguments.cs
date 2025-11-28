@@ -271,7 +271,7 @@ public sealed class CommandLineArguments
 
         static IntPtr StringToIntPtr(string arg) =>
             IntPtr.Size == 8
-                ? new IntPtr(long.Parse(arg, NumberStyles.HexNumber))
+                ? new(long.Parse(arg, NumberStyles.HexNumber))
                 : new IntPtr(int.Parse(arg, NumberStyles.HexNumber));
 
         [DllImport("user32.dll")]
@@ -1337,9 +1337,7 @@ public sealed class CommandLineArguments
     /// Represents an error during <see cref="GetCommandLineArguments"/>.
     /// </summary>
     [Serializable]
-#pragma warning disable S3925
     public sealed class ParseException : Exception
-#pragma warning restore S3925
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseException"/> class.

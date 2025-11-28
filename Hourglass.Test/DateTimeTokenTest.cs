@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#pragma warning disable S6562
-
 namespace Hourglass.Test;
 
 using System;
@@ -8561,8 +8559,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithNextMondayAnd20150101At000000Returns20150105At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Monday, DayOfWeekRelation = DayOfWeekRelation.Next },
             TimeToken = new EmptyTimeToken()
@@ -8572,7 +8570,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 5, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 5, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8583,8 +8581,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithNextFridayAnd20150101At000000Returns20150102At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Friday, DayOfWeekRelation = DayOfWeekRelation.Next },
             TimeToken = new EmptyTimeToken()
@@ -8594,7 +8592,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 2, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8605,8 +8603,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithMondayAfterNextAnd20150101At000000Returns20150112At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Monday, DayOfWeekRelation = DayOfWeekRelation.AfterNext },
             TimeToken = new EmptyTimeToken()
@@ -8616,7 +8614,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 12, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 12, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8627,8 +8625,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithFridayAfterNextAnd20150101At000000Returns20150109At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Friday, DayOfWeekRelation = DayOfWeekRelation.AfterNext },
             TimeToken = new EmptyTimeToken()
@@ -8638,7 +8636,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 9, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 9, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8649,8 +8647,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithMondayNextWeekAnd20150101At000000Returns20150105At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Monday, DayOfWeekRelation = DayOfWeekRelation.NextWeek },
             TimeToken = new EmptyTimeToken()
@@ -8660,7 +8658,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 5, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 5, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8671,8 +8669,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithFridayNextWeekAnd20150101At000000Returns20150109At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new DayOfWeekDateToken { DayOfWeek = DayOfWeek.Friday, DayOfWeekRelation = DayOfWeekRelation.NextWeek },
             TimeToken = new EmptyTimeToken()
@@ -8682,7 +8680,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 9, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 9, 0, 0, 0), endTime);
     }
 
     #endregion
@@ -8697,8 +8695,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWith14And20150101At000000Returns20150114At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new NormalDateToken { Day = 14 },
             TimeToken = new EmptyTimeToken()
@@ -8708,7 +8706,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 14, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 14, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8719,8 +8717,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithFebruaryAnd20150101At000000Returns20150201At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new NormalDateToken { Month = 2 },
             TimeToken = new EmptyTimeToken()
@@ -8730,7 +8728,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 2, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 2, 1, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8741,8 +8739,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithFebruary14And20150101At000000Returns20150214At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new NormalDateToken { Month = 2, Day = 14 },
             TimeToken = new EmptyTimeToken()
@@ -8752,7 +8750,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 2, 14, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 2, 14, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8763,8 +8761,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWith2016And20150101At000000Returns20160101At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new NormalDateToken { Year = 2016 },
             TimeToken = new EmptyTimeToken()
@@ -8774,7 +8772,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2016, 1, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2016, 1, 1, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8785,8 +8783,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithFebruary2016And20150101At000000Returns20160201At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new NormalDateToken { Year = 2016, Month = 2 },
             TimeToken = new EmptyTimeToken()
@@ -8796,7 +8794,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2016, 2, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2016, 2, 1, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8807,8 +8805,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithFebruary142016And20150101At000000Returns20160214At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new NormalDateToken { Year = 2016, Month = 2, Day = 14 },
             TimeToken = new EmptyTimeToken()
@@ -8818,7 +8816,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2016, 2, 14, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2016, 2, 14, 0, 0, 0), endTime);
     }
 
     #endregion
@@ -8833,8 +8831,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithTodayAnd20150101At000000Returns20150101At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new RelativeDateToken { RelativeDate = RelativeDate.Today },
             TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Pm, Hour = 12, Minute = 0, Second = 0 }
@@ -8844,7 +8842,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 12, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 12, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8855,8 +8853,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithTomorrowAnd20150101At000000Returns20150102At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new RelativeDateToken { RelativeDate = RelativeDate.Tomorrow },
             TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Pm, Hour = 12, Minute = 0, Second = 0 }
@@ -8866,7 +8864,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 2, 12, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 2, 12, 0, 0), endTime);
     }
 
     #endregion
@@ -8881,8 +8879,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithNewYearAnd20151231At220000Returns20160101At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 12, 31, 22, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 12, 31, 22, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new SpecialDateToken { SpecialDate = SpecialDate.NewYear },
             TimeToken = new EmptyTimeToken()
@@ -8892,7 +8890,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2016, 1, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2016, 1, 1, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8903,8 +8901,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithChristmasDayAnd20151201At000000Returns20151225At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 12, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 12, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new SpecialDateToken { SpecialDate = SpecialDate.ChristmasDay },
             TimeToken = new EmptyTimeToken()
@@ -8914,7 +8912,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 12, 25, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 12, 25, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -8925,8 +8923,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithNewYearsEveAnd20151201At000000Returns20151231At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 12, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 12, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new SpecialDateToken { SpecialDate = SpecialDate.NewYearsEve },
             TimeToken = new EmptyTimeToken()
@@ -8936,7 +8934,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 12, 31, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 12, 31, 0, 0, 0), endTime);
     }
 
     #endregion
@@ -8951,8 +8949,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWith154515And20150101At120000Returns20150101At154515()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 12, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 12, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new EmptyDateToken(),
             TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Pm, Hour = 3, Minute = 45, Second = 15 }
@@ -8962,7 +8960,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 15, 45, 15), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 15, 45, 15), endTime);
     }
 
     /// <summary>
@@ -8973,8 +8971,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWith034515And20150101At120000Returns20150102At034515()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 12, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 12, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new EmptyDateToken(),
             TimeToken = new NormalTimeToken { HourPeriod = HourPeriod.Am, Hour = 3, Minute = 45, Second = 15 }
@@ -8984,7 +8982,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 2, 3, 45, 15), endTime);
+        Assert.AreEqual(new(2015, 1, 2, 3, 45, 15), endTime);
     }
 
     #endregion
@@ -8999,8 +8997,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithMiddayAnd20150101At000000Returns20150101At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new EmptyDateToken(),
             TimeToken = new SpecialTimeToken { SpecialTime = SpecialTime.Midday }
@@ -9010,7 +9008,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 12, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 12, 0, 0), endTime);
     }
 
     /// <summary>
@@ -9021,8 +9019,8 @@ public sealed class DateTimeTokenTest
     public void GetEndTimeWithMidnightAnd20150101At000000Returns20150102At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        DateTimeToken dateTimeToken = new DateTimeToken
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        DateTimeToken dateTimeToken = new()
         {
             DateToken = new EmptyDateToken(),
             TimeToken = new SpecialTimeToken { SpecialTime = SpecialTime.Midnight }
@@ -9032,7 +9030,7 @@ public sealed class DateTimeTokenTest
         DateTime endTime = dateTimeToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 2, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 2, 0, 0, 0), endTime);
     }
 
     #endregion

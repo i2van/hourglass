@@ -14,16 +14,16 @@ public abstract class TaskDialogIcon
 {
     private static readonly IReadOnlyDictionary<TaskDialogStandardIcon, TaskDialogStandardIconContainer> s_standardIcons
         = new Dictionary<TaskDialogStandardIcon, TaskDialogStandardIconContainer>() {
-            { TaskDialogStandardIcon.None, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.None) },
-            { TaskDialogStandardIcon.Information, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.Information) },
-            { TaskDialogStandardIcon.Warning, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.Warning) },
-            { TaskDialogStandardIcon.Error, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.Error) },
-            { TaskDialogStandardIcon.SecurityShield, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.SecurityShield) },
-            { TaskDialogStandardIcon.SecurityShieldBlueBar, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.SecurityShieldBlueBar) },
-            { TaskDialogStandardIcon.SecurityShieldGrayBar, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.SecurityShieldGrayBar) },
-            { TaskDialogStandardIcon.SecurityWarningYellowBar, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.SecurityWarningYellowBar) },
-            { TaskDialogStandardIcon.SecurityErrorRedBar, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.SecurityErrorRedBar) },
-            { TaskDialogStandardIcon.SecuritySuccessGreenBar, new TaskDialogStandardIconContainer(TaskDialogStandardIcon.SecuritySuccessGreenBar) },
+            { TaskDialogStandardIcon.None, new(TaskDialogStandardIcon.None) },
+            { TaskDialogStandardIcon.Information, new(TaskDialogStandardIcon.Information) },
+            { TaskDialogStandardIcon.Warning, new(TaskDialogStandardIcon.Warning) },
+            { TaskDialogStandardIcon.Error, new(TaskDialogStandardIcon.Error) },
+            { TaskDialogStandardIcon.SecurityShield, new(TaskDialogStandardIcon.SecurityShield) },
+            { TaskDialogStandardIcon.SecurityShieldBlueBar, new(TaskDialogStandardIcon.SecurityShieldBlueBar) },
+            { TaskDialogStandardIcon.SecurityShieldGrayBar, new(TaskDialogStandardIcon.SecurityShieldGrayBar) },
+            { TaskDialogStandardIcon.SecurityWarningYellowBar, new(TaskDialogStandardIcon.SecurityWarningYellowBar) },
+            { TaskDialogStandardIcon.SecurityErrorRedBar, new(TaskDialogStandardIcon.SecurityErrorRedBar) },
+            { TaskDialogStandardIcon.SecuritySuccessGreenBar, new(TaskDialogStandardIcon.SecuritySuccessGreenBar) },
         };
 
     private protected TaskDialogIcon()

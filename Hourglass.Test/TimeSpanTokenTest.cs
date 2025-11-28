@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#pragma warning disable S6562
-
 namespace Hourglass.Test;
 
 using System;
@@ -1507,14 +1505,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5SecondsAnd20150101At000000Returns20150101At000005()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Seconds = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Seconds = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 0, 0, 5), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 0, 0, 5), endTime);
     }
 
     /// <summary>
@@ -1525,14 +1523,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5MinutesAnd20150101At000000Returns20150101At000500()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Minutes = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Minutes = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 0, 5, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 0, 5, 0), endTime);
     }
 
     /// <summary>
@@ -1543,14 +1541,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5HoursAnd20150101At000000Returns20150101At050000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Hours = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Hours = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 5, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 5, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1561,14 +1559,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5DaysAnd20150101At000000Returns20150106At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Days = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Days = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 6, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 6, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1579,14 +1577,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5WeeksAnd20150101At000000Returns20150205At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Weeks = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Weeks = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 2, 5, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 2, 5, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1597,14 +1595,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5MonthsAnd20150101At000000Returns20150601At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Months = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Months = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 6, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 6, 1, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1615,14 +1613,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith5YearsAnd20150101At000000Returns20200101At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Years = 5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Years = 5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2020, 1, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2020, 1, 1, 0, 0, 0), endTime);
     }
 
     #endregion
@@ -1637,14 +1635,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5SecondsAnd20150101At000000000Returns20150101At000001500()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Seconds = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Seconds = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 0, 0, 1, 500), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 0, 0, 1, 500), endTime);
     }
 
     /// <summary>
@@ -1655,14 +1653,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5MinutesAnd20150101At000000Returns20150101At000130()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Minutes = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Minutes = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 0, 1, 30), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 0, 1, 30), endTime);
     }
 
     /// <summary>
@@ -1673,14 +1671,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5HoursAnd20150101At000000Returns20150101At013000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Hours = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Hours = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 1, 1, 30, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 1, 1, 30, 0), endTime);
     }
 
     /// <summary>
@@ -1691,14 +1689,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5DaysAnd20150101At000000Returns20150102At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Days = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Days = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 2, 12, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 2, 12, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1709,14 +1707,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5WeeksAnd20150101At000000Returns20150111At120000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Weeks = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Weeks = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 1, 11, 12, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 1, 11, 12, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1727,14 +1725,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5MonthsAnd20150101At000000Returns20150215At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Months = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Months = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2015, 2, 15, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2015, 2, 15, 0, 0, 0), endTime);
     }
 
     /// <summary>
@@ -1745,14 +1743,14 @@ public sealed class TimeSpanTokenTest
     public void GetEndTimeWith1Point5YearsAnd20150101At000000Returns20160701At000000()
     {
         // Arrange
-        DateTime startTime = new DateTime(2015, 1, 1, 0, 0, 0);
-        TimeSpanToken timeSpanToken = new TimeSpanToken { Years = 1.5 };
+        DateTime startTime = new(2015, 1, 1, 0, 0, 0);
+        TimeSpanToken timeSpanToken = new() { Years = 1.5 };
 
         // Act
         DateTime endTime = timeSpanToken.GetEndTime(startTime);
 
         // Assert
-        Assert.AreEqual(new DateTime(2016, 7, 1, 0, 0, 0), endTime);
+        Assert.AreEqual(new(2016, 7, 1, 0, 0, 0), endTime);
     }
 
     #endregion

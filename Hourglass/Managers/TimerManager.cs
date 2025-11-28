@@ -60,17 +60,13 @@ public sealed class TimerManager : Manager
     /// Gets a list of the currently loaded timers that are not bound to any <see cref="TimerWindow"/> and are not
     /// <see cref="TimerState.Stopped"/>.
     /// </summary>
-#pragma warning disable S2365
     public IReadOnlyCollection<Timer> ResumableTimers => _timers.Where(static t => t is { ShouldBeSaved: true, State: not TimerState.Stopped } && !IsBoundToWindow(t)).ToArray();
-#pragma warning restore S2365
 
     /// <summary>
     /// Gets a list of the currently loaded timers that are bound to any <see cref="TimerWindow"/> and are <see
     /// cref="TimerState.Running"/>.
     /// </summary>
-#pragma warning disable S2365
     public IReadOnlyCollection<Timer> RunningTimers => _timers.Where(static t => t.State == TimerState.Running && IsBoundToWindow(t)).ToArray();
-#pragma warning restore S2365
 
     /// <inheritdoc />
     public override void Initialize()

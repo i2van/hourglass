@@ -625,7 +625,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _resumeAllMenuItem.Click += static delegate { TimerManager.ResumeAll(); };
         Items.Add(_resumeAllMenuItem);
 
-        _pauseResumeAllSeparator = new Separator();
+        _pauseResumeAllSeparator = new();
 
         Items.Add(_pauseResumeAllSeparator);
 

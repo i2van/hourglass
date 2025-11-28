@@ -1976,8 +1976,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             int selectionEnd = capture.Length;
 
             return shiftModifier
-                ? new Selection(TimerTextBox, selectionStart + selectionEnd, 0)
-                : new Selection(TimerTextBox, selectionStart, selectionEnd);
+                ? new(TimerTextBox, selectionStart + selectionEnd, 0)
+                : new(TimerTextBox, selectionStart, selectionEnd);
         }
     }
 
