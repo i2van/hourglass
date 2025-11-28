@@ -39,8 +39,8 @@ public sealed class NormalDateToken : DateToken
     /// <inheritdoc />
     public override bool IsValid =>
         DateTimeExtensions.IsValid(Year, Month, Day)
-        && (Year.HasValue || Month.HasValue || Day.HasValue)
-        && !(Year.HasValue && !Month.HasValue && Day.HasValue);
+        && (Year is not null || Month is not null || Day is not null)
+        && !(Year is not null && Month is null && Day is not null);
 
     /// <inheritdoc />
     public override DateTime ToDateTime(DateTime minDate, bool inclusive)
@@ -50,22 +50,22 @@ public sealed class NormalDateToken : DateToken
         DateTime date;
 
         int year = Year ?? minDate.Year;
-        int month = Month ?? (!Year.HasValue ? minDate.Month : 1);
-        int day = Day ?? (!Year.HasValue && !Month.HasValue ? minDate.Day : 1);
+        int month = Month ?? (Year is null ? minDate.Month : 1);
+        int day = Day ?? (Year is null && Month is null ? minDate.Day : 1);
 
         while (!DateTimeExtensions.TryToDateTime(year, month, day, out date)
                || date < minDate.Date
                || (date == minDate.Date && !inclusive))
         {
             // Try the next month if we only have a day
-            if (!Month.HasValue && !Year.HasValue)
+            if (Month is null && Year is null)
             {
                 DateTimeExtensions.IncrementMonth(ref year, ref month);
                 continue;
             }
 
             // Try the next year if we only have a month or a day and a month
-            if (!Year.HasValue)
+            if (Year is null)
             {
                 year++;
                 continue;
@@ -86,7 +86,7 @@ public sealed class NormalDateToken : DateToken
             ThrowIfNotValid();
 
             // Day only
-            if (Day.HasValue && !Month.HasValue && !Year.HasValue)
+            if (Day is not null && Month is null && Year is null)
             {
                 return string.Format(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
@@ -95,9 +95,9 @@ public sealed class NormalDateToken : DateToken
             }
 
             // Day and month
-            if (Day.HasValue && Month.HasValue && !Year.HasValue)
+            if (Day is not null && Month is not null && Year is null)
             {
-                string formatString = provider.IsMonthFirst()
+                string formatString = provider.IsMonthFirst
                     ? Resources.ResourceManager.GetString(nameof(Resources.NormalDateTokenMonthAndDayFormatString), provider)
                     : Resources.ResourceManager.GetString(nameof(Resources.NormalDateTokenDayAndMonthFormatString), provider);
 
@@ -109,9 +109,9 @@ public sealed class NormalDateToken : DateToken
             }
 
             // Day, month, and year
-            if (Day.HasValue && Month.HasValue && Year.HasValue)
+            if (Day is not null && Month is not null && Year is not null)
             {
-                string formatString = provider.IsMonthFirst()
+                string formatString = provider.IsMonthFirst
                     ? Resources.ResourceManager.GetString(nameof(Resources.NormalDateTokenMonthDayAndYearFormatString), provider)
                     : Resources.ResourceManager.GetString(nameof(Resources.NormalDateTokenDayMonthAndYearFormatString), provider);
 
@@ -124,7 +124,7 @@ public sealed class NormalDateToken : DateToken
             }
 
             // Month only
-            if (!Day.HasValue && Month.HasValue && !Year.HasValue)
+            if (Day is null && Month is not null && Year is null)
             {
                 return string.Format(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
@@ -133,7 +133,7 @@ public sealed class NormalDateToken : DateToken
             }
 
             // Month and year
-            if (!Day.HasValue && Month.HasValue && Year.HasValue)
+            if (Day is null && Month is not null && Year is not null)
             {
                 return string.Format(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
@@ -143,7 +143,7 @@ public sealed class NormalDateToken : DateToken
             }
 
             // Year
-            if (!Day.HasValue && !Month.HasValue && Year.HasValue)
+            if (Day is null && Month is null && Year is not null)
             {
                 return string.Format(
                     Resources.ResourceManager.GetEffectiveProvider(provider),
@@ -180,12 +180,12 @@ public sealed class NormalDateToken : DateToken
         /// <inheritdoc />
         public override IEnumerable<string> GetPatterns(IFormatProvider provider)
         {
-            if (provider.IsMonthFirst())
+            if (provider.IsMonthFirst)
             {
                 return GetPatternsWithMonthFirst(provider);
             }
 
-            if (provider.IsYearFirst())
+            if (provider.IsYearFirst)
             {
                 return GetPatternsWithYearFirst(provider);
             }

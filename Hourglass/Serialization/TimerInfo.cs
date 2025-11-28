@@ -52,7 +52,7 @@ public sealed class TimerInfo
     public long? TimeElapsedTicks
     {
         get => TimeElapsed?.Ticks;
-        set => TimeElapsed = value.HasValue ? new TimeSpan(value.Value) : null;
+        set => TimeElapsed = value is not null ? new TimeSpan(value.Value) : null;
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public sealed class TimerInfo
     public long? TimeLeftTicks
     {
         get => TimeLeft?.Ticks;
-        set => TimeLeft = value.HasValue ? new TimeSpan(value.Value) : null;
+        set => TimeLeft = value is not null ? new TimeSpan(value.Value) : null;
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public sealed class TimerInfo
     public long? TimeExpiredTicks
     {
         get => TimeExpired?.Ticks;
-        set => TimeExpired = value.HasValue ? new TimeSpan(value.Value) : null;
+        set => TimeExpired = value is not null ? new TimeSpan(value.Value) : null;
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public sealed class TimerInfo
     public long? TotalTimeTicks
     {
         get => TotalTime?.Ticks;
-        set => TotalTime = value.HasValue ? new TimeSpan(value.Value) : null;
+        set => TotalTime = value is not null ? new TimeSpan(value.Value) : null;
     }
 
     /// <summary>

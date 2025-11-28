@@ -110,7 +110,7 @@ public sealed class SoundPlayer : IDisposable
                     _soundPlayer.Play();
 
                     // Start a timer to notify the completion of playback if we know the duration
-                    if (sound.Duration.HasValue)
+                    if (sound.Duration is not null)
                     {
                         _dispatcherTimer.Interval = sound.Duration.Value;
                         _dispatcherTimer.Start();

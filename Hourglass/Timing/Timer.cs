@@ -249,7 +249,7 @@ public sealed class Timer : TimerBase
     /// </summary>
     private void Loop()
     {
-        if (!EndTime.HasValue || EndTime > DateTime.Now)
+        if (EndTime is null || EndTime > DateTime.Now)
         {
             throw new InvalidOperationException();
         }
@@ -306,8 +306,8 @@ public sealed class Timer : TimerBase
     private double? GetTimeLeftAsPercentage()
     {
         if (State == TimerState.Stopped ||
-            !TimeElapsed.HasValue ||
-            !TotalTime.HasValue)
+            TimeElapsed is null ||
+            TotalTime is null)
         {
             return null;
         }
@@ -336,8 +336,8 @@ public sealed class Timer : TimerBase
     private double? GetTimeElapsedAsPercentage()
     {
         if (State == TimerState.Stopped ||
-            !TimeLeft.HasValue ||
-            !TotalTime.HasValue)
+            TimeLeft is null ||
+            TotalTime is null)
         {
             return null;
         }

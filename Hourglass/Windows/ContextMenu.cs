@@ -1206,7 +1206,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
             outerBorder.Child = progress;
         }
-        else if (!timer.Options.ReverseProgressBar && timer.TimeLeftAsPercentage.HasValue)
+        else if (!timer.Options.ReverseProgressBar && timer.TimeLeftAsPercentage is not null)
         {
             Border progress = new()
             {
@@ -1218,7 +1218,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
             outerBorder.Child = progress;
         }
-        else if (timer.Options.ReverseProgressBar && timer.TimeElapsedAsPercentage.HasValue)
+        else if (timer.Options.ReverseProgressBar && timer.TimeElapsedAsPercentage is not null)
         {
             Border progress = new()
             {

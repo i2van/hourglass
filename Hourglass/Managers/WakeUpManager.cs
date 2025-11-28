@@ -70,7 +70,7 @@ public sealed class WakeUpManager : Manager
             CancelWaitableTimer();
 
             DateTime? nextExpiry = GetNextTimerExpiry();
-            if (nextExpiry.HasValue)
+            if (nextExpiry is not null)
             {
                 DateTime wakeTime = nextExpiry.Value.AddSeconds(-15);
                 wakeTime = MathExtensions.Max(wakeTime, DateTime.Now.AddSeconds(15));
@@ -90,7 +90,7 @@ public sealed class WakeUpManager : Manager
     private static DateTime? GetNextTimerExpiry()
     {
         return TimerManager.Instance.RunningTimers
-            .Where(static t => t.EndTime.HasValue)
+            .Where(static t => t.EndTime is not null)
             .Select(static t => t.EndTime!.Value)
             .OrderBy(static t => t)
             .FirstOrDefault();

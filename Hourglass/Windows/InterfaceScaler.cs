@@ -287,7 +287,7 @@ public sealed class InterfaceScaler
 
         Timer timer = _timerWindow.Timer;
 
-        if (timer.TotalTime.HasValue)
+        if (timer.TotalTime is not null)
         {
             double interval = timer.TotalTime.Value.TotalMilliseconds / _timerWindow.ActualWidth / 2.0;
             interval = MathExtensions.LimitToRange(interval, 10.0, TimerBase.DefaultInterval.TotalMilliseconds);

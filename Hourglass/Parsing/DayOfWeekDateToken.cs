@@ -52,9 +52,9 @@ public sealed class DayOfWeekDateToken : DateToken
 
     /// <inheritdoc />
     public override bool IsValid =>
-        DayOfWeek.HasValue
+        DayOfWeek is not null
         && Enum.IsDefined(typeof(DayOfWeek), DayOfWeek.Value)
-        && DayOfWeekRelation.HasValue
+        && DayOfWeekRelation is not null
         && Enum.IsDefined(typeof(DayOfWeekRelation), DayOfWeekRelation.Value);
 
     /// <inheritdoc />
