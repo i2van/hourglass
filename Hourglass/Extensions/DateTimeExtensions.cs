@@ -18,61 +18,62 @@ using Properties;
 /// </summary>
 public static class DateTimeExtensions
 {
-    /// <summary>
-    /// Returns a new <see cref="DateTime"/> that adds the specified number of weeks to the value of this instance.
-    /// </summary>
     /// <param name="dateTime">A <see cref="DateTime"/>.</param>
-    /// <param name="weeks">A number of weeks. The <paramref name="weeks"/> parameter can be negative or positive.
-    /// </param>
-    /// <returns>An object whose value is the sum of the date and time represented by this instance and <paramref
-    /// name="weeks"/>.</returns>
-    public static DateTime AddWeeks(this DateTime dateTime, double weeks)
+    extension(DateTime dateTime)
     {
-        return dateTime.AddDays(7 * weeks);
-    }
-
-    /// <summary>
-    /// Returns a new <see cref="DateTime"/> that adds the specified number of months to the value of this instance.
-    /// </summary>
-    /// <param name="dateTime">A <see cref="DateTime"/>.</param>
-    /// <param name="months">A number of months. The <paramref name="months"/> parameter can be negative or
-    /// positive.</param>
-    /// <returns>An object whose value is the sum of the date and time represented by this instance and <paramref
-    /// name="months"/>.</returns>
-    public static DateTime AddMonths(this DateTime dateTime, double months)
-    {
-        int wholeMonths = (int)months;
-        double partMonth = months % 1.0;
-
-        // Add whole months
-        dateTime = dateTime.AddMonths(wholeMonths);
-
-        // Add part month if required
-        if (partMonth > 0.0)
+        /// <summary>
+        /// Returns a new <see cref="DateTime"/> that adds the specified number of weeks to the value of this instance.
+        /// </summary>
+        /// <param name="weeks">A number of weeks. The <paramref name="weeks"/> parameter can be negative or positive.
+        /// </param>
+        /// <returns>An object whose value is the sum of the date and time represented by this instance and <paramref
+        /// name="weeks"/>.</returns>
+        public DateTime AddWeeks(double weeks)
         {
-            int monthInDays = (dateTime.AddMonths(1) - dateTime).Days;
-            dateTime = dateTime.AddDays(Math.Round(monthInDays * partMonth));
-        }
-        else if (partMonth < 0.0)
-        {
-            int monthInDays = (dateTime - dateTime.AddMonths(-1)).Days;
-            dateTime = dateTime.AddDays(Math.Round(monthInDays * partMonth));
+            return dateTime.AddDays(7 * weeks);
         }
 
-        return dateTime;
-    }
+        /// <summary>
+        /// Returns a new <see cref="DateTime"/> that adds the specified number of months to the value of this instance.
+        /// </summary>
+        /// <param name="months">A number of months. The <paramref name="months"/> parameter can be negative or
+        /// positive.</param>
+        /// <returns>An object whose value is the sum of the date and time represented by this instance and <paramref
+        /// name="months"/>.</returns>
+        public DateTime AddMonths(double months)
+        {
+            int wholeMonths = (int)months;
+            double partMonth = months % 1.0;
 
-    /// <summary>
-    /// Returns a new <see cref="DateTime"/> that adds the specified number of years to the value of this instance.
-    /// </summary>
-    /// <param name="dateTime">A <see cref="DateTime"/>.</param>
-    /// <param name="years">A number of years. The <paramref name="years"/> parameter can be negative or positive.
-    /// </param>
-    /// <returns>An object whose value is the sum of the date and time represented by this instance and <paramref
-    /// name="years"/>.</returns>
-    public static DateTime AddYears(this DateTime dateTime, double years)
-    {
-        return dateTime.AddMonths(12 * years);
+            // Add whole months
+            dateTime = dateTime.AddMonths(wholeMonths);
+
+            // Add part month if required
+            if (partMonth > 0.0)
+            {
+                int monthInDays = (dateTime.AddMonths(1) - dateTime).Days;
+                dateTime = dateTime.AddDays(Math.Round(monthInDays * partMonth));
+            }
+            else if (partMonth < 0.0)
+            {
+                int monthInDays = (dateTime - dateTime.AddMonths(-1)).Days;
+                dateTime = dateTime.AddDays(Math.Round(monthInDays * partMonth));
+            }
+
+            return dateTime;
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="DateTime"/> that adds the specified number of years to the value of this instance.
+        /// </summary>
+        /// <param name="years">A number of years. The <paramref name="years"/> parameter can be negative or positive.
+        /// </param>
+        /// <returns>An object whose value is the sum of the date and time represented by this instance and <paramref
+        /// name="years"/>.</returns>
+        public DateTime AddYears(double years)
+        {
+            return dateTime.AddMonths(12 * years);
+        }
     }
 
     /// <summary>
@@ -237,20 +238,24 @@ public static class DateTimeExtensions
     /// <returns>A dictionary mapping month values to their localized string representations.</returns>
     private static IDictionary<int, string> GetMonthStrings(IFormatProvider provider)
     {
-        return new Dictionary<int, string>
+        return GetMonthNames()
+                .Select((name, number) => (Number: number + 1, Name: Resources.ResourceManager.GetString(name, provider)))
+                .ToDictionary(static m => m.Number, static m => m.Name);
+
+        static IEnumerable<string> GetMonthNames()
         {
-            { 1, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsJanuary), provider) },
-            { 2, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsFebruary), provider) },
-            { 3, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsMarch), provider) },
-            { 4, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsApril), provider) },
-            { 5, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsMay), provider) },
-            { 6, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsJune), provider) },
-            { 7, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsJuly), provider) },
-            { 8, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsAugust), provider) },
-            { 9, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsSeptember), provider) },
-            { 10, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsOctober), provider) },
-            { 11, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsNovember), provider) },
-            { 12, Resources.ResourceManager.GetString(nameof(Resources.DateTimeExtensionsDecember), provider) }
-        };
+            yield return nameof(Resources.DateTimeExtensionsJanuary);
+            yield return nameof(Resources.DateTimeExtensionsFebruary);
+            yield return nameof(Resources.DateTimeExtensionsMarch);
+            yield return nameof(Resources.DateTimeExtensionsApril);
+            yield return nameof(Resources.DateTimeExtensionsMay);
+            yield return nameof(Resources.DateTimeExtensionsJune);
+            yield return nameof(Resources.DateTimeExtensionsJuly);
+            yield return nameof(Resources.DateTimeExtensionsAugust);
+            yield return nameof(Resources.DateTimeExtensionsSeptember);
+            yield return nameof(Resources.DateTimeExtensionsOctober);
+            yield return nameof(Resources.DateTimeExtensionsNovember);
+            yield return nameof(Resources.DateTimeExtensionsDecember);
+        }
     }
 }

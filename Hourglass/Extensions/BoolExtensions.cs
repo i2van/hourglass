@@ -4,9 +4,12 @@ namespace Hourglass.Extensions;
 
 internal static class BoolExtensions
 {
-    public static Visibility ToVisibility(this bool visible) =>
-        visible ? Visibility.Visible : Visibility.Collapsed;
+    extension(bool visible)
+    {
+        public Visibility ToVisibility() =>
+            visible ? Visibility.Visible : Visibility.Collapsed;
 
-    public static Visibility ToVisibilityReversed(this bool visible) =>
-        ToVisibility(!visible);
+        public Visibility ToVisibilityReversed() =>
+            ToVisibility(!visible);
+    }
 }

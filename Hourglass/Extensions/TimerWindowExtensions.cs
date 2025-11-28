@@ -24,17 +24,20 @@ public static class TimerWindowExtensions
     private static readonly Comparer<TimerWindow> TimeComparer = Comparer<TimerWindow>.Create(CompareTime);
     private static readonly StringComparer TitleComparer = StringComparer.CurrentCultureIgnoreCase;
 
-    public static IEnumerable<TimerWindow> Arrange(this IEnumerable<TimerWindow> windows)
+    extension(IEnumerable<TimerWindow> windows)
     {
-        var orderByRank = windows.OrderBy(static window => window, RankComparer);
+        public IEnumerable<TimerWindow> Arrange()
+        {
+            var orderByRank = windows.OrderBy(static window => window, RankComparer);
 
-        return Settings.Default.OrderByTitleFirst
-            ? orderByRank.ThenBy(Title, TitleComparer).ThenBy(static window => window, TimeComparer)
-            : orderByRank.ThenBy(static window => window, TimeComparer).ThenBy(Title, TitleComparer);
+            return Settings.Default.OrderByTitleFirst
+                ? orderByRank.ThenBy(Title, TitleComparer).ThenBy(static window => window, TimeComparer)
+                : orderByRank.ThenBy(static window => window, TimeComparer).ThenBy(Title, TitleComparer);
+        }
+
+        public IEnumerable<TimerWindow> ArrangeDescending() =>
+            windows.Arrange().Reverse();
     }
-
-    public static IEnumerable<TimerWindow> ArrangeDescending(this IEnumerable<TimerWindow> windows) =>
-        windows.Arrange().Reverse();
 
     public static void BringNextToFrontAndActivate(this TimerWindow thisWindow, bool activate = true)
     {
@@ -75,64 +78,67 @@ public static class TimerWindowExtensions
     private static bool _jumpListDisabled;
     private static int _lastUpdatedJumpListID;
 
-    public static void UpdateJumpList(this TimerWindow window) =>
-        window.UpdateJumpList(false);
-
-    public static void UpdateJumpList(this TimerWindow window, bool force)
+    extension(TimerWindow window)
     {
-        if (_jumpListDisabled)
+        public void UpdateJumpList() =>
+            window.UpdateJumpList(false);
+
+        public void UpdateJumpList(bool force)
         {
-            return;
-        }
-
-        var jumpList = JumpList.GetJumpList(Application.Current);
-
-        if (jumpList is null)
-        {
-            JumpList.SetJumpList(Application.Current, jumpList = new());
-        }
-
-        if (!Settings.Default.UseJumpList)
-        {
-            _jumpListDisabled = true;
-
-            jumpList.JumpItems.Clear();
-            jumpList.Apply();
-
-            return;
-        }
-
-        if (!force && (TimerWindow.LastActivatedID != window.ID ||
-                       !window.ShowInTaskbar ||
-                       !window.IsVisible))
-        {
-            return;
-        }
-
-        jumpList.JumpItems.Clear();
-
-        var handle = new WindowInteropHelper(window).Handle;
-
-        foreach (var jumpItem in window.JumpListButtons.Where(static jlb => jlb.Button.IsEnabled))
-        {
-            jumpList.JumpItems.Add(new JumpTask
-            {
-                Title = jumpItem.Text,
-                Arguments = CommandLineArguments.CreateJumpListCommandLine(handle, jumpItem.Index),
-                IconResourceIndex = jumpItem.Index+1
-            });
-        }
-
-        window.Dispatcher.Invoke(() => ApplyJumpList(++_lastUpdatedJumpListID), force ? DispatcherPriority.Normal : DispatcherPriority.Background);
-
-        void ApplyJumpList(int jumpListID)
-        {
-            if (_lastUpdatedJumpListID != jumpListID)
+            if (_jumpListDisabled)
             {
                 return;
             }
 
-            jumpList.Apply();
+            var jumpList = JumpList.GetJumpList(Application.Current);
+
+            if (jumpList is null)
+            {
+                JumpList.SetJumpList(Application.Current, jumpList = new());
+            }
+
+            if (!Settings.Default.UseJumpList)
+            {
+                _jumpListDisabled = true;
+
+                jumpList.JumpItems.Clear();
+                jumpList.Apply();
+
+                return;
+            }
+
+            if (!force && (TimerWindow.LastActivatedID != window.ID ||
+                           !window.ShowInTaskbar ||
+                           !window.IsVisible))
+            {
+                return;
+            }
+
+            jumpList.JumpItems.Clear();
+
+            var handle = new WindowInteropHelper(window).Handle;
+
+            foreach (var jumpItem in window.JumpListButtons.Where(static jlb => jlb.Button.IsEnabled))
+            {
+                jumpList.JumpItems.Add(new JumpTask
+                {
+                    Title = jumpItem.Text,
+                    Arguments = CommandLineArguments.CreateJumpListCommandLine(handle, jumpItem.Index),
+                    IconResourceIndex = jumpItem.Index+1
+                });
+            }
+
+            window.Dispatcher.Invoke(() => ApplyJumpList(++_lastUpdatedJumpListID), force ? DispatcherPriority.Normal : DispatcherPriority.Background);
+
+            void ApplyJumpList(int jumpListID)
+            {
+                if (_lastUpdatedJumpListID != jumpListID)
+                {
+                    return;
+                }
+
+                jumpList.Apply();
+            }
         }
     }
 
@@ -284,7 +290,6 @@ public static class TimerWindowExtensions
         }
     }
 
-#pragma warning disable S101
     [StructLayout(LayoutKind.Sequential)]
     private struct POINT
     {
@@ -319,5 +324,4 @@ public static class TimerWindowExtensions
         public RECT rcWork;
         public uint dwFlags;
     }
-#pragma warning restore S101
 }

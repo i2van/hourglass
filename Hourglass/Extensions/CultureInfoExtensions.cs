@@ -18,29 +18,28 @@ using System.Text.RegularExpressions;
 /// </summary>
 public static class CultureInfoExtensions
 {
-    /// <summary>
-    /// Returns a value indicating whether an <see cref="IFormatProvider"/> prefers the month-day-year ordering in
-    /// date representations.
-    /// </summary>
     /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-    /// <returns>A value indicating whether the specified <see cref="IFormatProvider"/> prefers the month-day-year
-    /// ordering in date representations.</returns>
-    public static bool IsMonthFirst(this IFormatProvider provider)
+    extension(IFormatProvider provider)
     {
-        DateTimeFormatInfo? formatInfo = (DateTimeFormatInfo?)provider.GetFormat(typeof(DateTimeFormatInfo));
-        return Regex.IsMatch(formatInfo!.ShortDatePattern, @"^.*M.*d.*y.*$");
-    }
+        /// <summary>
+        /// Returns a value indicating whether an <see cref="IFormatProvider"/> prefers the month-day-year ordering in
+        /// date representations.
+        /// </summary>
+        /// <returns>A value indicating whether the specified <see cref="IFormatProvider"/> prefers the month-day-year
+        /// ordering in date representations.</returns>
+        public bool IsMonthFirst =>
+            Regex.IsMatch(provider.GetShortDatePattern(), @"^.*M.*d.*y.*$");
 
-    /// <summary>
-    /// Returns a value indicating whether an <see cref="IFormatProvider"/> prefers the year-month-day ordering in
-    /// date representations.
-    /// </summary>
-    /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-    /// <returns>A value indicating whether the specified <see cref="IFormatProvider"/> prefers the year-month-day
-    /// ordering in date representations.</returns>
-    public static bool IsYearFirst(this IFormatProvider provider)
-    {
-        DateTimeFormatInfo? formatInfo = (DateTimeFormatInfo?)provider.GetFormat(typeof(DateTimeFormatInfo));
-        return Regex.IsMatch(formatInfo!.ShortDatePattern, @"^.*y.*M.*d.*$");
+        /// <summary>
+        /// Returns a value indicating whether an <see cref="IFormatProvider"/> prefers the year-month-day ordering in
+        /// date representations.
+        /// </summary>
+        /// <returns>A value indicating whether the specified <see cref="IFormatProvider"/> prefers the year-month-day
+        /// ordering in date representations.</returns>
+        public bool IsYearFirst =>
+            Regex.IsMatch(provider.GetShortDatePattern(), @"^.*y.*M.*d.*$");
+
+        private string GetShortDatePattern() =>
+            ((DateTimeFormatInfo?)provider.GetFormat(typeof(DateTimeFormatInfo)))!.ShortDatePattern;
     }
 }

@@ -59,7 +59,7 @@ public static class DayOfWeekExtensions
     /// <returns>A string that represents the current object.</returns>
     public static string ToLocalizedString(this DayOfWeek? dayOfWeek, IFormatProvider provider)
     {
-        return dayOfWeek.HasValue ? dayOfWeek.Value.ToLocalizedString(provider) : string.Empty;
+        return dayOfWeek is not null ? dayOfWeek.Value.ToLocalizedString(provider) : string.Empty;
     }
 
     /// <summary>
@@ -71,13 +71,16 @@ public static class DayOfWeekExtensions
     {
         return new Dictionary<DayOfWeek, string>
         {
-            { DayOfWeek.Monday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsMonday), provider) },
-            { DayOfWeek.Tuesday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsTuesday), provider) },
-            { DayOfWeek.Wednesday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsWednesday), provider) },
-            { DayOfWeek.Thursday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsThursday), provider) },
-            { DayOfWeek.Friday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsFriday), provider) },
-            { DayOfWeek.Saturday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsSaturday), provider) },
-            { DayOfWeek.Sunday, Resources.ResourceManager.GetString(nameof(Resources.DayOfWeekExtensionsSunday), provider) }
+            [DayOfWeek.Monday]    = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsMonday)),
+            [DayOfWeek.Tuesday]   = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsTuesday)),
+            [DayOfWeek.Wednesday] = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsWednesday)),
+            [DayOfWeek.Thursday]  = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsThursday)),
+            [DayOfWeek.Friday]    = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsFriday)),
+            [DayOfWeek.Saturday]  = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsSaturday)),
+            [DayOfWeek.Sunday]    = GetDayOfWeek(nameof(Resources.DayOfWeekExtensionsSunday))
         };
+
+        string GetDayOfWeek(string name) =>
+            Resources.ResourceManager.GetString(name, provider);
     }
 }

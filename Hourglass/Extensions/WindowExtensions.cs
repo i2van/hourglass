@@ -134,59 +134,55 @@ public static class WindowExtensions
                 windowSize.IsFullScreen);
     }
 
-    /// <summary>
-    /// Restores the size, position, and state of a window from its persisted size, position, and state.
-    /// </summary>
-    /// <typeparam name="T">The type of the window.</typeparam>
     /// <param name="window">A window.</param>
-    /// <param name="options">Options for performing the restore. (Optional.)</param>
-    public static void RestoreFromSettings<T>(this T window, RestoreOptions options = RestoreOptions.None)
-        where T : Window, IRestorableWindow
-    {
-        WindowSize windowSize = window.PersistedSize;
-        window.Restore(windowSize, options);
-    }
-
-    /// <summary>
-    /// Restores the size, position, and state of a window from another window of the same type.
-    /// </summary>
-    /// <remarks>
-    /// This method offsets the window position slightly so that the two windows do not overlap.
-    /// </remarks>
     /// <typeparam name="T">The type of the window.</typeparam>
-    /// <param name="window">A window.</param>
-    /// <param name="otherWindow">The window from which to copy the size, position, and state.</param>
-    /// <param name="options">Options for performing the restore. (Optional.)</param>
-    public static void RestoreFromWindow<T>(this T window, T otherWindow, RestoreOptions options = RestoreOptions.None)
-        where T : Window, IRestorableWindow
+    extension<T>(T window) where T : Window, IRestorableWindow
     {
-        WindowSize? windowSize = WindowSize.FromWindow(otherWindow);
-        WindowSize? offsetWindowSize = windowSize.Offset();
-        window.Restore(offsetWindowSize, options);
-    }
-
-    /// <summary>
-    /// Restores the size, position, and state of a window from another visible window of the same type, or from
-    /// the app settings if there is no other visible window of the same type.
-    /// </summary>
-    /// <remarks>
-    /// This method offsets the window position slightly so that the two windows do not overlap.
-    /// </remarks>
-    /// <typeparam name="T">The type of the window.</typeparam>
-    /// <param name="window">A window.</param>
-    /// <param name="options">Options for performing the restore. (Optional.)</param>
-    public static void RestoreFromSibling<T>(this T window, RestoreOptions options = RestoreOptions.None)
-        where T : Window, IRestorableWindow
-    {
-        WindowSize? windowSize = WindowSize.FromSiblingOfWindow(window);
-        if (windowSize is not null)
+        /// <summary>
+        /// Restores the size, position, and state of a window from its persisted size, position, and state.
+        /// </summary>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
+        public void RestoreFromSettings(RestoreOptions options = RestoreOptions.None)
         {
+            WindowSize windowSize = window.PersistedSize;
+            window.Restore(windowSize, options);
+        }
+
+        /// <summary>
+        /// Restores the size, position, and state of a window from another window of the same type.
+        /// </summary>
+        /// <remarks>
+        /// This method offsets the window position slightly so that the two windows do not overlap.
+        /// </remarks>
+        /// <param name="otherWindow">The window from which to copy the size, position, and state.</param>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
+        public void RestoreFromWindow(T otherWindow, RestoreOptions options = RestoreOptions.None)
+        {
+            WindowSize? windowSize = WindowSize.FromWindow(otherWindow);
             WindowSize? offsetWindowSize = windowSize.Offset();
             window.Restore(offsetWindowSize, options);
         }
-        else
+
+        /// <summary>
+        /// Restores the size, position, and state of a window from another visible window of the same type, or from
+        /// the app settings if there is no other visible window of the same type.
+        /// </summary>
+        /// <remarks>
+        /// This method offsets the window position slightly so that the two windows do not overlap.
+        /// </remarks>
+        /// <param name="options">Options for performing the restore. (Optional.)</param>
+        public void RestoreFromSibling(RestoreOptions options = RestoreOptions.None)
         {
-            window.RestoreFromSettings(options);
+            WindowSize? windowSize = WindowSize.FromSiblingOfWindow(window);
+            if (windowSize is not null)
+            {
+                WindowSize? offsetWindowSize = windowSize.Offset();
+                window.Restore(offsetWindowSize, options);
+            }
+            else
+            {
+                window.RestoreFromSettings(options);
+            }
         }
     }
 
@@ -412,102 +408,103 @@ public static class WindowExtensions
         return offsetRect;
     }
 
-    /// <summary>
-    /// Positions a window in the center of the screen. If the window is larger than the work area, the window size
-    /// is decreased to fit in the work area.
-    /// </summary>
     /// <param name="window">A window.</param>
-    public static void CenterOnScreen(this Window window)
+    extension(Window window)
     {
-        Rect windowRect = window.GetBoundsForNormalState();
-        Rect centeredRect = windowRect.CenterOnScreen();
-
-        window.RestoreBounds(centeredRect);
-    }
-
-    /// <summary>
-    /// Returns the bounds of a window, or its restore bounds if it is minimized or maximized.
-    /// </summary>
-    /// <param name="window">A window.</param>
-    /// <returns>The bounds of a window, or its restore bounds if it is minimized or maximized.</returns>
-    private static Rect GetBoundsForNormalState(this Window window)
-    {
-        if (window.WindowState != WindowState.Normal && window.RestoreBounds.HasSizeAndLocation())
+        /// <summary>
+        /// Positions a window in the center of the screen. If the window is larger than the work area, the window size
+        /// is decreased to fit in the work area.
+        /// </summary>
+        public void CenterOnScreen()
         {
-            return window.RestoreBounds;
+            Rect windowRect = window.GetBoundsForNormalState();
+            Rect centeredRect = windowRect.CenterOnScreen();
+
+            window.RestoreBounds(centeredRect);
         }
 
-        return new(window.Left, window.Top, window.Width, window.Height);
+        /// <summary>
+        /// Returns the bounds of a window, or its restore bounds if it is minimized or maximized.
+        /// </summary>
+        /// <returns>The bounds of a window, or its restore bounds if it is minimized or maximized.</returns>
+        private Rect GetBoundsForNormalState()
+        {
+            if (window.WindowState != WindowState.Normal && window.RestoreBounds.HasSizeAndLocation())
+            {
+                return window.RestoreBounds;
+            }
+
+            return new(window.Left, window.Top, window.Width, window.Height);
+        }
     }
 
-    /// <summary>
-    /// Returns the <see cref="Point"/> at the center of a <see cref="Rect"/>.
-    /// </summary>
     /// <param name="rect">A <see cref="Rect"/>.</param>
-    /// <returns>The <see cref="Point"/> at the center of a <see cref="Rect"/>.</returns>
-    private static Point GetCenter(this Rect rect)
+    extension(Rect rect)
     {
-        if (rect.HasSizeAndLocation())
+        /// <summary>
+        /// Returns the <see cref="Point"/> at the center of a <see cref="Rect"/>.
+        /// </summary>
+        /// <returns>The <see cref="Point"/> at the center of a <see cref="Rect"/>.</returns>
+        private Point GetCenter()
         {
-            return new(
-                (int)(rect.X + rect.Width / 2),
-                (int)(rect.Y + rect.Height / 2));
+            if (rect.HasSizeAndLocation())
+            {
+                return new(
+                    (int)(rect.X + rect.Width / 2),
+                    (int)(rect.Y + rect.Height / 2));
+            }
+
+            return rect.Location;
         }
 
-        return rect.Location;
-    }
-
-    /// <summary>
-    /// Returns a value indicating whether the <see cref="Rect"/> has a valid location.
-    /// </summary>
-    /// <param name="rect">A <see cref="Rect"/>.</param>
-    /// <returns>A value indicating whether the <see cref="Rect"/> has a valid location.</returns>
-    private static bool HasLocation(this Rect rect)
-    {
-        return IsValidDouble(rect.X) && IsValidDouble(rect.Y);
-    }
-
-    /// <summary>
-    /// Returns a value indicating whether the <see cref="Rect"/> has a valid size.
-    /// </summary>
-    /// <param name="rect">A <see cref="Rect"/>.</param>
-    /// <returns>A value indicating whether the <see cref="Rect"/> has a valid size.</returns>
-    private static bool HasSize(this Rect rect)
-    {
-        return IsValidDouble(rect.Width) && IsValidDouble(rect.Height);
-    }
-
-    /// <summary>
-    /// Returns a value indicating whether the <see cref="Rect"/> has a valid size and location.
-    /// </summary>
-    /// <param name="rect">A <see cref="Rect"/>.</param>
-    /// <returns>A value indicating whether the <see cref="Rect"/> has a valid size and location.</returns>
-    private static bool HasSizeAndLocation(this Rect rect)
-    {
-        return rect.HasSize() && rect.HasLocation();
-    }
-
-    /// <summary>
-    /// Returns a value indicating whether the size and position of the <see cref="Rect"/> are such that the center
-    /// of the <see cref="Rect"/> is visible on the screen.
-    /// </summary>
-    /// <param name="rect">A <see cref="Rect"/>.</param>
-    /// <returns>A value indicating whether the size and position of the <see cref="Rect"/> are such that the center
-    /// of the <see cref="Rect"/> is visible on the screen.</returns>
-    private static bool IsOnScreen(this Rect rect)
-    {
-        if (rect.HasLocation())
+        /// <summary>
+        /// Returns a value indicating whether the <see cref="Rect"/> has a valid location.
+        /// </summary>
+        /// <returns>A value indicating whether the <see cref="Rect"/> has a valid location.</returns>
+        private bool HasLocation()
         {
-            Rect virtualScreenRect = new(
-                SystemParameters.VirtualScreenLeft,
-                SystemParameters.VirtualScreenTop,
-                SystemParameters.VirtualScreenWidth,
-                SystemParameters.VirtualScreenHeight);
-
-            return virtualScreenRect.Contains(rect.GetCenter());
+            return IsValidDouble(rect.X) && IsValidDouble(rect.Y);
         }
 
-        return true;
+        /// <summary>
+        /// Returns a value indicating whether the <see cref="Rect"/> has a valid size.
+        /// </summary>
+        /// <returns>A value indicating whether the <see cref="Rect"/> has a valid size.</returns>
+        private bool HasSize()
+        {
+            return IsValidDouble(rect.Width) && IsValidDouble(rect.Height);
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the <see cref="Rect"/> has a valid size and location.
+        /// </summary>
+        /// <returns>A value indicating whether the <see cref="Rect"/> has a valid size and location.</returns>
+        private bool HasSizeAndLocation()
+        {
+            return rect.HasSize() && rect.HasLocation();
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the size and position of the <see cref="Rect"/> are such that the center
+        /// of the <see cref="Rect"/> is visible on the screen.
+        /// </summary>
+        /// <returns>A value indicating whether the size and position of the <see cref="Rect"/> are such that the center
+        /// of the <see cref="Rect"/> is visible on the screen.</returns>
+        private bool IsOnScreen()
+        {
+            if (rect.HasLocation())
+            {
+                Rect virtualScreenRect = new(
+                    SystemParameters.VirtualScreenLeft,
+                    SystemParameters.VirtualScreenTop,
+                    SystemParameters.VirtualScreenWidth,
+                    SystemParameters.VirtualScreenHeight);
+
+                return virtualScreenRect.Contains(rect.GetCenter());
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -613,9 +610,7 @@ public static class WindowExtensions
 
             var contextMenuEventArgs = (ContextMenuEventArgs)Activator.CreateInstance(
                 typeof(ContextMenuEventArgs),
-#pragma warning disable S3011
                 BindingFlags.Instance | BindingFlags.NonPublic,
-#pragma warning restore S3011
                 null,
                 [window, true],
                 null);
@@ -690,9 +685,7 @@ public static class WindowExtensions
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-#pragma warning disable S3241
         static extern bool SetForegroundWindow(IntPtr hWnd);
-#pragma warning restore S3241
     }
 
     public static void Clean()
@@ -701,15 +694,18 @@ public static class WindowExtensions
         _taskDialogInstance = null;
     }
 
-    public static double GetMinTrackWidth(this Visual visual) =>
-        Math.Round(
-                   GetSystemMetrics(34 /* SM_CXMINTRACK */) /
-                   (PresentationSource.FromVisual(visual)?.CompositionTarget?.TransformToDevice.M11 ?? 1));
+    extension(Visual visual)
+    {
+        public double GetMinTrackWidth() =>
+            Math.Round(
+                GetSystemMetrics(34 /* SM_CXMINTRACK */) /
+                (PresentationSource.FromVisual(visual)?.CompositionTarget?.TransformToDevice.M11 ?? 1));
 
-    public static double GetMinTrackHeight(this Visual visual) =>
-        Math.Round(1+
-                   GetSystemMetrics(35 /* SM_CYMINTRACK */) /
-                   (PresentationSource.FromVisual(visual)?.CompositionTarget?.TransformToDevice.M22 ?? 1));
+        public double GetMinTrackHeight() =>
+            Math.Round(1+
+                       GetSystemMetrics(35 /* SM_CYMINTRACK */) /
+                       (PresentationSource.FromVisual(visual)?.CompositionTarget?.TransformToDevice.M22 ?? 1));
+    }
 
     public static bool IsTextBoxView(this object o) =>
         StringComparer.Ordinal.Equals(o.GetType().FullName, "System.Windows.Controls.TextBoxView");
