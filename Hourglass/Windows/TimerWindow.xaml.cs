@@ -653,9 +653,14 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         return Timer.ToString();
     }
 
-    private record Selection(TextBox TextBox, int Start, int Length);
-    private record AllSelection(TextBox TextBox) : Selection(TextBox, 0, TextBox.Text.Length);
-    private record CaretAtEndSelection(TextBox TextBox) : Selection(TextBox, TextBox.Text.Length, 0);
+    private record Selection(TextBox TextBox, Func<int> StartGetter, Func<int> LengthGetter)
+    {
+        public int Start => StartGetter();
+        public int Length => LengthGetter();
+    }
+
+    private record AllSelection(TextBox TextBox) : Selection(TextBox, static () => 0, () => TextBox.Text.Length);
+    private record CaretAtEndSelection(TextBox TextBox) : Selection(TextBox, () => TextBox.Text.Length, static () => 0);
 
     /// <summary>
     /// Sets the window to accept user input to start a new <see cref="Timer"/>.
@@ -667,9 +672,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         TitleTextBox.Text = Timer.Options.Title ?? string.Empty;
 
-        AdjustTimerTextBoxText();
-
         selection ??= new AllSelection(TimerTextBox);
+        if (ReferenceEquals(selection.TextBox, TimerTextBox))
+        {
+            AdjustTimerTextBoxText();
+        }
+
         selection.TextBox.Focus();
         selection.TextBox.Select(selection.Start, selection.Length);
 
@@ -686,7 +694,16 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
             if (Timer.Options.ShowTimeElapsed)
             {
-                TimerTextBox.Text = Timer.TimeLeftAsString ?? string.Empty;
+                TimerTextBox.Text =
+                    GetOriginalUserInput() ??
+                    Timer.TimeLeftAsString ??
+                    string.Empty;
+            }
+            else
+            {
+                TimerTextBox.Text =
+                    GetOriginalUserInput() ??
+                    TimerTextBox.Text;
             }
 
             if (string.IsNullOrWhiteSpace(TimerTextBox.Text) ||
@@ -699,6 +716,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 Timer.TimerStart?.OriginalInput ??
                 Timer.TimerStart?.ToString() ??
                 LastTimerStart.OriginalInput;
+
+            string? GetOriginalUserInput() =>
+                Settings.Default.EditTimerStartTime
+                    ? Timer.TimerStart?.OriginalInput
+                    : null;
         }
     }
 
@@ -1952,7 +1974,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             _ => null
         };
 
-        if (selection is not null)
+        if (selection is not null && (!Settings.Default.EditTimerStartTime || selection is AllSelection or CaretAtEndSelection))
         {
             SwitchToInputMode(selection);
 
@@ -1976,8 +1998,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             int selectionEnd = capture.Length;
 
             return shiftModifier
-                ? new(TimerTextBox, selectionStart + selectionEnd, 0)
-                : new(TimerTextBox, selectionStart, selectionEnd);
+                ? new(TimerTextBox, () => selectionStart + selectionEnd, static () => 0)
+                : new(TimerTextBox, () => selectionStart, () => selectionEnd);
         }
     }
 

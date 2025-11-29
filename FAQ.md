@@ -41,6 +41,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to speed up the Portable Hourglass startup?](#how-to-speed-up-the-portable-hourglass-startup)
 - [How to find the Hourglass settings?](#how-to-find-the-hourglass-settings)
 - [How to disable the Hourglass updates?](#how-to-disable-the-hourglass-updates)
+- [How to enable editing of the timer start time instead of time left?](#how-to-enable-editing-of-the-timer-start-time-instead-of-time-left)
 - [How to enable the Hourglass Jump List?](#how-to-enable-the-hourglass-jump-list)
 - [How to disable the Hourglass thumbnail toolbar?](#how-to-disable-the-hourglass-thumbnail-toolbar)
 - [How to always open the Hourglass timer windows centered?](#how-to-always-open-the-hourglass-timer-windows-centered)
@@ -454,6 +455,13 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 
 > [!NOTE]
 > To hide **Update** link in the timer window without disabling updates set `ShowUpdateLink` to `False`.
+
+## How to enable editing of the timer start time instead of time left?
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set `EditTimerStartTime` to `True`.
+4. Launch the **Hourglass**.
 
 ## How to enable the Hourglass [Jump List](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#jump-lists)?
 

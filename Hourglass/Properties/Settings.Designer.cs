@@ -245,5 +245,17 @@ namespace Hourglass.Properties {
                 this["AlwaysCenterWindow"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EditTimerStartTime {
+            get {
+                return ((bool)(this["EditTimerStartTime"]));
+            }
+            set {
+                this["EditTimerStartTime"] = value;
+            }
+        }
     }
 }
