@@ -6,6 +6,7 @@
 
 namespace Hourglass.Properties;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,8 @@ using Windows;
 #endif
 internal sealed partial class Settings
 {
+    private const int MaxTimeoutSeconds = 60*60;
+
     /// <summary>
     /// Gets or sets the most recent <see cref="TimerOptions"/>.
     /// </summary>
@@ -35,19 +38,8 @@ internal sealed partial class Settings
     /// </summary>
     public IList<Timer> Timers
     {
-        get
-        {
-            IEnumerable<TimerInfo> timerInfos = TimerInfos ?? [];
-#pragma warning disable S2365
-            return timerInfos.Select(Timer.FromTimerInfo).Where(static t => t is not null).ToList()!;
-#pragma warning restore S2365
-        }
-
-        set
-        {
-            IEnumerable<TimerInfo> timerInfos = value.Select(TimerInfo.FromTimer).Where(static t => t is not null)!;
-            TimerInfos = new(timerInfos);
-        }
+        get => [..(TimerInfos ?? []).Select(Timer.FromTimerInfo).OfType<Timer>()];
+        set => TimerInfos = [..value.Select(TimerInfo.FromTimer).OfType<TimerInfo>()];
     }
 
     /// <summary>
@@ -55,19 +47,8 @@ internal sealed partial class Settings
     /// </summary>
     public IList<TimerStart> TimerStarts
     {
-        get
-        {
-            IEnumerable<TimerStartInfo> timerStartInfos = TimerStartInfos ?? [];
-#pragma warning disable S2365
-            return timerStartInfos.Select(TimerStart.FromTimerStartInfo).Where(static t => t is not null).ToList()!;
-#pragma warning restore S2365
-        }
-
-        set
-        {
-            IEnumerable<TimerStartInfo> timerStartInfos = value.Select(TimerStartInfo.FromTimerStart)!;
-            TimerStartInfos = new(timerStartInfos);
-        }
+        get => [..(TimerStartInfos ?? []).Select(TimerStart.FromTimerStartInfo).OfType<TimerStart>()];
+        set => TimerStartInfos = [..value.Select(TimerStartInfo.FromTimerStart).OfType<TimerStartInfo>()];
     }
 
     /// <summary>
@@ -75,19 +56,8 @@ internal sealed partial class Settings
     /// </summary>
     public IList<Theme> UserProvidedThemes
     {
-        get
-        {
-            IEnumerable<ThemeInfo> userProvidedThemeInfos = UserProvidedThemeInfos ?? [];
-#pragma warning disable S2365
-            return userProvidedThemeInfos.Select(Theme.FromThemeInfo).Where(static t => t is not null).ToList()!;
-#pragma warning restore S2365
-        }
-
-        set
-        {
-            IEnumerable<ThemeInfo?> userProvidedThemeInfos = value.Select(ThemeInfo.FromTheme).Where(static t => t is not null);
-            UserProvidedThemeInfos = new(userProvidedThemeInfos!);
-        }
+        get => [..(UserProvidedThemeInfos ?? []).Select(Theme.FromThemeInfo).OfType<Theme>()];
+        set => UserProvidedThemeInfos = [..value.Select(ThemeInfo.FromTheme).OfType<ThemeInfo>()];
     }
 
     /// <summary>
@@ -97,5 +67,17 @@ internal sealed partial class Settings
     {
         get => WindowSize.FromWindowSizeInfo(WindowSizeInfo);
         set => WindowSizeInfo = WindowSizeInfo.FromWindowSize(value);
+    }
+
+    public TimeSpan? MinimizeWhenExpiredTimeout
+    {
+        get
+        {
+            Default.Reload();
+
+            return MinimizeWhenExpiredSeconds is > 0 and <= MaxTimeoutSeconds
+                ? TimeSpan.FromSeconds(MinimizeWhenExpiredSeconds)
+                : null;
+        }
     }
 }

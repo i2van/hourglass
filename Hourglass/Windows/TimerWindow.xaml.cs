@@ -1450,6 +1450,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             BeginExpirationAnimationAndSound();
         }
 
+        this.HideExpiredAfterDelay();
+
         UpdateTimeToolTip();
         UpdateNotificationAreaIcon();
     }
@@ -2088,6 +2090,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         e.Handled = true;
     }
 
+    public bool IsWindowStateChanged { get; set; }
+
     /// <summary>
     /// Invoked when the window's WindowState property changes.
     /// </summary>
@@ -2095,6 +2099,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void WindowStateChanged(object sender, EventArgs e)
     {
+        IsWindowStateChanged = true;
+
         if (WindowState != WindowState.Minimized && !IsFullScreen)
         {
             RestoreWindowState = WindowState;

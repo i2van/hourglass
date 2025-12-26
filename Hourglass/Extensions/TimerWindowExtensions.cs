@@ -39,47 +39,86 @@ public static class TimerWindowExtensions
             windows.Arrange().Reverse();
     }
 
-    public static void BringNextToFrontAndActivate(this TimerWindow thisWindow, bool activate = true)
-    {
-        if (thisWindow.DoNotActivateNextWindow)
-        {
-            thisWindow.DoNotActivateNextWindow = false;
-            return;
-        }
-
-        if (!Settings.Default.ActivateNextWindow)
-        {
-            return;
-        }
-
-        var nextWindow = GetNextWindow();
-        nextWindow?.Dispatcher.BeginInvoke(() => nextWindow.BringToFrontAndActivate(activate));
-
-        TimerWindow? GetNextWindow()
-        {
-            if (Application.Current is null)
-            {
-                return null;
-            }
-
-            var allWindows = Application.Current.Windows.OfType<TimerWindow>().Arrange().ToArray();
-
-            return GetNextApplicableWindow(allWindows.SkipWhile(NotThisWindow).Skip(1)) ??
-                   GetNextApplicableWindow(allWindows.TakeWhile(NotThisWindow));
-
-            bool NotThisWindow(TimerWindow window) =>
-                !ReferenceEquals(thisWindow, window);
-
-            static TimerWindow? GetNextApplicableWindow(IEnumerable<TimerWindow> windows) =>
-                windows.FirstOrDefault(static window => window.IsVisible && window.WindowState != WindowState.Minimized);
-        }
-    }
-
     private static bool _jumpListDisabled;
     private static int _lastUpdatedJumpListID;
 
     extension(TimerWindow window)
     {
+        public void BringNextToFrontAndActivate(bool activate = true)
+        {
+            if (window.DoNotActivateNextWindow)
+            {
+                window.DoNotActivateNextWindow = false;
+                return;
+            }
+
+            if (!Settings.Default.ActivateNextWindow)
+            {
+                return;
+            }
+
+            var nextWindow = GetNextWindow();
+            nextWindow?.Dispatcher.BeginInvoke(() => nextWindow.BringToFrontAndActivate(activate));
+
+            TimerWindow? GetNextWindow()
+            {
+                if (Application.Current is null)
+                {
+                    return null;
+                }
+
+                var allWindows = Application.Current.Windows.OfType<TimerWindow>().Arrange().ToArray();
+
+                return GetNextApplicableWindow(allWindows.SkipWhile(NotThisWindow).Skip(1)) ??
+                       GetNextApplicableWindow(allWindows.TakeWhile(NotThisWindow));
+
+                bool NotThisWindow(TimerWindow thisWindow) =>
+                    !ReferenceEquals(window, thisWindow);
+
+                static TimerWindow? GetNextApplicableWindow(IEnumerable<TimerWindow> windows) =>
+                    windows.FirstOrDefault(static window => window.IsVisible && window.WindowState != WindowState.Minimized);
+            }
+        }
+
+        public void HideExpiredAfterDelay()
+        {
+            if (window.Options.LockInterface)
+            {
+                return;
+            }
+
+            var minimizeWhenExpired = Settings.Default.MinimizeWhenExpiredTimeout;
+
+            if (minimizeWhenExpired is null ||
+                window.WindowState == WindowState.Minimized ||
+                !window.IsVisible)
+            {
+                return;
+            }
+
+            window.IsWindowStateChanged = false;
+
+            var windowWeakReference = new WeakReference<TimerWindow>(window);
+
+            var dispatcherTimer = new DispatcherTimer
+            {
+                Interval = minimizeWhenExpired.Value
+            };
+            dispatcherTimer.Tick += DispatcherTimerTick;
+            dispatcherTimer.Start();
+
+
+            void DispatcherTimerTick(object sender, EventArgs e)
+            {
+                ((DispatcherTimer)sender).Stop();
+
+                if (windowWeakReference.TryGetTarget(out var targetWindow) && !targetWindow.IsWindowStateChanged)
+                {
+                    targetWindow.WindowState = WindowState.Minimized;
+                }
+            }
+        }
+
         public void UpdateJumpList() =>
             window.UpdateJumpList(false);
 

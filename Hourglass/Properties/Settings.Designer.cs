@@ -257,5 +257,29 @@ namespace Hourglass.Properties {
                 this["EditTimerStartTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MinimizeWhenExpiredSeconds {
+            get {
+                return ((int)(this["MinimizeWhenExpiredSeconds"]));
+            }
+            set {
+                this["MinimizeWhenExpiredSeconds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CloseWhenExpiredSeconds {
+            get {
+                return ((int)(this["CloseWhenExpiredSeconds"]));
+            }
+            set {
+                this["CloseWhenExpiredSeconds"] = value;
+            }
+        }
     }
 }
