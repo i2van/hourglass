@@ -81,6 +81,11 @@ public sealed class TimerOptionsInfo
     public bool CloseWhenExpired { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the timer window should be minimized when the timer expires.
+    /// </summary>
+    public bool MinimizeWhenExpired { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether Windows should be shut down when the timer expires.
     /// </summary>
     public bool ShutDownWhenExpired { get; set; }

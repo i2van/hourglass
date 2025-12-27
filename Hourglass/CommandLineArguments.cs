@@ -143,6 +143,11 @@ public sealed class CommandLineArguments
     public bool CloseWhenExpired { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether the timer window should be minimized when the timer expires.
+    /// </summary>
+    public bool MinimizeWhenExpired { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether Windows should be shut down when the timer expires.
     /// </summary>
     public bool ShutDownWhenExpired { get; private set; }
@@ -329,6 +334,7 @@ public sealed class CommandLineArguments
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
             PopUpWhenExpired = PopUpWhenExpired,
             CloseWhenExpired = CloseWhenExpired,
+            MinimizeWhenExpired = MinimizeWhenExpired,
             ShutDownWhenExpired = ShutDownWhenExpired,
             Theme = Theme,
             Sound = Sound,
@@ -378,6 +384,7 @@ public sealed class CommandLineArguments
             PauseBeforeLoopTimer = options.PauseBeforeLoopTimer,
             PopUpWhenExpired = options.PopUpWhenExpired,
             CloseWhenExpired = options.CloseWhenExpired,
+            MinimizeWhenExpired = options.MinimizeWhenExpired,
             ShutDownWhenExpired = options.ShutDownWhenExpired,
             Theme = options.Theme,
             Sound = options.Sound,
@@ -424,6 +431,7 @@ public sealed class CommandLineArguments
             PauseBeforeLoopTimer = defaultOptions.PauseBeforeLoopTimer,
             PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
             CloseWhenExpired = defaultOptions.CloseWhenExpired,
+            MinimizeWhenExpired = defaultOptions.MinimizeWhenExpired,
             ShutDownWhenExpired = defaultOptions.ShutDownWhenExpired,
             Theme = defaultOptions.Theme,
             Sound = defaultOptions.Sound,
@@ -699,6 +707,20 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.CloseWhenExpired = closeWhenExpired;
                     argumentsBasedOnFactoryDefaults.CloseWhenExpired = closeWhenExpired;
+                    break;
+
+                case "--minimize-when-expired":
+                case "-em":
+                case "/em":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--minimize-when-expired");
+
+                    bool minimizeWhenExpired = GetBoolValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.MinimizeWhenExpired);
+
+                    argumentsBasedOnMostRecentOptions.MinimizeWhenExpired = minimizeWhenExpired;
+                    argumentsBasedOnFactoryDefaults.MinimizeWhenExpired = minimizeWhenExpired;
                     break;
 
                 case "--shut-down-when-expired":

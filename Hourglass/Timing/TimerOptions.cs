@@ -88,6 +88,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         PauseBeforeLoopTimer = false;
         PopUpWhenExpired = true;
         CloseWhenExpired = false;
+        MinimizeWhenExpired = false;
         ShutDownWhenExpired = false;
         Theme = Theme.DefaultTheme;
         Sound = Sound.DefaultSound;
@@ -375,6 +376,25 @@ public sealed class TimerOptions : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the timer window should be minimized when the timer expires.
+    /// </summary>
+    public bool MinimizeWhenExpired
+    {
+        get;
+
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    }
+
+    /// <summary>
     /// Gets or sets a value indicating whether Windows should be shut down when the timer expires.
     /// </summary>
     public bool ShutDownWhenExpired
@@ -556,6 +576,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         PauseBeforeLoopTimer = options.PauseBeforeLoopTimer;
         PopUpWhenExpired = options.PopUpWhenExpired;
         CloseWhenExpired = options.CloseWhenExpired;
+        MinimizeWhenExpired = options.MinimizeWhenExpired;
         ShutDownWhenExpired = options.ShutDownWhenExpired;
         Theme = options.Theme;
         Sound = options.Sound;
@@ -579,6 +600,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             nameof(PauseBeforeLoopTimer),
             nameof(PopUpWhenExpired),
             nameof(CloseWhenExpired),
+            nameof(MinimizeWhenExpired),
             nameof(ShutDownWhenExpired),
             nameof(Theme),
             nameof(Sound),
@@ -611,6 +633,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         PauseBeforeLoopTimer = info.PauseBeforeLoopTimer;
         PopUpWhenExpired = info.PopUpWhenExpired;
         CloseWhenExpired = info.CloseWhenExpired;
+        MinimizeWhenExpired = info.MinimizeWhenExpired;
         ShutDownWhenExpired = info.ShutDownWhenExpired;
         Theme = Theme.FromIdentifier(info.ThemeIdentifier);
         Sound = Sound.FromIdentifier(info.SoundIdentifier);
@@ -634,6 +657,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             nameof(PauseBeforeLoopTimer),
             nameof(PopUpWhenExpired),
             nameof(CloseWhenExpired),
+            nameof(MinimizeWhenExpired),
             nameof(ShutDownWhenExpired),
             nameof(Theme),
             nameof(Sound),
@@ -662,6 +686,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
             PopUpWhenExpired = PopUpWhenExpired,
             CloseWhenExpired = CloseWhenExpired,
+            MinimizeWhenExpired = MinimizeWhenExpired,
             ShutDownWhenExpired = ShutDownWhenExpired,
             ThemeIdentifier = Theme?.Identifier,
             SoundIdentifier = Sound?.Identifier,

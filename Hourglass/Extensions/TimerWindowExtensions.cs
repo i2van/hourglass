@@ -80,41 +80,46 @@ public static class TimerWindowExtensions
             }
         }
 
-        public void HideExpiredAfterDelay()
+        public void ExecuteWhenExpiredAfterDelay(bool shouldExecute, TimeSpan? executeWhenExpiredTimeout, Action<TimerWindow> action)
         {
-            if (window.Options.LockInterface)
+            if (window.Options.LockInterface || !shouldExecute)
             {
                 return;
             }
 
-            var minimizeWhenExpired = Settings.Default.MinimizeWhenExpiredTimeout;
-
-            if (minimizeWhenExpired is null ||
-                window.WindowState == WindowState.Minimized ||
-                !window.IsVisible)
+            if (executeWhenExpiredTimeout is null)
             {
+                ExecuteWhenExpired(window);
                 return;
             }
 
-            window.IsWindowStateChanged = false;
+            window.UndoExecuteWhenExpired = false;
 
             var windowWeakReference = new WeakReference<TimerWindow>(window);
 
             var dispatcherTimer = new DispatcherTimer
             {
-                Interval = minimizeWhenExpired.Value
+                Interval = executeWhenExpiredTimeout.Value
             };
             dispatcherTimer.Tick += DispatcherTimerTick;
             dispatcherTimer.Start();
 
 
+            void ExecuteWhenExpired(TimerWindow targetWindow)
+            {
+                if (!targetWindow.UndoExecuteWhenExpired)
+                {
+                    action(targetWindow);
+                }
+            }
+
             void DispatcherTimerTick(object sender, EventArgs e)
             {
                 ((DispatcherTimer)sender).Stop();
 
-                if (windowWeakReference.TryGetTarget(out var targetWindow) && !targetWindow.IsWindowStateChanged)
+                if (windowWeakReference.TryGetTarget(out var targetWindow))
                 {
-                    targetWindow.WindowState = WindowState.Minimized;
+                    ExecuteWhenExpired(targetWindow);
                 }
             }
         }

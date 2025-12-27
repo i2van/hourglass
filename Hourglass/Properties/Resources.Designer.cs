@@ -431,6 +431,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimize when _expired.
+        /// </summary>
+        public static string ContextMenuMinimizeWhenExpiredMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuMinimizeWhenExpiredMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _New timer.
         /// </summary>
         public static string ContextMenuNewTimerMenuItem {

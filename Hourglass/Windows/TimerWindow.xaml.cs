@@ -297,6 +297,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         private set
         {
+            UndoExecuteWhenExpired = UndoExecuteWhenExpired || value == TimerWindowMode.Input;
+
             if (field == value)
             {
                 return;
@@ -1031,7 +1033,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                     }
                     else
                     {
-                        Close();
+                        CloseWhenExpired();
                     }
                 }
                 else
@@ -1069,9 +1071,15 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
         else if (Options.CloseWhenExpired)
         {
-            Close();
+            CloseWhenExpired();
         }
     }
+
+    private void CloseWhenExpired() =>
+        this.ExecuteWhenExpiredAfterDelay(
+            true,
+            Settings.Default.CloseWhenExpiredTimeout,
+            static window => window.Close());
 
     /// <summary>
     /// Initializes the update button.
@@ -1450,7 +1458,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             BeginExpirationAnimationAndSound();
         }
 
-        this.HideExpiredAfterDelay();
+        this.ExecuteWhenExpiredAfterDelay(
+            Options.MinimizeWhenExpired && (WindowState != WindowState.Minimized || IsVisible),
+            Settings.Default.MinimizeWhenExpiredTimeout,
+            static window => window.WindowState = WindowState.Minimized);
 
         UpdateTimeToolTip();
         UpdateNotificationAreaIcon();
@@ -1570,6 +1581,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void StartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        UndoExecuteWhenExpired = false;
+
         using IDisposable _ = _updateShellIntegration;
 
         TimerStart? timerStart = TimerStart.FromString(TimerTextBox.Text);
@@ -1684,6 +1697,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void RestartCommandExecuted(object sender, ExecutedRoutedEventArgs e)
     {
+        UndoExecuteWhenExpired = false;
+
         using IDisposable _ = _updateShellIntegration;
 
         if (Options.LockInterface || !Timer.SupportsRestart)
@@ -2090,7 +2105,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         e.Handled = true;
     }
 
-    public bool IsWindowStateChanged { get; set; }
+    public bool UndoExecuteWhenExpired { get; set; }
 
     /// <summary>
     /// Invoked when the window's WindowState property changes.
@@ -2099,7 +2114,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void WindowStateChanged(object sender, EventArgs e)
     {
-        IsWindowStateChanged = true;
+        UndoExecuteWhenExpired = true;
 
         if (WindowState != WindowState.Minimized && !IsFullScreen)
         {

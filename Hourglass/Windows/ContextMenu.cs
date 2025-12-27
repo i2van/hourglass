@@ -97,6 +97,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _closeWhenExpiredMenuItem = null!;
 
     /// <summary>
+    /// The "Minimize when expired" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _minimizeWhenExpiredMenuItem = null!;
+
+    /// <summary>
     /// The "Recent inputs" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _recentInputsMenuItem = null!;
@@ -409,6 +414,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             _closeWhenExpiredMenuItem.IsEnabled = false;
         }
 
+        // Minimize when expired
+        _minimizeWhenExpiredMenuItem.IsChecked = _timerWindow.Options.MinimizeWhenExpired;
+
         UpdateThemesMenuItems();
 
         // Sound
@@ -520,6 +528,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         {
             _timerWindow.Options.CloseWhenExpired = _closeWhenExpiredMenuItem.IsChecked;
         }
+
+        // Minimize when expired
+        _timerWindow.Options.MinimizeWhenExpired = _minimizeWhenExpiredMenuItem.IsChecked;
 
         // Sound
         var selectedSoundMenuItem = _selectableSoundMenuItems.FirstOrDefault(static mi => mi.IsChecked);
@@ -804,6 +815,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         };
         _closeWhenExpiredMenuItem.Click += CheckableMenuItemClick;
         Items.Add(_closeWhenExpiredMenuItem);
+
+        // Minimize when expired
+        _minimizeWhenExpiredMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuMinimizeWhenExpiredMenuItem
+        };
+        _minimizeWhenExpiredMenuItem.Click += CheckableMenuItemClick;
+        Items.Add(_minimizeWhenExpiredMenuItem);
 
         Items.Add(new Separator());
 
