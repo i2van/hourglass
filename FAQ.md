@@ -45,6 +45,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to enable the Hourglass Jump List?](#how-to-enable-the-hourglass-jump-list)
 - [How to disable the Hourglass thumbnail toolbar?](#how-to-disable-the-hourglass-thumbnail-toolbar)
 - [How to always open the Hourglass timer windows centered?](#how-to-always-open-the-hourglass-timer-windows-centered)
+- [How to configure delay timeouts for automatic close, minimize or shut down when expired?](#how-to-configure-delay-timeouts-for-automatic-close-minimize-or-shut-down-when-expired)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
 - [What should I do if there is no notification sound?](#what-should-i-do-if-there-is-no-notification-sound)
 
@@ -483,6 +484,23 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 3. Set `AlwaysCenterWindow` to `True`.
 4. Launch the **Hourglass**.
+
+## How to configure delay timeouts for automatic close, minimize or shut down when expired?
+
+By default, when **Close when expired**, **Minimize when expired** or **Shut down when expired** options are enabled, the action is performed immediately after the timer expires. You can configure a delay timeout **in seconds** before the action is performed.
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set one or more of the following values:
+   - `CloseWhenExpiredSeconds` - delay in seconds before closing the timer window when **Close when expired** is enabled (default is `0`)
+   - `MinimizeWhenExpiredSeconds` - delay in seconds before minimizing the timer window when **Minimize when expired** is enabled (default is `0`)
+   - `ShutDownWhenExpiredSeconds` - delay in seconds before shutting down Windows when **Shut down when expired** is enabled (default is `0`)
+4. Launch the **Hourglass**.
+
+> [!NOTE]
+> - Setting the value to `0` means the action will be performed immediately.
+> - The maximum allowed timeout value is `3600` seconds (`1 hour`).
+> - These settings only apply when the corresponding **Close when expired**, **Minimize when expired** or **Shut down when expired** options are enabled in the timer window context menu or via command-line.
 
 ## What should I do if the Hourglass does not start?
 

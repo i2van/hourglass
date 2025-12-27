@@ -94,6 +94,7 @@ ngen-Hourglass.bat uninstall
 - New option [`--show-trigger-time`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--show-trigger-time), `-st`, `/st`
 - New option [`--pause-after-loop-timer`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--pause-after-loop-timer), `-pl`, `/pl`
 - New option [`--order-by-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--order-by-title), `-ot`, `/ot`
+- New option [`--minimize-when-expired`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--minimize-when-expired), `-em`, `/em`
 - Renamed option `--prompt-on-exit` to [`--prompt-on-close`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--prompt-on-close)
 - New option [`--save-timer-on-closing`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--save-timer-on-closing), `-sc`, `/sc`
 
@@ -154,6 +155,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - The **Pause all** timer window context menu command pauses all the running timers. Command-line command is [`pause`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+pause)
 - The **Resume all** timer window context menu command resumes all the paused timers. Command-line command is [`resume`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+resume)
 - The **Pause after each loop** timer window context menu command pauses the loop timer when it expires. Command-line command is [`--pause-after-loop-timer`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--pause-after-loop-timer), `-pl`, `/pl`
+- The **Minimize when expired** timer window context menu command minimizes the timer window when the timer expires. Command-line option is [`--minimize-when-expired`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--minimize-when-expired), `-em`, `/em`
 
 #### Other
 

@@ -281,5 +281,17 @@ namespace Hourglass.Properties {
                 this["CloseWhenExpiredSeconds"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ShutDownWhenExpiredSeconds {
+            get {
+                return ((int)(this["ShutDownWhenExpiredSeconds"]));
+            }
+            set {
+                this["ShutDownWhenExpiredSeconds"] = value;
+            }
+        }
     }
 }

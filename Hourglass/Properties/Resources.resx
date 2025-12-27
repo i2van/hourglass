@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -1367,6 +1367,14 @@ $</value>
   <data name="ContextMenuPrefer24HourTimeMenuItem" xml:space="preserve">
     <value>Prefer 24-_hour time when parsing</value>
     <comment>The text for the prefer 24-hour time when parsing menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuMinimizeWhenExpiredMenuItem" xml:space="preserve">
+    <value>Minimize when _expired</value>
+    <comment>The text for the minimize when expired menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuTimeoutAfterPreposition" xml:space="preserve">
+    <value> after </value>
+    <comment>The preposition used to separate the menu item text from the timeout duration (e.g., "Close when expired after 5 seconds")</comment>
   </data>
   <data name="ContextMenuDigitalClockTimeMenuItem" xml:space="preserve">
     <value>Display time in the digital _clock format</value>

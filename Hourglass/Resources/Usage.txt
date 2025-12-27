@@ -167,12 +167,27 @@ Options:
   --close-when-expired on|off|last
         Closes the timer window when the timer expires.
 
+        CloseWhenExpiredSeconds configuration setting specifies close timeout.
+
         Required        no
         Default value   last
         Alias           -e, /e
 
+  --minimize-when-expired on|off|last
+        Minimizes the timer window when the timer expires.
+
+        MinimizeWhenExpiredSeconds configuration setting specifies minimize
+        timeout.
+
+        Required        no
+        Default value   last
+        Alias           -em, /em
+
   --shut-down-when-expired on|off
         Shuts down windows when the timer expires.
+
+        ShutDownWhenExpiredSeconds configuration setting specifies shut down
+        timeout.
 
         Required        no
         Default value   off
@@ -353,6 +368,7 @@ Options:
             --pause-after-loop-timer      -pl off
             --pop-up-when-expired         -p  on
             --close-when-expired          -e  off
+            --minimize-when-expired       -em off
             --shut-down-when-expired      -x  off
             --theme                       -m  accent
             --sound                       -s  normal beep

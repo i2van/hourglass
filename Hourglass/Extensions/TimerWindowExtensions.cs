@@ -80,41 +80,49 @@ public static class TimerWindowExtensions
             }
         }
 
-        public void HideExpiredAfterDelay()
+        public void ExecuteWhenExpiredAfterDelay(bool shouldExecute, TimeSpan? executeWhenExpiredTimeout, Action<TimerWindow?> action , bool executeWhenNoWindow = false)
         {
-            if (window.Options.LockInterface)
+            if (!shouldExecute)
             {
                 return;
             }
 
-            var minimizeWhenExpired = Settings.Default.MinimizeWhenExpiredTimeout;
+            window.UndoExecuteWhenExpired = false;
 
-            if (minimizeWhenExpired is null ||
-                window.WindowState == WindowState.Minimized ||
-                !window.IsVisible)
+            if (executeWhenExpiredTimeout is null)
             {
+                ExecuteWhenExpired(window);
                 return;
             }
-
-            window.IsWindowStateChanged = false;
 
             var windowWeakReference = new WeakReference<TimerWindow>(window);
 
             var dispatcherTimer = new DispatcherTimer
             {
-                Interval = minimizeWhenExpired.Value
+                Interval = executeWhenExpiredTimeout.Value
             };
             dispatcherTimer.Tick += DispatcherTimerTick;
             dispatcherTimer.Start();
 
 
+            void ExecuteWhenExpired(TimerWindow? targetWindow)
+            {
+                if (executeWhenNoWindow || targetWindow?.UndoExecuteWhenExpired == false)
+                {
+                    action(targetWindow);
+                    targetWindow?.UndoExecuteWhenExpired = false;
+                }
+            }
+
             void DispatcherTimerTick(object sender, EventArgs e)
             {
                 ((DispatcherTimer)sender).Stop();
 
-                if (windowWeakReference.TryGetTarget(out var targetWindow) && !targetWindow.IsWindowStateChanged)
+                TimerWindow? targetWindow = null;
+
+                if (executeWhenNoWindow || windowWeakReference.TryGetTarget(out targetWindow))
                 {
-                    targetWindow.WindowState = WindowState.Minimized;
+                    ExecuteWhenExpired(targetWindow);
                 }
             }
         }

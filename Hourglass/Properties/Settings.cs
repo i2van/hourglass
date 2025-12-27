@@ -69,15 +69,17 @@ internal sealed partial class Settings
         set => WindowSizeInfo = WindowSizeInfo.FromWindowSize(value);
     }
 
-    public TimeSpan? MinimizeWhenExpiredTimeout
-    {
-        get
-        {
-            Default.Reload();
+    public TimeSpan? MinimizeWhenExpiredTimeout =>
+        GetWhenExpiredTimeout(MinimizeWhenExpiredSeconds);
 
-            return MinimizeWhenExpiredSeconds is > 0 and <= MaxTimeoutSeconds
-                ? TimeSpan.FromSeconds(MinimizeWhenExpiredSeconds)
-                : null;
-        }
-    }
+    public TimeSpan? CloseWhenExpiredTimeout =>
+        GetWhenExpiredTimeout(CloseWhenExpiredSeconds);
+
+    public TimeSpan? ShutDownWhenExpiredTimeout =>
+        GetWhenExpiredTimeout(ShutDownWhenExpiredSeconds);
+
+    private static TimeSpan? GetWhenExpiredTimeout(int timeout) =>
+        timeout is > 0 and <= MaxTimeoutSeconds
+            ? TimeSpan.FromSeconds(timeout)
+            : null;
 }

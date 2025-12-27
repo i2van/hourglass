@@ -97,6 +97,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _closeWhenExpiredMenuItem = null!;
 
     /// <summary>
+    /// The "Minimize when expired" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _minimizeWhenExpiredMenuItem = null!;
+
+    /// <summary>
     /// The "Recent inputs" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _recentInputsMenuItem = null!;
@@ -409,6 +414,16 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             _closeWhenExpiredMenuItem.IsEnabled = false;
         }
 
+        _closeWhenExpiredMenuItem.Header = GetMenuItemHeaderWithTimeout(
+            Properties.Resources.ContextMenuCloseWhenExpiredMenuItem,
+            Settings.Default.CloseWhenExpiredTimeout);
+
+        // Minimize when expired
+        _minimizeWhenExpiredMenuItem.IsChecked = _timerWindow.Options.MinimizeWhenExpired;
+        _minimizeWhenExpiredMenuItem.Header = GetMenuItemHeaderWithTimeout(
+            Properties.Resources.ContextMenuMinimizeWhenExpiredMenuItem,
+            Settings.Default.MinimizeWhenExpiredTimeout);
+
         UpdateThemesMenuItems();
 
         // Sound
@@ -461,6 +476,10 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             _shutDownWhenExpiredMenuItem.IsChecked = false;
             _shutDownWhenExpiredMenuItem.IsEnabled = false;
         }
+
+        _shutDownWhenExpiredMenuItem.Header = GetMenuItemHeaderWithTimeout(
+            Properties.Resources.ContextMenuShutDownWhenExpiredMenuItem,
+            Settings.Default.ShutDownWhenExpiredTimeout);
 
         // Window title
         foreach (var menuItem in _selectableWindowTitleMenuItems)
@@ -520,6 +539,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         {
             _timerWindow.Options.CloseWhenExpired = _closeWhenExpiredMenuItem.IsChecked;
         }
+
+        // Minimize when expired
+        _timerWindow.Options.MinimizeWhenExpired = _minimizeWhenExpiredMenuItem.IsChecked;
 
         // Sound
         var selectedSoundMenuItem = _selectableSoundMenuItems.FirstOrDefault(static mi => mi.IsChecked);
@@ -804,6 +826,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         };
         _closeWhenExpiredMenuItem.Click += CheckableMenuItemClick;
         Items.Add(_closeWhenExpiredMenuItem);
+
+        // Minimize when expired
+        _minimizeWhenExpiredMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuMinimizeWhenExpiredMenuItem
+        };
+        _minimizeWhenExpiredMenuItem.Click += CheckableMenuItemClick;
+        Items.Add(_minimizeWhenExpiredMenuItem);
 
         Items.Add(new Separator());
 
@@ -1232,6 +1262,83 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         }
 
         return outerBorder;
+    }
+
+    /// <summary>
+    /// Returns a menu item header with optional timeout information appended.
+    /// </summary>
+    /// <param name="baseHeader">The base header text.</param>
+    /// <param name="timeout">The timeout value.</param>
+    /// <returns>A string combining the base header with formatted timeout text, or just the base header if timeout is zero or null.</returns>
+    private static string GetMenuItemHeaderWithTimeout(string baseHeader, TimeSpan? timeout)
+    {
+        if (timeout is null || timeout.Value <= TimeSpan.Zero)
+        {
+            return baseHeader;
+        }
+
+        string timeoutText = FormatTimeoutForMenu(timeout.Value);
+        return $"{baseHeader}{Properties.Resources.ContextMenuTimeoutAfterPreposition}{timeoutText}";
+    }
+
+    /// <summary>
+    /// Formats a timeout value for menu display, excluding zero seconds and zero minutes+seconds.
+    /// </summary>
+    /// <param name="timeout">The timeout value to format.</param>
+    /// <returns>A natural language string representation of the timeout without trailing zeros.</returns>
+    private static string FormatTimeoutForMenu(TimeSpan timeout)
+    {
+        return string.Join(Properties.Resources.TimeSpanExtensionsUnitSeparator, GetParts());
+
+        IEnumerable<string> GetParts()
+        {
+            int days = timeout.Days;
+            int hours = timeout.Hours;
+            int minutes = timeout.Minutes;
+            int seconds = timeout.Seconds;
+
+            bool hasValue = false;
+
+            if (days != 0)
+            {
+                hasValue = true;
+                yield return GetStringWithUnits(days, Properties.Resources.TimeSpanExtensions1DayFormatString, Properties.Resources.TimeSpanExtensionsNDaysFormatString);
+            }
+
+            if (hours != 0)
+            {
+                hasValue = true;
+                yield return GetStringWithUnits(hours, Properties.Resources.TimeSpanExtensions1HourFormatString, Properties.Resources.TimeSpanExtensionsNHoursFormatString);
+            }
+
+            if (minutes != 0)
+            {
+                hasValue = true;
+                yield return GetStringWithUnits(minutes, Properties.Resources.TimeSpanExtensions1MinuteFormatString, Properties.Resources.TimeSpanExtensionsNMinutesFormatString);
+            }
+
+            // Only add seconds if they're non-zero OR if there are no other parts
+            if (seconds != 0 || !hasValue)
+            {
+                yield return GetStringWithUnits(seconds, Properties.Resources.TimeSpanExtensions1SecondFormatString, Properties.Resources.TimeSpanExtensionsNSecondsFormatString);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns a string for the specified value with the specified unit (e.g., "5 minutes").
+    /// </summary>
+    /// <param name="value">A value.</param>
+    /// <param name="singularFormat">Format string for singular form (value == 1).</param>
+    /// <param name="pluralFormat">Format string for plural form (value != 1).</param>
+    /// <returns>A string for the specified value with the specified unit.</returns>
+    private static string GetStringWithUnits(int value, string singularFormat, string pluralFormat)
+    {
+        string format = value == 1 ? singularFormat : pluralFormat;
+        return string.Format(
+            Properties.Resources.ResourceManager.GetEffectiveProvider(),
+            format,
+            value);
     }
 
     /// <summary>
