@@ -1,4 +1,4 @@
-﻿name: build
+name: build
 
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
     # Set up
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v5.0.1
+      uses: actions/setup-dotnet@v5.1.0
       with:
         dotnet-version: |
           10.0.x
