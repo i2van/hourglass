@@ -132,6 +132,11 @@ public sealed class CommandLineArguments
     public bool PauseBeforeLoopTimer { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether to start the timer in a paused state.
+    /// </summary>
+    public bool StartPaused { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether the timer window should be brought to the top of other windows when the
     /// timer expires.
     /// </summary>
@@ -332,6 +337,7 @@ public sealed class CommandLineArguments
             ShowTriggerTime = ShowTriggerTime,
             LoopTimer = LoopTimer,
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
+            StartPaused = StartPaused,
             PopUpWhenExpired = PopUpWhenExpired,
             CloseWhenExpired = CloseWhenExpired,
             MinimizeWhenExpired = MinimizeWhenExpired,
@@ -679,6 +685,19 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.PauseBeforeLoopTimer = pauseBeforeLoopTimer;
                     argumentsBasedOnFactoryDefaults.PauseBeforeLoopTimer = pauseBeforeLoopTimer;
+                    break;
+
+                case "--start-paused":
+                case "-sp":
+                case "/sp":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--start-paused");
+
+                    bool startPaused = GetBoolValue(
+                        arg,
+                        remainingArgs);
+
+                    argumentsBasedOnMostRecentOptions.StartPaused = startPaused;
+                    argumentsBasedOnFactoryDefaults.StartPaused = startPaused;
                     break;
 
                 case "--pop-up-when-expired":

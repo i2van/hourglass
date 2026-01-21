@@ -157,6 +157,16 @@ Options:
         Default value   last
         Alias           -pl, /pl
 
+  --start-paused on|off
+        Starts the timer in a paused state.
+
+        This option is never remembered. It must be specified as a command-line
+        argument each time the timer is started.
+
+        Required        no
+        Default value   off
+        Alias           -sp, /sp
+
   --pop-up-when-expired on|off|last
         Pops up the timer window when the timer expires.
 
@@ -296,7 +306,7 @@ Options:
             title           Timer title
 
             left+title      Time remaining · Timer title
-            elapsed+title   Time elapsed · Timer title
+            elapsed+title   Timer elapsed · Timer title
 
             title+left      Timer title · Time remaining
             title+elapsed   Timer title · Time elapsed
@@ -366,6 +376,7 @@ Options:
             --multi-timers                -mt off
             --loop-timer                  -l  off
             --pause-after-loop-timer      -pl off
+            --start-paused                -sp off
             --pop-up-when-expired         -p  on
             --close-when-expired          -e  off
             --minimize-when-expired       -em off

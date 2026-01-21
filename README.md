@@ -93,6 +93,7 @@ ngen-Hourglass.bat uninstall
 - New option [`--activate-next`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--activate-next), `-an`, `/an`
 - New option [`--show-trigger-time`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--show-trigger-time), `-st`, `/st`
 - New option [`--pause-after-loop-timer`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--pause-after-loop-timer), `-pl`, `/pl`
+- New option [`--start-paused`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--start-paused), `-sp`, `/sp`
 - New option [`--order-by-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--order-by-title), `-ot`, `/ot`
 - New option [`--minimize-when-expired`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--minimize-when-expired), `-em`, `/em`
 - Renamed option `--prompt-on-exit` to [`--prompt-on-close`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--prompt-on-close)

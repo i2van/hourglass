@@ -86,6 +86,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         ShowTriggerTime = false;
         LoopTimer = false;
         PauseBeforeLoopTimer = false;
+        StartPaused = false;
         PopUpWhenExpired = true;
         CloseWhenExpired = false;
         MinimizeWhenExpired = false;
@@ -321,6 +322,25 @@ public sealed class TimerOptions : INotifyPropertyChanged
     /// Gets or sets a value indicating whether to pause before loop the timer continuously.
     /// </summary>
     public bool PauseBeforeLoopTimer
+    {
+        get;
+
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to start the timer in a paused state.
+    /// </summary>
+    public bool StartPaused
     {
         get;
 
@@ -574,6 +594,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         ShowTriggerTime = options.ShowTriggerTime;
         LoopTimer = options.LoopTimer;
         PauseBeforeLoopTimer = options.PauseBeforeLoopTimer;
+        StartPaused = options.StartPaused;
         PopUpWhenExpired = options.PopUpWhenExpired;
         CloseWhenExpired = options.CloseWhenExpired;
         MinimizeWhenExpired = options.MinimizeWhenExpired;
@@ -598,6 +619,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             nameof(ShowTimeElapsed),
             nameof(LoopTimer),
             nameof(PauseBeforeLoopTimer),
+            nameof(StartPaused),
             nameof(PopUpWhenExpired),
             nameof(CloseWhenExpired),
             nameof(MinimizeWhenExpired),
@@ -631,6 +653,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         ShowTriggerTime = info.ShowTriggerTime;
         LoopTimer = info.LoopTimer;
         PauseBeforeLoopTimer = info.PauseBeforeLoopTimer;
+        StartPaused = info.StartPaused;
         PopUpWhenExpired = info.PopUpWhenExpired;
         CloseWhenExpired = info.CloseWhenExpired;
         MinimizeWhenExpired = info.MinimizeWhenExpired;
@@ -655,6 +678,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             nameof(ShowTimeElapsed),
             nameof(LoopTimer),
             nameof(PauseBeforeLoopTimer),
+            nameof(StartPaused),
             nameof(PopUpWhenExpired),
             nameof(CloseWhenExpired),
             nameof(MinimizeWhenExpired),
@@ -684,6 +708,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             ShowTriggerTime = ShowTriggerTime,
             LoopTimer = LoopTimer,
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
+            StartPaused = StartPaused,
             PopUpWhenExpired = PopUpWhenExpired,
             CloseWhenExpired = CloseWhenExpired,
             MinimizeWhenExpired = MinimizeWhenExpired,

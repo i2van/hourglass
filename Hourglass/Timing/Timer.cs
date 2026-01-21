@@ -92,7 +92,7 @@ public sealed class Timer : TimerBase
     /// <summary>
     /// Gets a value indicating whether the timer supports pause.
     /// </summary>
-    public bool SupportsPause => TimerStart is null || TimerStart.Type == TimerStartType.TimeSpan;
+    public bool SupportsPause => !Options.LockInterface && (TimerStart is null || TimerStart.Type == TimerStartType.TimeSpan);
 
     /// <summary>
     /// Gets a value indicating whether the timer supports looping.
@@ -115,9 +115,10 @@ public sealed class Timer : TimerBase
     /// Starts the timer.
     /// </summary>
     /// <param name="newTimerStart">A <see cref="TimerStart"/>.</param>
+    /// <param name="startPaused">A value indicating whether to start the timer in a paused state.</param>
     /// <returns>A value indicating whether the timer was started successfully.</returns>
     /// <exception cref="ObjectDisposedException">If the timer has been disposed.</exception>
-    public bool Start(TimerStart newTimerStart)
+    public bool Start(TimerStart newTimerStart, bool startPaused = false)
     {
         ThrowIfDisposed();
 
@@ -128,6 +129,12 @@ public sealed class Timer : TimerBase
             OnPropertyChanged(nameof(TimerStart));
 
             Start(start, end);
+
+            if (startPaused && SupportsPause)
+            {
+                Pause();
+            }
+
             return true;
         }
 

@@ -478,7 +478,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         // Start a new timer
         Timer newTimer = new(Options);
-        if (!newTimer.Start(timerStart))
+        if (!newTimer.Start(timerStart, Options.StartPaused))
         {
             // The user has started a timer that expired in the past
             if (Options.LockInterface)

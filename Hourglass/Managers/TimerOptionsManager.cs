@@ -81,8 +81,9 @@ public sealed class TimerOptionsManager : Manager
         // Never save a title
         _mostRecentOptions.Title = string.Empty;
 
-        // Never save shutting down when expired or lock interface options
+        // Never save shutting down when expired, lock interface, or start paused options
         _mostRecentOptions.ShutDownWhenExpired = false;
         _mostRecentOptions.LockInterface = false;
+        _mostRecentOptions.StartPaused = false;
     }
 }
