@@ -436,6 +436,55 @@ public static class WindowExtensions
 
             return new(window.Left, window.Top, window.Width, window.Height);
         }
+
+        /// <summary>
+        /// Force window layout update.
+        /// </summary>
+        public void ForceUpdateLayout()
+        {
+            try
+            {
+                window.Dispatcher.Invoke(EmptyAction, DispatcherPriority.Render);
+            }
+            catch(InvalidOperationException)
+            {
+                // Ignore.
+            }
+        }
+
+        /// <summary>
+        /// Open window context menu.
+        /// </summary>
+        public void OpenContextMenu()
+        {
+            try
+            {
+                if (window.ContextMenu is null)
+                {
+                    return;
+                }
+
+                var contextMenuEventArgs = (ContextMenuEventArgs)Activator.CreateInstance(
+                    typeof(ContextMenuEventArgs),
+                    BindingFlags.Instance | BindingFlags.NonPublic,
+                    null,
+                    [window, true],
+                    null);
+
+                contextMenuEventArgs.RoutedEvent = FrameworkElement.ContextMenuOpeningEvent;
+                window.RaiseEvent(contextMenuEventArgs);
+
+                window.ContextMenu.IsOpen = !contextMenuEventArgs.Handled;
+            }
+            catch
+            {
+                // Fallback.
+                System.Windows.Forms.SendKeys.SendWait("+{F10}");
+            }
+        }
+
+        public void MoveToCurrentVirtualDesktop() =>
+            VirtualDesktopManager.Instance.MoveToCurrentVirtualDesktop(window);
     }
 
     /// <param name="rect">A <see cref="Rect"/>.</param>
@@ -578,57 +627,6 @@ public static class WindowExtensions
     }
 
     private static readonly Action EmptyAction = delegate { };
-
-    /// <summary>
-    /// Force window layout update.
-    /// </summary>
-    /// <param name="window">The window.</param>
-    public static void ForceUpdateLayout(this Window window)
-    {
-        try
-        {
-            window.Dispatcher.Invoke(EmptyAction, DispatcherPriority.Render);
-        }
-        catch(InvalidOperationException)
-        {
-            // Ignore.
-        }
-    }
-
-    /// <summary>
-    /// Open window context menu.
-    /// </summary>
-    /// <param name="window">The window.</param>
-    public static void OpenContextMenu(this Window window)
-    {
-        try
-        {
-            if (window.ContextMenu is null)
-            {
-                return;
-            }
-
-            var contextMenuEventArgs = (ContextMenuEventArgs)Activator.CreateInstance(
-                typeof(ContextMenuEventArgs),
-                BindingFlags.Instance | BindingFlags.NonPublic,
-                null,
-                [window, true],
-                null);
-
-            contextMenuEventArgs.RoutedEvent = FrameworkElement.ContextMenuOpeningEvent;
-            window.RaiseEvent(contextMenuEventArgs);
-
-            window.ContextMenu.IsOpen = !contextMenuEventArgs.Handled;
-        }
-        catch
-        {
-            // Fallback.
-            System.Windows.Forms.SendKeys.SendWait("+{F10}");
-        }
-    }
-
-    public static void MoveToCurrentVirtualDesktop(this Window window) =>
-        VirtualDesktopManager.Instance.MoveToCurrentVirtualDesktop(window);
 
     private static TaskDialog? _taskDialogInstance;
 
