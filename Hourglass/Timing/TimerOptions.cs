@@ -132,7 +132,12 @@ public sealed class TimerOptions : INotifyPropertyChanged
     /// </summary>
     public string? Title
     {
-        get;
+        get =>
+            LockInterface
+                ? field?.StartsWith(Properties.Resources.LockInterfaceSymbol) == true
+                    ? field
+                    : $"{Properties.Resources.LockInterfaceSymbol}{(string.IsNullOrWhiteSpace(field) ? string.Empty : field)}"
+                : field;
 
         set
         {
@@ -545,7 +550,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             }
 
             field = value;
-            PropertyChanged.Notify(this);
+            PropertyChanged.Notify(this, nameof(LockInterface), nameof(Title));
         }
     }
 

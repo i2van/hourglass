@@ -1495,4 +1495,8 @@ $</value>
     <value>([0-9]+)\s*:[^:]+:[^:]+$</value>
     <comment>The regular expression that matches digital clock hours</comment>
   </data>
+  <data name="LockInterfaceSymbol" xml:space="preserve">
+    <value>🔒</value>
+    <comment>The lock symbol prefix displayed when the timer interface is locked</comment>
+  </data>
 </root>
