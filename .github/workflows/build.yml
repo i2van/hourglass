@@ -58,7 +58,7 @@ jobs:
       run: dotnet test --configuration "${{env.CONFIG_PORTABLE}}" --no-build --verbosity normal
 
     - name: Create ${{env.NAME}} ${{env.CONFIG_PORTABLE}} test report
-      uses: dorny/test-reporter@v2.3.0
+      uses: dorny/test-reporter@v2.5.0
       if: ${{success() || failure()}}
       with:
         name: tests
