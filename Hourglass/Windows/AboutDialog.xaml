@@ -15,6 +15,7 @@
         WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=CloseButton, Mode=OneWay}">
     <Window.Resources>
+        <FontFamily x:Key="LightFontFamily">Segoe UI Light, Segoe UI</FontFamily>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
         <Style x:Key="HyperlinkStyle" TargetType="{x:Type TextBlock}">
@@ -31,7 +32,7 @@
     <StackPanel>
         <TextBlock Background="Gray"
                    TextOptions.TextFormattingMode="Ideal"
-                   FontFamily="Segoe UI Light, Segoe UI"
+                   FontFamily="{StaticResource LightFontFamily}"
                    FontSize="20"
                    Foreground="#F5F5F5"
                    Padding="15 20 80 20"

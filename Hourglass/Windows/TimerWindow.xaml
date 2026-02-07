@@ -6,7 +6,7 @@
         RenderOptions.ClearTypeHint="Enabled"
         Width="{x:Static local:InterfaceScaler.BaseWindowWidth}"
         Height="{x:Static local:InterfaceScaler.BaseWindowHeight}"
-        SourceInitialized="OnSourceInitialized"
+        SourceInitialized="WindowSourceInitialized"
         Loaded="WindowLoaded"
         SizeChanged="WindowSizeChanged"
         StateChanged="WindowStateChanged"
@@ -76,6 +76,8 @@
         <BitmapImage x:Key="RestartThumbImage" UriSource="/Resources/RestartIcon.ico"/>
         <BitmapImage x:Key="RestartThumbImageGrayed" UriSource="/Resources/RestartIconGrayed.ico"/>
         <!-- ReSharper restore Xaml.RedundantResource -->
+        <FontFamily x:Key="PrimaryFontFamily">Segoe UI</FontFamily>
+        <FontFamily x:Key="TimerFontFamily">Segoe UI Light, Segoe UI</FontFamily>
         <local:RegexMatchConverter x:Key="RegexMatchConverter"/>
         <Style TargetType="{x:Type ProgressBar}">
             <Setter Property="Template">
@@ -189,7 +191,7 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Button}">
-            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontFamily" Value="{StaticResource PrimaryFontFamily}"/>
             <Setter Property="Margin" Value="7 0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -210,7 +212,7 @@
             </Setter>
         </Style>
         <Style x:Key="TimeExpiredLabelStyle" TargetType="{x:Type Label}">
-            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontFamily" Value="{StaticResource PrimaryFontFamily}"/>
             <Setter Property="Margin" Value="7 0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -312,7 +314,7 @@
                                         UndoLimit="100"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
-                                        FontFamily="Segoe UI"
+                                        FontFamily="{StaticResource PrimaryFontFamily}"
                                         KeyDown="TitleTextBoxKeyDown"
                                         MaxFontSize="24"
                                         MinFontSize="0.5"
@@ -327,7 +329,7 @@
                                         UndoLimit="60"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
-                                        FontFamily="Segoe UI Light, Segoe UI"
+                                        FontFamily="{StaticResource TimerFontFamily}"
                                         Margin="0 1 0 4"
                                         MaxFontSize="36"
                                         MinFontSize="0.5"

@@ -9,9 +9,12 @@
         WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=CloseButton, Mode=OneWay}">
     <Window.Resources>
+        <FontFamily x:Key="LightFontFamily">Segoe UI Light, Segoe UI</FontFamily>
+        <FontFamily x:Key="PrimaryFontFamily">Segoe UI</FontFamily>
+        <FontFamily x:Key="MonospaceFontFamily">Consolas, Courier New, Courier</FontFamily>
         <Style x:Key="DetailsButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="#0066CC"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontFamily" Value="{StaticResource PrimaryFontFamily}"/>
             <Setter Property="Margin" Value="15 0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -38,7 +41,7 @@
             <TextBlock x:Name="TitleTextBlock"
                        TextOptions.TextFormattingMode="Ideal"
                        Background="#C75050"
-                       FontFamily="Segoe UI Light, Segoe UI"
+                       FontFamily="{StaticResource LightFontFamily}"
                        FontSize="20"
                        Foreground="#F5F5F5"
                        Padding="15 20 80 20"/>
@@ -59,7 +62,7 @@
                          BorderThickness="0"
                          Margin="0"
                          Padding="13"
-                         FontFamily="Consolas, Courier New, Courier"
+                         FontFamily="{StaticResource MonospaceFontFamily}"
                          FontSize="12"
                          IsReadOnly="True"
                          IsReadOnlyCaretVisible="True"
