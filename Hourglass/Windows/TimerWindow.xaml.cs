@@ -2243,7 +2243,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         this.BringNextToFrontAndActivate();
     }
 
-    private void OnSourceInitialized(object sender, EventArgs e)
+    private void WindowSourceInitialized(object sender, EventArgs e)
     {
         this.AddWindowProcHook();
 
