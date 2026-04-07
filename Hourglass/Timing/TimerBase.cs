@@ -136,13 +136,13 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// Gets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
     /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
     /// </summary>
-    public DateTime? StartTime { get; private set; }
+    public DateTime? StartTime { get; protected set; }
 
     /// <summary>
     /// Gets the <see cref="DateTime"/> that this timer will expire or has expired if the <see cref="State"/> is
     /// <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
     /// </summary>
-    public DateTime? EndTime { get; private set; }
+    public DateTime? EndTime { get; protected set; }
 
     /// <summary>
     /// Gets a <see cref="TimeSpan"/> representing the time elapsed since this timer started if the <see
@@ -171,7 +171,7 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
     /// <c>null</c> otherwise.
     /// </summary>
-    public TimeSpan? TotalTime { get; private set; }
+    public TimeSpan? TotalTime { get; protected set; }
 
     /// <summary>
     /// Gets or sets the period of time between timer ticks.
@@ -270,7 +270,7 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// <remarks>
     /// If the <see cref="State"/> is not <see cref="TimerState.Paused"/>, this method does nothing.
     /// </remarks>
-    public void Resume()
+    public virtual void Resume()
     {
         ThrowIfDisposed();
 

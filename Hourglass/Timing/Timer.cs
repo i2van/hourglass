@@ -92,17 +92,17 @@ public sealed class Timer : TimerBase
     /// <summary>
     /// Gets a value indicating whether the timer supports pause.
     /// </summary>
-    public bool SupportsPause => !Options.LockInterface && (TimerStart is null || TimerStart.Type == TimerStartType.TimeSpan);
+    public bool SupportsPause => !Options.LockInterface && TimerStart is not null;
 
     /// <summary>
     /// Gets a value indicating whether the timer supports looping.
     /// </summary>
-    public bool SupportsLooping => TimerStart is null || TimerStart.Type == TimerStartType.TimeSpan;
+    public bool SupportsLooping => true;
 
     /// <summary>
     /// Gets a value indicating whether the timer supports restarting.
     /// </summary>
-    public bool SupportsRestart => TimerStart?.Type == TimerStartType.TimeSpan;
+    public bool SupportsRestart => TimerStart is not null;
 
     /// <summary>
     /// Returns a <see cref="Timer"/> for a <see cref="TimerInfo"/>.
@@ -141,6 +141,38 @@ public sealed class Timer : TimerBase
         return false;
     }
 
+    /// <inheritdoc />
+    public override void Resume()
+    {
+        ThrowIfDisposed();
+
+        if (State != TimerState.Paused ||
+            TimerStart?.Type != TimerStartType.DateTime ||
+            !TimerStart.TryGetEndTime(DateTime.Now, out var fixedEnd) ||
+            fixedEnd <= DateTime.Now)
+        {
+            base.Resume();
+            return;
+        }
+
+        base.Resume();
+
+        // Correct EndTime back to the fixed target derived from OriginalInput and adjust StartTime / TotalTime accordingly.
+        DateTime now = DateTime.Now;
+        EndTime = fixedEnd;
+        TotalTime = fixedEnd - (StartTime ?? now);
+        StartTime = fixedEnd - TotalTime;
+
+        ResetLastEndTime();
+
+        OnPropertyChanged(
+            nameof(EndTime),
+            nameof(TotalTime),
+            nameof(StartTime));
+
+        Update();
+    }
+
     /// <summary>
     /// Restarts the timer.
     /// </summary>
@@ -150,7 +182,7 @@ public sealed class Timer : TimerBase
         ThrowIfDisposed();
 
         TimerStart? actualTimerStart = TimerStart;
-        if (actualTimerStart?.Type == TimerStartType.TimeSpan)
+        if (actualTimerStart is not null)
         {
             Stop();
             Start(actualTimerStart);
@@ -410,11 +442,13 @@ public sealed class Timer : TimerBase
     private static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
 
     private EndTimeFormatState _endTimeFormatState;
+    private DateTime? _endTimeCached;
     private string _endTimeFormatted = string.Empty;
 
     private void ResetLastEndTime()
     {
         _endTimeFormatState = EndTimeFormatState.Undefined;
+        _endTimeCached = null;
         _endTimeFormatted = string.Empty;
     }
 
@@ -446,12 +480,13 @@ public sealed class Timer : TimerBase
                 EndTimeFormatState.Other
         };
 
-        if (_endTimeFormatState == endTimeFormatState)
+        if (_endTimeFormatState == endTimeFormatState && _endTimeCached == endTime)
         {
             return _endTimeFormatted;
         }
 
         _endTimeFormatState = endTimeFormatState;
+        _endTimeCached = endTime;
 
         return _endTimeFormatted = endTimeFormatState switch
         {
