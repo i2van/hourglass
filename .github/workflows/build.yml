@@ -32,7 +32,7 @@ jobs:
     # Set up msbuild
 
     - name: Setup msbuild
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
 
     # Check out
 
