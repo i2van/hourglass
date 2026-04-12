@@ -165,6 +165,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - The timer tooltip is shown if the timer window size is too small.
 - The progress bar changes direction to vertical when the height is more than the width and vice versa.
 - When the timer window is minimized or closed the next visible non-minimized timer window is activated.
+- The until-date timer is controlled the same way as the countdown timer.
 - The time left is now used for editing instead of the original launch time.
 - The timer window pops up on the current virtual desktop.
 - The mouse double-click on progress border toggles full screen.

@@ -1187,7 +1187,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                     TitleTextBox.TextChanged += TitleTextBoxTextChanged;
 
                     TimerTextBox.Text =
-                        (Timer.Options.ShowTimeElapsed
+                        (Timer.State == TimerState.Paused && Timer.TimerStart?.Type == TimerStartType.DateTime
+                            ? Timer.TimerStart.OriginalInput
+                            : null)
+                        ?? (Timer.Options.ShowTimeElapsed
                             ? Timer.TimeElapsedAsString
                             : Timer.TimeLeftAsString)
                         ?? string.Empty;
@@ -2243,7 +2246,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         this.BringNextToFrontAndActivate();
     }
 
-    private void OnSourceInitialized(object sender, EventArgs e)
+    private void WindowSourceInitialized(object sender, EventArgs e)
     {
         this.AddWindowProcHook();
 

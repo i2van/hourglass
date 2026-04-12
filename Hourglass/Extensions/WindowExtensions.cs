@@ -444,7 +444,7 @@ public static class WindowExtensions
         {
             try
             {
-                window.Dispatcher.Invoke(EmptyAction, DispatcherPriority.Render);
+                window.Dispatcher.Invoke(EmptyAction, DispatcherPriority.Loaded);
             }
             catch(InvalidOperationException)
             {

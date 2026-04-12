@@ -14,6 +14,8 @@
         WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=CloseButton, Mode=OneWay}">
     <Window.Resources>
+        <FontFamily x:Key="MonospaceFontFamily">Consolas, Courier New, Courier</FontFamily>
+        <FontFamily x:Key="LightFontFamily">Segoe UI Light, Segoe UI</FontFamily>
         <Style x:Key="HyperlinkStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" Value="15 0 0 0"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -30,7 +32,7 @@
                    Focusable="False"
                    TextOptions.TextFormattingMode="Ideal"
                    Background="Gray"
-                   FontFamily="Segoe UI Light, Segoe UI"
+                   FontFamily="{StaticResource LightFontFamily}"
                    FontSize="20"
                    Foreground="#F5F5F5"
                    Padding="15 20 80 20"/>
@@ -38,7 +40,7 @@
                  BorderThickness="0"
                  Margin="0"
                  Padding="13 0 13 0"
-                 FontFamily="Consolas, Courier New, Courier"
+                 FontFamily="{StaticResource MonospaceFontFamily}"
                  IsReadOnly="True"
                  IsReadOnlyCaretVisible="True"
                  HorizontalScrollBarVisibility="Auto"
