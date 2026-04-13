@@ -1007,7 +1007,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 break;
 
             case TimerWindowMode.Status:
-                if (Options.LoopTimer && Timer.SupportsLooping)
+                if (Options.LoopTimer)
                 {
                     // Flash three times, or flash indefinitely if the sound is looped
                     if (_flashExpirationCount < 3 || Options.LoopSound)

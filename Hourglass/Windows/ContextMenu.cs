@@ -384,26 +384,16 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         // Loop timer
         // Pause before looping
-        if (_timerWindow.Timer.SupportsLooping)
-        {
-            _loopTimerMenuItem.IsEnabled = true;
-            _loopTimerMenuItem.IsChecked = _timerWindow.Options.LoopTimer;
-            _pauseBeforeLoopTimerMenuItem.IsEnabled = _timerWindow.Options.LoopTimer;
-            _pauseBeforeLoopTimerMenuItem.IsChecked = _pauseBeforeLoopTimerMenuItem.IsEnabled && _timerWindow.Options.PauseBeforeLoopTimer;
-        }
-        else
-        {
-            _loopTimerMenuItem.IsEnabled = false;
-            _loopTimerMenuItem.IsChecked = false;
-            _pauseBeforeLoopTimerMenuItem.IsEnabled = false;
-            _pauseBeforeLoopTimerMenuItem.IsChecked = false;
-        }
+        _loopTimerMenuItem.IsEnabled = true;
+        _loopTimerMenuItem.IsChecked = _timerWindow.Options.LoopTimer;
+        _pauseBeforeLoopTimerMenuItem.IsEnabled = _timerWindow.Options.LoopTimer;
+        _pauseBeforeLoopTimerMenuItem.IsChecked = _pauseBeforeLoopTimerMenuItem.IsEnabled && _timerWindow.Options.PauseBeforeLoopTimer;
 
         // Pop up when expired
         _popUpWhenExpiredMenuItem.IsChecked = _timerWindow.Options.PopUpWhenExpired;
 
         // Close when expired
-        if ((!_timerWindow.Options.LoopTimer || !_timerWindow.Timer.SupportsLooping) && !_timerWindow.Options.LoopSound)
+        if (_timerWindow.Options is { LoopTimer: false, LoopSound: false })
         {
             _closeWhenExpiredMenuItem.IsChecked = _timerWindow.Options.CloseWhenExpired;
             _closeWhenExpiredMenuItem.IsEnabled = true;
@@ -466,7 +456,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _showTriggerTimeMenuItem.IsChecked = _timerWindow.Options.ShowTriggerTime;
 
         // Shut down when expired
-        if ((!_timerWindow.Options.LoopTimer || !_timerWindow.Timer.SupportsLooping) && !_timerWindow.Options.LoopSound)
+        if (_timerWindow.Options is { LoopTimer: false, LoopSound: false })
         {
             _shutDownWhenExpiredMenuItem.IsChecked = _timerWindow.Options.ShutDownWhenExpired;
             _shutDownWhenExpiredMenuItem.IsEnabled = true;

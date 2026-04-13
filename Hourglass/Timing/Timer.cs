@@ -95,11 +95,6 @@ public sealed class Timer : TimerBase
     public bool SupportsPause => !Options.LockInterface && TimerStart is not null;
 
     /// <summary>
-    /// Gets a value indicating whether the timer supports looping.
-    /// </summary>
-    public bool SupportsLooping => true;
-
-    /// <summary>
     /// Gets a value indicating whether the timer supports restarting.
     /// </summary>
     public bool SupportsRestart => TimerStart is not null;
@@ -197,7 +192,7 @@ public sealed class Timer : TimerBase
             "Timer{0}{1}{2}FormatString",
             State,
             string.IsNullOrWhiteSpace(Options.Title) ? string.Empty : Resources.WithTitleText,
-            Options.LoopTimer && SupportsLooping ? Resources.LoopedText : string.Empty);
+            Options.LoopTimer ? Resources.LoopedText : string.Empty);
 
         return string.Format(
             Resources.ResourceManager.GetEffectiveProvider(),
@@ -270,7 +265,7 @@ public sealed class Timer : TimerBase
         UpdateHourglassTimer();
         base.OnExpired();
 
-        if (Options.LoopTimer && SupportsLooping && State != TimerState.Stopped)
+        if (Options.LoopTimer && State != TimerState.Stopped)
         {
             Loop();
         }
