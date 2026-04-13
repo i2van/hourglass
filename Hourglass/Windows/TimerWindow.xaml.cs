@@ -705,6 +705,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             {
                 TimerTextBox.Text =
                     GetOriginalUserInput() ??
+                    (Timer.TimerStart?.Type == TimerStartType.DateTime
+                        ? Timer.TimerStart.OriginalInput
+                        : null) ??
                     TimerTextBox.Text;
             }
 
@@ -1187,7 +1190,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                     TitleTextBox.TextChanged += TitleTextBoxTextChanged;
 
                     TimerTextBox.Text =
-                        (Timer.State == TimerState.Paused && Timer.TimerStart?.Type == TimerStartType.DateTime
+                        (Timer is { State: TimerState.Paused, TimerStart.Type: TimerStartType.DateTime }
                             ? Timer.TimerStart.OriginalInput
                             : null)
                         ?? (Timer.Options.ShowTimeElapsed
