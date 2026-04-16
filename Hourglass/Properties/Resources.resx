@@ -784,6 +784,10 @@ $</value>
     <value>_Clear recent inputs</value>
     <comment>The text for the clear recent inputs menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuRecentInputWithTitleMenuItemFormat" xml:space="preserve">
+    <value>{0} · {1}</value>
+    <comment>The format string for a recent input menu item that has a title, where {0} is the timer input and {1} is the title</comment>
+  </data>
   <data name="ContextMenuClearSavedTimersMenuItem" xml:space="preserve">
     <value>_Clear saved timers</value>
     <comment>The text for the clear saved timers menu item, where the character following the optional underscore (_) is the access key</comment>

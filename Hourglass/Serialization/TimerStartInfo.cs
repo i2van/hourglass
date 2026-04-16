@@ -20,6 +20,11 @@ public sealed class TimerStartInfo
     public TimerStartToken TimerStartToken { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets the user-specified title saved with this input.
+    /// </summary>
+    public string? Title { get; set; }
+
+    /// <summary>
     /// Returns a <see cref="TimerStartInfo"/> for a <see cref="TimerStart"/>.
     /// </summary>
     /// <param name="timerStart">A <see cref="TimerStart"/>.</param>

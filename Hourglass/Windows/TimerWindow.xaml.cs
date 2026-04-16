@@ -508,6 +508,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         if (remember)
         {
+            timerStart.Title = Options.Title;
             TimerStartManager.Instance.Add(timerStart);
         }
 

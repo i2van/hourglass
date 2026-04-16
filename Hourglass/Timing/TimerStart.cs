@@ -39,6 +39,11 @@ public sealed class TimerStart
     private readonly TimerStartToken _timerStartToken;
 
     /// <summary>
+    /// Gets or sets the user-specified title saved with this input.
+    /// </summary>
+    public string? Title { get; set; }
+
+    /// <summary>
     /// The original timer input.
     /// </summary>
     public string OriginalInput =>
@@ -67,6 +72,7 @@ public sealed class TimerStart
         }
 
         _timerStartToken = timerStartInfo.TimerStartToken;
+        Title = timerStartInfo.Title;
     }
 
     /// <summary>
@@ -145,7 +151,8 @@ public sealed class TimerStart
     {
         return new()
         {
-            TimerStartToken = _timerStartToken
+            TimerStartToken = _timerStartToken,
+            Title = Title
         };
     }
 }

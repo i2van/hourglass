@@ -1058,9 +1058,13 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         foreach (var timerStart in timerStarts)
         {
+            var header = string.IsNullOrWhiteSpace(timerStart.Title)
+                ? timerStart.OriginalInput
+                : string.Format(Properties.Resources.ContextMenuRecentInputWithTitleMenuItemFormat, timerStart.OriginalInput, timerStart.Title);
+
             MenuItem timerMenuItem = new()
             {
-                Header = timerStart.OriginalInput.MakeFirstCharHotkey(),
+                Header = header.MakeFirstCharHotkey(),
                 Tag = timerStart
             };
             timerMenuItem.Click += RecentInputMenuItemClick;
@@ -1103,6 +1107,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             window.Options.Set(_timerWindow.Options);
             window.Options.Title = null;
             window.RestoreFromWindow(_timerWindow);
+        }
+
+        if (!string.IsNullOrWhiteSpace(timerStart.Title))
+        {
+            window.Options.Title = timerStart.Title;
         }
 
         window.Show(timerStart);

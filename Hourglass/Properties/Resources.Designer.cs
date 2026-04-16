@@ -548,6 +548,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} · {1}.
+        /// </summary>
+        public static string ContextMenuRecentInputWithTitleMenuItemFormat {
+            get {
+                return ResourceManager.GetString("ContextMenuRecentInputWithTitleMenuItemFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Reset position and size.
         /// </summary>
         public static string ContextMenuResetPositionAndSizeMenuItem {
