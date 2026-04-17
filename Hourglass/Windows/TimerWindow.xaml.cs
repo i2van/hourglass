@@ -522,6 +522,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="existingTimer">A timer.</param>
     public void Show(Timer existingTimer)
     {
+        // Ensure the timer has up-to-date values before binding to avoid stale progress bar on restore
+        existingTimer.Update();
+
         // Show the status of the existing timer
         Timer = existingTimer;
         SwitchToStatusMode();

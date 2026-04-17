@@ -1235,29 +1235,24 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
             outerBorder.Child = progress;
         }
-        else if (!timer.Options.ReverseProgressBar && timer.TimeLeftAsPercentage is not null)
+        else
         {
-            Border progress = new()
-            {
-                Background = timer.Options.Theme?.ProgressBarBrush,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Width = MathExtensions.LimitToRange(timer.TimeLeftAsPercentage.Value / 100.0 * 16.0, 0.0, 16.0),
-                Height = 6
-            };
+            var percentage = timer.Options.ReverseProgressBar
+                ? timer.TimeElapsedAsPercentage
+                : timer.TimeLeftAsPercentage;
 
-            outerBorder.Child = progress;
-        }
-        else if (timer.Options.ReverseProgressBar && timer.TimeElapsedAsPercentage is not null)
-        {
-            Border progress = new()
+            if (percentage is not null)
             {
-                Background = timer.Options.Theme?.ProgressBarBrush,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Width = MathExtensions.LimitToRange(timer.TimeElapsedAsPercentage.Value / 100.0 * 16.0, 0.0, 16.0),
-                Height = 6
-            };
+                Border progress = new()
+                {
+                    Background = timer.Options.Theme?.ProgressBarBrush,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Width = MathExtensions.LimitToRange(percentage.Value / 100.0 * 16.0, 0.0, 16.0),
+                    Height = 6
+                };
 
-            outerBorder.Child = progress;
+                outerBorder.Child = progress;
+            }
         }
 
         return outerBorder;
