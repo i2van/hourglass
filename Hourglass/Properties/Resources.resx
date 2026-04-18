@@ -745,7 +745,7 @@ $</value>
     <comment>The string for the quiet beep sound</comment>
   </data>
   <data name="ErrorManagerErrorHasBeenWritten" xml:space="preserve">
-    <value>The error has been written to "{0}".</value>
+    <value>The error has been written to the '{0}'.</value>
     <comment>The message displayed to the user when an error dump is written to a file, where {0} is the path to the file (e.g., "The error has been written to '{0}'." is "The error has been written to 'C:\error.txt'.")</comment>
   </data>
   <data name="ErrorManagerFailedToClean" xml:space="preserve">
@@ -844,6 +844,14 @@ $</value>
     <value>_Sound</value>
     <comment>The text for the sound menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ErrorDialogCopyToClipboardButtonContent" xml:space="preserve">
+    <value>Copy to clipboard</value>
+    <comment>The text for the copy to clipboard link in the error dialog</comment>
+  </data>
+  <data name="ErrorDialogReportBugButtonContent" xml:space="preserve">
+    <value>Report a bug</value>
+    <comment>The text for the report a bug link in the error dialog</comment>
+  </data>
   <data name="ErrorDialogCloseButtonContent" xml:space="preserve">
     <value>_Close</value>
     <comment>The text for the close button in the error dialog, where the character following the optional underscore (_) is the access key</comment>
@@ -853,8 +861,8 @@ $</value>
     <comment>The default message displayed in the error dialog</comment>
   </data>
   <data name="ErrorDialogShowDetailsButtonContent" xml:space="preserve">
-    <value>_Show details</value>
-    <comment>The text for the show details button in the error dialog, where the character following the optional underscore (_) is the access key</comment>
+    <value>_Show details ▼</value>
+    <comment>The text for the show details button in the error dialog, where the character following the optional underscore (_) is the access key, and ▼ indicates the dialog will expand</comment>
   </data>
   <data name="ErrorDialogTitle" xml:space="preserve">
     <value>Hourglass</value>

@@ -1119,6 +1119,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy to clipboard.
+        /// </summary>
+        public static string ErrorDialogCopyToClipboardButtonContent {
+            get {
+                return ResourceManager.GetString("ErrorDialogCopyToClipboardButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An unexpected error has occurred.
         /// </summary>
         public static string ErrorDialogDefaultMessageText {
@@ -1128,7 +1137,16 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Show details.
+        ///   Looks up a localized string similar to Report a bug.
+        /// </summary>
+        public static string ErrorDialogReportBugButtonContent {
+            get {
+                return ResourceManager.GetString("ErrorDialogReportBugButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Show details ▼.
         /// </summary>
         public static string ErrorDialogShowDetailsButtonContent {
             get {
@@ -1146,7 +1164,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The error has been written to &quot;{0}&quot;..
+        ///   Looks up a localized string similar to The error has been written to the &apos;{0}&apos;..
         /// </summary>
         public static string ErrorManagerErrorHasBeenWritten {
             get {
