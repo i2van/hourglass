@@ -1,4 +1,4 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Bundle
     Name="Hourglass"
     Version="1.15.53.0"
@@ -8,9 +8,12 @@
 
     <!-- Specify a "sensible default" install location -->
     <Variable Name="InstallFolder" Type="formatted" Value="[ProgramFilesFolder]Hourglass" />
+    <Variable Name="HourglassInstalled" Type="numeric" Value="0" />
+
+    <util:RegistrySearch Id="HourglassInstallSearch" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Hourglass.exe" Variable="HourglassInstalled" Result="exists" />
 
     <BootstrapperApplication>
-      <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" Theme="rtfLicense" />
+      <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" Theme="rtfLicense" ThemeFile="Theme.xml" LocalizationFile="Theme.wxl" />
     </BootstrapperApplication>
     <Chain>
       <PackageGroupRef Id="NetFx48Web" />

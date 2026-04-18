@@ -26,6 +26,8 @@
   <ItemGroup>
     <Content Include="Logo.png" />
     <Content Include="MIT.rtf" />
+    <Content Include="Theme.xml" />
+    <Content Include="Theme.wxl" />
   </ItemGroup>
   <Target Name="SignCabs">
     <Exec Command="&quot;$(SignToolPath)&quot; sign /sha1 B77A97E1103C36360CDC8D49CF0D3D5BBBE6827E /t http://timestamp.digicert.com &quot;%(SignCabs.FullPath)&quot;" />
