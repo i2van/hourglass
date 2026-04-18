@@ -758,7 +758,14 @@ public class NotificationAreaIcon : IDisposable
                 timerWindow.Timer.ShouldBeSaved = shouldSaveTimer;
             }
 
-            window.Close();
+            try
+            {
+                window.Close();
+            }
+            catch (InvalidOperationException)
+            {
+                // Window may already be closing.
+            }
         }
 
         static bool IsTimerRunningFor(TimerWindow window) =>
