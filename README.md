@@ -108,6 +108,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - New **Accent** theme which uses [Windows accent color](https://support.microsoft.com/en-us/windows/personalize-your-colors-in-windows-3290d30f-d064-5cfe-6470-2fe9c6533e37). This theme is a default one.
 - Enables editing of the [timer start time](https://github.com/i2van/hourglass/blob/main/FAQ.md#how-to-enable-editing-of-the-timer-start-time-instead-of-time-left) instead of time left.
 - The [Jump List](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#jump-lists) support (disabled by default, see [FAQ](https://github.com/i2van/hourglass/blob/main/FAQ.md#how-to-enable-the-hourglass-jump-list)).
+- Settings write errors can be [ignored](https://github.com/i2van/hourglass/blob/main/FAQ.md#how-to-ignore-settings-write-errors) when the settings file is read-only.
 - The [thumbnail toolbar](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#thumbnail-toolbars) support (enabled by default, see [FAQ](https://github.com/i2van/hourglass/blob/main/FAQ.md#how-to-disable-the-hourglass-thumbnail-toolbar)).
 
 ### Notification Area

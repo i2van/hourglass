@@ -293,5 +293,17 @@ namespace Hourglass.Properties {
                 this["ShutDownWhenExpiredSeconds"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IgnoreSettingsWriteErrors {
+            get {
+                return ((bool)(this["IgnoreSettingsWriteErrors"]));
+            }
+            set {
+                this["IgnoreSettingsWriteErrors"] = value;
+            }
+        }
     }
 }

@@ -6,6 +6,9 @@
 
 namespace Hourglass.Managers;
 
+using System;
+
+using Extensions;
 using Properties;
 
 // ReSharper disable ExceptionNotDocumented
@@ -34,13 +37,25 @@ public sealed class SettingsManager : Manager
         {
             Settings.Default.Upgrade();
             Settings.Default.UpgradeRequired = false;
-            Settings.Default.Save();
+            TrySave();
         }
     }
 
     /// <inheritdoc />
     public override void Persist()
     {
-        Settings.Default.Save();
+        TrySave();
+    }
+
+    private static void TrySave()
+    {
+        try
+        {
+            Settings.Default.Save();
+        }
+        catch (UnauthorizedAccessException) when (Settings.Default.IgnoreSettingsWriteErrors)
+        {
+            // Ignore errors when the settings file is read-only.
+        }
     }
 }

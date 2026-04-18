@@ -46,6 +46,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to disable the Hourglass thumbnail toolbar?](#how-to-disable-the-hourglass-thumbnail-toolbar)
 - [How to always open the Hourglass timer windows centered?](#how-to-always-open-the-hourglass-timer-windows-centered)
 - [How to configure delay timeouts for automatic close, minimize or shut down when expired?](#how-to-configure-delay-timeouts-for-automatic-close-minimize-or-shut-down-when-expired)
+- [How to ignore settings write errors?](#how-to-ignore-settings-write-errors)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
 - [What should I do if there is no notification sound?](#what-should-i-do-if-there-is-no-notification-sound)
 
@@ -502,12 +503,24 @@ By default, when **Close when expired**, **Minimize when expired** or **Shut dow
 > - The maximum allowed timeout value is `3600` seconds (`1 hour`).
 > - These settings only apply when the corresponding **Close when expired**, **Minimize when expired** or **Shut down when expired** options are enabled in the timer window context menu or via command-line.
 
+## How to ignore settings write errors?
+
+If the **Hourglass** [settings](#how-to-find-the-hourglass-settings) file is read-only or the **Hourglass** has no write access to, you can configure it to silently ignore settings write errors instead of reporting them.
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set `IgnoreSettingsWriteErrors` to `True`.
+4. Launch the **Hourglass**.
+
+> [!IMPORTANT]
+> When `IgnoreSettingsWriteErrors` is `True`, any changes made to settings (themes, options, etc.) will not be persisted between sessions.
+
 ## What should I do if the Hourglass does not start?
 
 > [!IMPORTANT]
 > The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%USERPROFILE%\AppData\Local\Temp` folder). File mask is the `Hourglass-Crash*.txt`.
 
-If the **Hourglass** does not start or fails silently, delete the **Hourglass** [settings](#how-to-find-the-hourglass-settings).
+If the **Hourglass** does not start or fails silently
 
 ## What should I do if there is no notification sound?
 
