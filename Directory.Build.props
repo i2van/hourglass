@@ -1,5 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
     <Version>1.15.53.0</Version>
+    <CurrentYear>$([System.DateTime]::Now.Year)</CurrentYear>
   </PropertyGroup>
 </Project>
