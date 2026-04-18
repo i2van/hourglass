@@ -141,7 +141,7 @@ public sealed partial class ErrorDialog
         ];
 
         string body = parts.Length > 0
-            ? $"```text{Environment.NewLine}{string.Join(Environment.NewLine + Environment.NewLine, parts)}{Environment.NewLine}```"
+            ? $"{Environment.NewLine}{Environment.NewLine}```text{Environment.NewLine}{string.Join(Environment.NewLine + Environment.NewLine, parts)}{Environment.NewLine}```"
             : string.Empty;
 
         string url = $"{Urls.NewIssue}?title={Uri.EscapeDataString(title)}&body={Uri.EscapeDataString(body)}";
