@@ -8,7 +8,6 @@ namespace Hourglass.Managers;
 
 using System;
 
-using Extensions;
 using Properties;
 
 // ReSharper disable ExceptionNotDocumented
