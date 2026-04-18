@@ -10,7 +10,7 @@
 
     <Window Width="485" Height="300" HexStyle="100a0000" FontId="0" Caption="#(loc.Caption)">
         <ImageControl X="11" Y="11" Width="64" Height="64" ImageFile="Logo.png" Visible="yes"/>
-        <Label X="80" Y="11" Width="-11" Height="64" FontId="1" Visible="yes" DisablePrefix="yes">#(loc.Title)</Label>
+        <Label X="80" Y="25" Width="-11" Height="36" FontId="1" Visible="yes" DisablePrefix="yes">#(loc.Title)</Label>
 
         <Page Name="Help">
             <Label X="11" Y="80" Width="-11" Height="30" FontId="2" DisablePrefix="yes">#(loc.HelpHeader)</Label>
