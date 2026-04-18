@@ -329,10 +329,10 @@ public sealed partial class ThemeManagerWindow
             {
                 case MessageBoxResult.Yes:
                     SaveChanges();
-                    return true;
+                    break;
 
                 case MessageBoxResult.No:
-                    return true;
+                    break;
 
                 case MessageBoxResult.Cancel:
                     return false;
