@@ -33,6 +33,7 @@ function Main
     $appManifestFile = Join-Path $ThisFolder Hourglass\Properties\app.manifest
     $bundleWxsFile   = Join-Path $ThisFolder Hourglass.Bundle\Bundle.wxs
     $productWxsFile  = Join-Path $ThisFolder Hourglass.Setup\Product.wxs
+    $mitRtfFile      = Join-Path $ThisFolder Hourglass.Bundle\MIT.rtf
 
     Write-Output "Reading '$latestFile'..."
 
@@ -52,6 +53,7 @@ function Main
     Update-Content $buildPropsFile  '(?<=\<Version\>)[^<]+',$latest.Version
     Update-Content $bundleWxsFile   '(?<=\s+Version=")[^"]+',$latest.Version
     Update-Content $productWxsFile  '(?<=\s+Version=")[^"]+',$latest.Version
+    Update-Content $mitRtfFile      '(?<=, \d{4}-)\d{4}',((Get-Date).Year)
 }
 
 function Update-Content($file, $replace)
