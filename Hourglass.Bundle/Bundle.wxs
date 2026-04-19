@@ -16,6 +16,8 @@
     <util:RegistrySearch Id="HourglassExePathSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="LaunchTarget" Result="value" />
     <util:RegistrySearch Id="HourglassInstallFolderSearch" Root="HKLM" Key="$(var.AppPathsKey)" Value="Path" Variable="InstallFolder" Result="value" />
 
+    <bal:Condition Condition="VersionNT >= v10.0" Message="[WixBundleName] requires Windows 10 or later." />
+
     <BootstrapperApplication>
       <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" Theme="rtfLicense" ThemeFile="Theme.xml" LocalizationFile="Theme.wxl" LaunchTarget="[InstallFolder]\Hourglass.exe" />
     </BootstrapperApplication>
