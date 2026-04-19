@@ -21,7 +21,7 @@
                             <Shortcut Id="ApplicationShortcut" Directory="ApplicationShortcutFolder" Name="Hourglass" Description="A simple countdown timer" Advertise="yes" Icon="AppIcon.exe" WorkingDirectory="APPLICATIONFOLDER"/>
                         </File>
                         <RegistryKey Root="HKMU" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\[ApplicationExe]">
-                            <RegistryValue Type="string" Value="[APPLICATIONFOLDER]\[ApplicationExe]"/>
+                            <RegistryValue Type="string" Value="[APPLICATIONFOLDER][ApplicationExe]"/>
                             <RegistryValue Type="string" Name="Path" Value="[APPLICATIONFOLDER]"/>
                         </RegistryKey>
                     </Component>
