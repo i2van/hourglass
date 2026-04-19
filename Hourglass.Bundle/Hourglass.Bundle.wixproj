@@ -3,7 +3,7 @@
     <AcceptEula>wix7</AcceptEula>
     <OutputName>HourglassInstaller</OutputName>
     <OutputType>Bundle</OutputType>
-    <DefineConstants>CurrentYear=$(CurrentYear)</DefineConstants>
+    <DefineConstants>CurrentYear=$(CurrentYear);DisplayVersion=$(DisplayVersion)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <Win10SDKInstallationFolder>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@InstallationFolder)</Win10SDKInstallationFolder>

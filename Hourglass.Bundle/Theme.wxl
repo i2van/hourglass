@@ -3,10 +3,10 @@
 
 <WixLocalization Culture="en-us" Language="1033" xmlns="http://wixtoolset.org/schemas/v4/wxl">
   <String Id="Caption" Value="[WixBundleName] Setup" />
-  <String Id="Title" Value="[WixBundleName]" />
+  <String Id="Title" Value="[WixBundleName] [DisplayVersion]" />
   <String Id="CheckingForUpdatesLabel" Value="Checking for updates" />
   <String Id="UpdateButton" Value="&amp;Update to version [WixStdBAUpdateAvailable]" />
-  <String Id="InstallVersion" Value="Version [WixBundleVersion]" />
+  <String Id="InstallVersion" Value="Version [DisplayVersion]" />
   <String Id="ConfirmCancelMessage" Value="Are you sure you want to cancel?" />
   <String Id="ExecuteUpgradeRelatedBundleMessage" Value="Previous version" />
   <String Id="HelpHeader" Value="Setup Help" />
