@@ -1,19 +1,26 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+  <?define AppPathsKey = "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Hourglass.exe" ?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
-  <Bundle Name="Hourglass"
-          Version="1.15.53.0"
-          Manufacturer="2021 Chris Dziemborowicz, 2024-2025 Ivan Ivon"
-          UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b"
-          IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
+  <Bundle
+    Name="Hourglass"
+    Version="1.15.53.0"
+    Manufacturer="2021 Chris Dziemborowicz, 2024-$(var.CurrentYear) Ivan Ivon"
+    UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b"
+    IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">
 
     <!-- Specify a "sensible default" install location -->
-    <Variable Name="InstallFolder" Type="string" Value="[ProgramFilesFolder]Hourglass" />
+    <Variable Name="InstallFolder" Type="formatted" Value="[ProgramFilesFolder]Hourglass" />
+    <Variable Name="HourglassInstalled" Type="numeric" Value="0" />
 
-    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
-      <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" />
-    </BootstrapperApplicationRef>
+    <util:RegistrySearch Id="HourglassInstallSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="HourglassInstalled" Result="exists" />
+    <util:RegistrySearch Id="HourglassExePathSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="LaunchTarget" Result="value" />
+    <util:RegistrySearch Id="HourglassInstallFolderSearch" Root="HKLM" Key="$(var.AppPathsKey)" Value="Path" Variable="InstallFolder" Result="value" />
+
+    <bal:Condition Condition="VersionNT >= v10.0" Message="[WixBundleName] requires Windows 10 or later." />
+
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" Theme="rtfLicense" ThemeFile="Theme.xml" LocalizationFile="Theme.wxl" LaunchTarget="[InstallFolder]\Hourglass.exe" />
+    </BootstrapperApplication>
     <Chain>
       <PackageGroupRef Id="NetFx48Web" />
       <MsiPackage Id="HourglassSetup" SourceFile="$(var.Hourglass.Setup.TargetPath)">

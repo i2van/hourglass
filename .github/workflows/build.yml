@@ -71,7 +71,7 @@ jobs:
       uses: actions/upload-artifact@v7.0.1
       with:
         path: |
-          ${{env.NAME}}.Bundle/bin/${{env.CONFIG}}/${{env.NAME}}Installer.exe
+          ${{env.NAME}}.Bundle/bin/x86/${{env.CONFIG}}/${{env.NAME}}Installer.exe
         archive: false
         retention-days: ${{env.RETENTION_DAYS}}
 

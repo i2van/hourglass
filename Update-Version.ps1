@@ -33,6 +33,8 @@ function Main
     $appManifestFile = Join-Path $ThisFolder Hourglass\Properties\app.manifest
     $bundleWxsFile   = Join-Path $ThisFolder Hourglass.Bundle\Bundle.wxs
     $productWxsFile  = Join-Path $ThisFolder Hourglass.Setup\Product.wxs
+    $mitRtfFile      = Join-Path $ThisFolder Hourglass.Bundle\MIT.rtf
+    $licenseTxtFile  = Join-Path $ThisFolder Hourglass\Resources\License.txt
 
     Write-Output "Reading '$latestFile'..."
 
@@ -48,10 +50,14 @@ function Main
 
     Write-Output "`n$(($latest | Format-List $fieldsFormat | Out-String).Trim())`n"
 
+    $year = (Get-Date).Year
+
     Update-Content $appManifestFile '(?<=assemblyIdentity\s+version=")[^"]+(?=[\s\S]+?name)',$latest.Version
     Update-Content $buildPropsFile  '(?<=\<Version\>)[^<]+',$latest.Version
     Update-Content $bundleWxsFile   '(?<=\s+Version=")[^"]+',$latest.Version
     Update-Content $productWxsFile  '(?<=\s+Version=")[^"]+',$latest.Version
+    Update-Content $mitRtfFile      '(?<=, \d{4}-)\d{4}',$year
+    Update-Content $licenseTxtFile  '(?<=, \d{4}-)\d{4}',$year
 }
 
 function Update-Content($file, $replace)
