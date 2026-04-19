@@ -14,6 +14,7 @@
 
     <util:RegistrySearch Id="HourglassInstallSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="HourglassInstalled" Result="exists" />
     <util:RegistrySearch Id="HourglassExePathSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="LaunchTarget" Result="value" />
+    <util:RegistrySearch Id="HourglassInstallFolderSearch" Root="HKLM" Key="$(var.AppPathsKey)" Value="Path" Variable="InstallFolder" Result="value" />
 
     <BootstrapperApplication>
       <bal:WixStandardBootstrapperApplication LicenseFile="MIT.rtf" LogoFile="Logo.png" Theme="rtfLicense" ThemeFile="Theme.xml" LocalizationFile="Theme.wxl" LaunchTarget="[InstallFolder]\Hourglass.exe" />
