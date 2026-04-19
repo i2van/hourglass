@@ -11,6 +11,7 @@
     <!-- Specify a "sensible default" install location -->
     <Variable Name="InstallFolder" Type="formatted" Value="[ProgramFilesFolder]Hourglass" />
     <Variable Name="HourglassInstalled" Type="numeric" Value="0" />
+    <Variable Name="DisplayVersion" Type="string" Value="$(var.DisplayVersion)" />
 
     <util:RegistrySearch Id="HourglassInstallSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="HourglassInstalled" Result="exists" />
     <util:RegistrySearch Id="HourglassExePathSearch" Root="HKLM" Key="$(var.AppPathsKey)" Variable="LaunchTarget" Result="value" />
