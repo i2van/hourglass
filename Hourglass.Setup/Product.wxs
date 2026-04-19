@@ -1,5 +1,5 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:netfx="http://wixtoolset.org/schemas/v4/wxs/netfx">
-    <Package Name="Hourglass" Language="1033" Version="1.15.53.0" Manufacturer="Chris Dziemborowicz, Ivan Ivon" UpgradeCode="172d3713-8820-4374-8195-3e2374e7724f" InstallerVersion="200" Compressed="yes" Scope="perMachine">
+    <Package Name="Hourglass" Language="1033" Version="$(var.Version)" Manufacturer="Chris Dziemborowicz, Ivan Ivon" UpgradeCode="172d3713-8820-4374-8195-3e2374e7724f" InstallerVersion="200" Compressed="yes" Scope="perMachine">
         <Icon Id="AppIcon.exe" SourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico" />
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
         <MediaTemplate EmbedCab="yes" />
