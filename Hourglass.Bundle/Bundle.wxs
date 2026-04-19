@@ -3,7 +3,7 @@
 
   <Bundle
     Name="Hourglass"
-    Version="1.15.53.0"
+    Version="$(var.Version)"
     Manufacturer="2021 Chris Dziemborowicz, 2024-$(var.CurrentYear) Ivan Ivon"
     UpgradeCode="f1d002c9-cfc9-40fb-84af-96e7aec26e0b"
     IconSourceFile="$(var.Hourglass.ProjectDir)Resources\AppIcon.ico">

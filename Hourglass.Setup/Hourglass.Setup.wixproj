@@ -3,6 +3,7 @@
     <AcceptEula>wix7</AcceptEula>
     <OutputName>Hourglass</OutputName>
     <SuppressValidation>true</SuppressValidation>
+    <DefineConstants>Version=$(Version)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <Win10SDKInstallationFolder>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\Windows\v10.0@InstallationFolder)</Win10SDKInstallationFolder>
