@@ -160,6 +160,16 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     public static readonly KeyGesture RestartKeyGesture     = new(Key.R, ModifierKeys.Control);
     public static readonly KeyGesture FullScreenKeyGesture  = new(Key.F11, ModifierKeys.None);
 
+    /// <summary>
+    /// The default width of a <see cref="TimerWindow"/>.
+    /// </summary>
+    public const double BaseWindowWidth = 355;
+
+    /// <summary>
+    /// The default height of a <see cref="TimerWindow"/>.
+    /// </summary>
+    public const double BaseWindowHeight = 160;
+
     public static int LastActivatedID { get; set; }
 
     private static int _id;
@@ -167,11 +177,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     public int ID { get; } = System.Threading.Interlocked.Increment(ref _id);
 
     private readonly IDisposable _updateShellIntegration;
-
-    /// <summary>
-    /// The <see cref="InterfaceScaler"/> for the window.
-    /// </summary>
-    private readonly InterfaceScaler _scaler = new();
 
     /// <summary>
     /// The <see cref="SoundPlayer"/> used to play notification sounds.
@@ -246,7 +251,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         SwitchToInputMode();
 
         _menu.Bind(this);
-        _scaler.Bind(this);
 
         TimerManager.Instance.Add(Timer);
     }
@@ -282,6 +286,177 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// Raised when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    /// Gets the scale factor for the user interface, based on the window size relative to the base dimensions.
+    /// </summary>
+    public double ScaleFactor
+    {
+        get;
+
+        private set
+        {
+            if (Math.Abs(field - value) < 1e-6)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = 1.0;
+
+    /// <summary>
+    /// Gets the margin for the inner grid, accounting for the scale factor and the minimum window track height.
+    /// </summary>
+    public Thickness InnerGridMargin
+    {
+        get;
+
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = new Thickness(13);
+
+    /// <summary>
+    /// Gets the margin for the controls panel, scaling with the reduced scale factor.
+    /// </summary>
+    public Thickness ControlsPanelMargin
+    {
+        get;
+
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = new Thickness(20, 0, 20, 0);
+
+    /// <summary>
+    /// Gets the maximum font size for the timer text box, scaling with the base scale factor.
+    /// </summary>
+    public double TimerMaxFontSize
+    {
+        get;
+
+        private set
+        {
+            if (Math.Abs(field - value) < 1e-6)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = 18.0;
+
+    /// <summary>
+    /// Gets the margin for the timer text box, scaling with the base scale factor.
+    /// </summary>
+    public Thickness TimerTextBoxMargin
+    {
+        get;
+
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = new Thickness(0, 1, 0, 2);
+
+    /// <summary>
+    /// Gets the font size for buttons and labels, scaling with the reduced scale factor.
+    /// </summary>
+    public double ScaledFontSize
+    {
+        get;
+
+        private set
+        {
+            if (Math.Abs(field - value) < 1e-6)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = 12.0;
+
+    /// <summary>
+    /// Gets the margin for buttons, scaling with the base scale factor.
+    /// </summary>
+    public Thickness ButtonMargin
+    {
+        get;
+
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = new Thickness(7, 0, 7, 0);
+
+    /// <summary>
+    /// Gets the border thickness for the notification border, scaling with the reduced scale factor.
+    /// </summary>
+    public Thickness NotificationBorderThickness
+    {
+        get;
+
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = new Thickness(1);
+
+    /// <summary>
+    /// Gets the margin for the notification border, scaling with the reduced scale factor.
+    /// </summary>
+    public Thickness NotificationBorderMargin
+    {
+        get;
+
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    } = new Thickness(15);
 
     /// <summary>
     /// Gets the <see cref="WindowSize"/> for the window persisted in the settings.
@@ -1118,6 +1293,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         PropertyChangedEventManager.AddHandler(_theme, ThemePropertyChanged, string.Empty);
 
         UpdateBoundControls();
+        ScaleTimerInterval();
     }
 
     /// <summary>
@@ -2052,6 +2228,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         UpdateTimeToolTip();
         UpdateNotificationAreaIcon();
+        UpdateScaleFactor();
+        ScaleTimerInterval();
     }
 
     /// <summary>
@@ -2163,6 +2341,59 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         ProgressBar.Orientation = Height > Width
             ? Orientation.Vertical
             : Orientation.Horizontal;
+
+        UpdateScaleFactor();
+        ScaleTimerInterval();
+    }
+
+    /// <summary>
+    /// Updates all scale-dependent UI properties based on the current window size.
+    /// </summary>
+    private void UpdateScaleFactor()
+    {
+        double widthFactor = Math.Max(ActualWidth / BaseWindowWidth, 1.0);
+        double heightFactor = Math.Max(ActualHeight / BaseWindowHeight, 1.0);
+        ScaleFactor = Math.Min(widthFactor, heightFactor);
+
+        double reduced = 1.0 + (ScaleFactor - 1.0) * 0.55;
+
+        double minTrackMargin = (this.GetMinTrackHeight() + 1.0) / 2.0;
+        InnerGridMargin = new Thickness(Math.Max(reduced * 13.0, minTrackMargin));
+
+        ControlsPanelMargin = new Thickness(reduced * 20.0, 0.0, reduced * 20.0, 0.0);
+
+        TimerMaxFontSize = ScaleFactor * 18.0;
+
+        double timerTop = ScaleFactor * 1.0 + (ScaleFactor - 1.0) * 10.0;
+        double timerBottom = ScaleFactor * 2.0 + (ScaleFactor - 1.0) * 10.0;
+        TimerTextBoxMargin = new Thickness(0.0, timerTop, 0.0, timerBottom);
+
+        ScaledFontSize = reduced * 12.0;
+        ButtonMargin = new Thickness(ScaleFactor * 7.0, 0.0, ScaleFactor * 7.0, 0.0);
+        NotificationBorderThickness = new Thickness(reduced);
+        NotificationBorderMargin = new Thickness(reduced * 15.0);
+    }
+
+    /// <summary>
+    /// Updates the timer interval to ensure smooth animation of the progress bar.
+    /// </summary>
+    private void ScaleTimerInterval()
+    {
+        if (!IsVisible)
+        {
+            return;
+        }
+
+        if (Timer.TotalTime is not null)
+        {
+            double interval = Timer.TotalTime.Value.TotalMilliseconds / ActualWidth / 2.0;
+            interval = MathExtensions.LimitToRange(interval, 10.0, TimerBase.DefaultInterval.TotalMilliseconds);
+            Timer.Interval = TimeSpan.FromMilliseconds(interval);
+        }
+        else
+        {
+            Timer.Interval = TimerBase.DefaultInterval;
+        }
     }
 
     /// <summary>

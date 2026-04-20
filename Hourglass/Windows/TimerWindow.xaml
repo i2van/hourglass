@@ -4,8 +4,8 @@
         xmlns:local="clr-namespace:Hourglass.Windows"
         SnapsToDevicePixels="True"
         RenderOptions.ClearTypeHint="Enabled"
-        Width="{x:Static local:InterfaceScaler.BaseWindowWidth}"
-        Height="{x:Static local:InterfaceScaler.BaseWindowHeight}"
+        Width="{x:Static local:TimerWindow.BaseWindowWidth}"
+        Height="{x:Static local:TimerWindow.BaseWindowHeight}"
         SourceInitialized="WindowSourceInitialized"
         Loaded="WindowLoaded"
         SizeChanged="WindowSizeChanged"
@@ -307,8 +307,8 @@
     <Grid>
         <ProgressBar x:Name="ProgressBar"/>
         <Border x:Name="OuterNotificationBorder" IsHitTestVisible="False" Opacity="0"/>
-        <Grid x:Name="InnerGrid" Margin="10">
-            <StackPanel x:Name="ControlsPanel" Margin="20 0" VerticalAlignment="Center">
+        <Grid x:Name="InnerGrid" Margin="{Binding InnerGridMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}">
+            <StackPanel x:Name="ControlsPanel" Margin="{Binding ControlsPanelMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" VerticalAlignment="Center">
                 <AdornerDecorator>
                     <local:SizeToFitTextBox x:Name="TitleTextBox"
                                         UndoLimit="100"
@@ -316,7 +316,7 @@
                                         BorderBrush="{x:Null}"
                                         FontFamily="{StaticResource PrimaryFontFamily}"
                                         KeyDown="TitleTextBoxKeyDown"
-                                        MaxFontSize="24"
+                                        MaxFontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
                                         MinFontSize="0.5"
                                         IsHitTestVisible="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=IsInterfaceUnlocked, Mode=OneTime}"
                                         PreviewMouseDown="TitleTextBoxPreviewMouseDown"
@@ -330,8 +330,8 @@
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
                                         FontFamily="{StaticResource TimerFontFamily}"
-                                        Margin="0 1 0 4"
-                                        MaxFontSize="36"
+                                        Margin="{Binding TimerTextBoxMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                                        MaxFontSize="{Binding TimerMaxFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
                                         MinFontSize="0.5"
                                         IsHitTestVisible="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=IsInterfaceUnlocked, Mode=OneTime}"
                                         PreviewMouseDown="TimerTextBoxPreviewMouseDown"
@@ -340,22 +340,27 @@
                 <Grid>
                     <Label x:Name="TimeExpiredLabel"
                            Content="{Binding RelativeSource={RelativeSource AncestorType=local:TimerWindow}, Path=Timer.TimeExpiredAsString, Mode=OneWay}"
+                           FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
                            HorizontalAlignment="Center"
                            Opacity="0.0"
                            Style="{StaticResource TimeExpiredLabelStyle}"/>
                     <StackPanel x:Name="ButtonPanel" HorizontalAlignment="Center" Orientation="Horizontal" Style="{StaticResource ButtonPanelStyle}">
-                        <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" IsDefault="True" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="RestartButton" Command="local:TimerWindow.RestartCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
-                        <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="StartButton" Command="local:TimerWindow.StartCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" IsDefault="True" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="PauseButton" Command="local:TimerWindow.PauseCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="ResumeButton" Command="local:TimerWindow.ResumeCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="StopButton" Command="local:TimerWindow.StopCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="RestartButton" Command="local:TimerWindow.RestartCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="CloseButton" Command="local:TimerWindow.CloseCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="CancelButton" Command="local:TimerWindow.CancelCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
+                        <Button x:Name="UpdateButton" Command="local:TimerWindow.UpdateCommand" FontSize="{Binding ScaledFontSize, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" Margin="{Binding ButtonMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Grid>
-        <Border x:Name="InnerNotificationBorder" BorderThickness="1" IsHitTestVisible="False" Margin="15" Opacity="0"/>
+        <Border x:Name="InnerNotificationBorder"
+                BorderThickness="{Binding NotificationBorderThickness, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                IsHitTestVisible="False"
+                Margin="{Binding NotificationBorderMargin, RelativeSource={RelativeSource AncestorType=local:TimerWindow}}"
+                Opacity="0"/>
     </Grid>
 </Window>

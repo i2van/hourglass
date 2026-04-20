@@ -417,7 +417,7 @@ public sealed class CommandLineArguments
         TimerOptions defaultOptions = new();
 
         WindowSize mostRecentWindowSize = GetMostRecentWindowSize();
-        Rect defaultWindowBounds = defaultOptions.WindowSize?.RestoreBounds ?? new(new(InterfaceScaler.BaseWindowWidth, InterfaceScaler.BaseWindowHeight));
+        Rect defaultWindowBounds = defaultOptions.WindowSize?.RestoreBounds ?? new(new(TimerWindow.BaseWindowWidth, TimerWindow.BaseWindowHeight));
         Rect defaultWindowBoundsWithLocation = mostRecentWindowSize.RestoreBounds.Merge(defaultWindowBounds);
 
         return new()

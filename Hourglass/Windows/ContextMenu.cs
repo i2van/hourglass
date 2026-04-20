@@ -1760,8 +1760,8 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     {
         ExitFullScreen();
 
-        _timerWindow.Width = InterfaceScaler.BaseWindowWidth;
-        _timerWindow.Height = InterfaceScaler.BaseWindowHeight;
+        _timerWindow.Width = TimerWindow.BaseWindowWidth;
+        _timerWindow.Height = TimerWindow.BaseWindowHeight;
 
         _timerWindow.CenterOnScreen();
     }

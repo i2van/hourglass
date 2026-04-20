@@ -96,7 +96,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         LoopSound = false;
         WindowTitleMode = WindowTitleMode.ApplicationName;
         WindowSize = new(
-            new(double.PositiveInfinity, double.PositiveInfinity, InterfaceScaler.BaseWindowWidth, InterfaceScaler.BaseWindowHeight),
+            new(double.PositiveInfinity, double.PositiveInfinity, TimerWindow.BaseWindowWidth, TimerWindow.BaseWindowHeight),
             WindowState.Normal,
             WindowState.Normal,
             false /* isFullScreen */);
