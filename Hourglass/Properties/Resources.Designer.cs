@@ -2915,6 +2915,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No match.
+        /// </summary>
+        public static string UsageDialogSearchNoMatchText {
+            get {
+                return ResourceManager.GetString("UsageDialogSearchNoMatchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hourglass Command-line Usage.
         /// </summary>
         public static string UsageDialogTitle {

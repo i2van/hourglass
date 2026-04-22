@@ -37,6 +37,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How do I show the time elapsed rather than the time left?](#how-do-i-show-the-time-elapsed-rather-than-the-time-left)
 - [How do I create a shortcut that automatically starts a timer with the Hourglass?](#how-do-i-create-a-shortcut-that-automatically-starts-a-timer-with-the-hourglass)
 - [What command-line arguments does the Hourglass accept?](#what-command-line-arguments-does-the-hourglass-accept)
+- [How do I search in the command-line usage dialog?](#how-do-i-search-in-the-command-line-usage-dialog)
 - [How to launch the Hourglass on Windows startup?](#how-to-launch-the-hourglass-on-windows-startup)
 - [How to speed up the Portable Hourglass startup?](#how-to-speed-up-the-portable-hourglass-startup)
 - [How to find the Hourglass settings?](#how-to-find-the-hourglass-settings)
@@ -408,6 +409,19 @@ You can also specify additional [command-line](https://github.com/i2van/hourglas
 You can launch the **Hourglass** and immediately start a timer by running `Hourglass.exe "<duration or date and time>"`. For example, to launch the **Hourglass** and start a 5-minute timer, run `Hourglass.exe "5 minutes"`.
 
 You can also set any option that you can set using the user interface by specifying additional command-line arguments. To view a full list of command-line arguments, run `Hourglass.exe --help` or click [here](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt).
+
+## How do I search in the command-line usage dialog?
+
+The command-line usage dialog supports incremental search with match highlighting.
+
+| Key                                | Action                     |
+| ---------------------------------- | -------------------------- |
+| `/` <br/> `Ctrl`+`F` <br/> `F3`    | Open search bar            |
+| `Escape`                           | Close search bar           |
+| `Enter` <br/> `F3`                 | Navigate to next match     |
+| `Shift`+`Enter` <br/> `Shift`+`F3` | Navigate to previous match |
+
+The match count is displayed next to the search box as `current/total`. Closing the search bar (via `Escape`, clicking in the text, or moving focus away) removes the highlight and returns the caret to the last matched position.
 
 ## How to launch the Hourglass on Windows startup?
 

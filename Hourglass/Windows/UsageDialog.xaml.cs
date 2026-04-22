@@ -34,7 +34,7 @@ public sealed partial class UsageDialog
     /// <summary>
     /// Gets or sets an optional error message to be displayed.
     /// </summary>
-    public string? ErrorMessage { get; set; }
+    public string? ErrorMessage { get; init; }
 
     /// <summary>
     /// Initializes the <see cref="Window.MaxWidth"/> and <see cref="Window.MaxHeight"/> properties.
@@ -106,6 +106,8 @@ public sealed partial class UsageDialog
             MessageTextBlock.Background = Brushes.Gray;
             MessageTextBlock.Text = Properties.Resources.UsageDialogDefaultMessageText;
         }
+
+        _ = new UsageDialogSearchBehavior(this, UsageTextBox, SearchBar, SearchTextBox, MatchCountTextBlock);
 
         Activate();
     }

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hourglass"
         xmlns:properties="clr-namespace:Hourglass.Properties"
+        xmlns:windows="clr-namespace:Hourglass.Windows"
         Loaded="WindowLoaded"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
@@ -27,6 +28,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="MessageTextBlock"
                    Focusable="False"
@@ -36,17 +38,46 @@
                    FontSize="20"
                    Foreground="#F5F5F5"
                    Padding="15 20 80 20"/>
-        <TextBox Grid.Row="1"
+        <TextBox x:Name="UsageTextBox"
+                 Grid.Row="1"
                  BorderThickness="0"
                  Margin="0"
                  Padding="13 0 13 0"
                  FontFamily="{StaticResource MonospaceFontFamily}"
                  IsReadOnly="True"
                  IsReadOnlyCaretVisible="True"
+                 IsInactiveSelectionHighlightEnabled="True"
+                 SelectionBrush="{x:Static SystemColors.HighlightBrush}"
+                 SelectionTextBrush="{x:Static SystemColors.HighlightTextBrush}"
                  HorizontalScrollBarVisibility="Auto"
                  VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Source={x:Static local:CommandLineArguments.Usage}, Mode=OneTime}"/>
-        <Border Grid.Row="2" Background="#F9F9F9" BorderBrush="#DDDDDD" BorderThickness="0 1 0 0">
+                 Text="{Binding Source={x:Static local:CommandLineArguments.Usage}, Mode=OneTime}">
+        </TextBox>
+        <Border x:Name="SearchBar"
+                Grid.Row="2"
+                Visibility="Collapsed"
+                Background="#F0F0F0"
+                BorderBrush="#DDDDDD"
+                BorderThickness="0 1 0 0"
+                Padding="8 5 8 5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="SearchTextBox"
+                         BorderThickness="1"
+                         Padding="4 2"
+                         VerticalAlignment="Center"/>
+                <TextBlock x:Name="MatchCountTextBlock"
+                           Grid.Column="1"
+                           Visibility="Collapsed"
+                           VerticalAlignment="Center"
+                           Margin="5 0 0 0"
+                           FontSize="11"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="3" Background="#F9F9F9" BorderBrush="#DDDDDD" BorderThickness="0 1 0 0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

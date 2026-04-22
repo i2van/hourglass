@@ -960,6 +960,10 @@ $</value>
     <value>_Close</value>
     <comment>The text for the close button in the command-line usage dialog, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="UsageDialogSearchNoMatchText" xml:space="preserve">
+    <value>No match</value>
+    <comment>The text shown in the match counter when no search matches are found in the command-line usage dialog</comment>
+  </data>
   <data name="UsageDialogDefaultMessageText" xml:space="preserve">
     <value>Hourglass command-line usage</value>
     <comment>The default message displayed in the Hourglass command-line usage dialog</comment>
