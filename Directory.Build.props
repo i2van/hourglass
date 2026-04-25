@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <Version>1.15.53.0</Version>
+    <Version>1.15.54.0</Version>
     <DisplayVersion>$([System.Text.RegularExpressions.Regex]::Replace($(Version), '\.0$', ''))</DisplayVersion>
     <CurrentYear>$([System.DateTime]::Now.Year)</CurrentYear>
   </PropertyGroup>
