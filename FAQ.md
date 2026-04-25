@@ -46,6 +46,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to enable the Hourglass Jump List?](#how-to-enable-the-hourglass-jump-list)
 - [How to disable the Hourglass thumbnail toolbar?](#how-to-disable-the-hourglass-thumbnail-toolbar)
 - [How to always open the Hourglass timer windows centered?](#how-to-always-open-the-hourglass-timer-windows-centered)
+- [How to allow the Hourglass timer windows to be placed off-screen?](#how-to-allow-the-hourglass-timer-windows-to-be-placed-off-screen)
 - [How to configure delay timeouts for automatic close, minimize or shut down when expired?](#how-to-configure-delay-timeouts-for-automatic-close-minimize-or-shut-down-when-expired)
 - [How to ignore settings write errors?](#how-to-ignore-settings-write-errors)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
@@ -499,6 +500,23 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 3. Set `AlwaysCenterWindow` to `True`.
 4. Launch the **Hourglass**.
+
+## How to allow the Hourglass timer windows to be placed off-screen?
+
+By default, the **Hourglass** checks whether the timer window is visible on screen after restoring its position. If the window would appear off-screen (e.g. on a disconnected monitor or at negative coordinates), it is automatically centered instead.
+
+You can disable this check to allow windows to be placed at any position, including negative coordinates or outside the current screen bounds.
+
+1. Exit the **Hourglass**.
+2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
+3. Set `AllowOffScreen` to `True`.
+4. Launch the **Hourglass**.
+
+> [!NOTE]
+> This is particularly useful when starting the **Hourglass** via command-line with the `/b` switch and negative coordinates, e.g. `Hourglass.exe /b "-300,1000,259,159"`.
+
+> [!WARNING]
+> When `AllowOffScreen` is `True`, timer windows may appear on disconnected or unavailable monitors and become inaccessible.
 
 ## How to configure delay timeouts for automatic close, minimize or shut down when expired?
 

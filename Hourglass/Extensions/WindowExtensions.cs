@@ -221,7 +221,7 @@ public static class WindowExtensions
         }
 
         // If the window is restored to a size or position that is not on the screen, center the window
-        if (windowSize.RestoreBounds.IsEmpty || !window.IsOnScreen())
+        if (windowSize.RestoreBounds.IsEmpty || (!Properties.Settings.Default.AllowOffScreen && !window.IsOnScreen()))
         {
             window.CenterOnScreen();
         }
