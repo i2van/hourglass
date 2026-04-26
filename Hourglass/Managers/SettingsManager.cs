@@ -7,6 +7,12 @@
 namespace Hourglass.Managers;
 
 using System;
+#if PORTABLE
+using System.IO;
+using System.Reflection;
+#else
+using System.Configuration;
+#endif
 
 using Properties;
 
@@ -56,5 +62,19 @@ public sealed class SettingsManager : Manager
         {
             // Ignore errors when the settings file is read-only.
         }
+    }
+
+    /// <summary>
+    /// Returns the path to the settings file.
+    /// </summary>
+    /// <returns>The path to the settings file.</returns>
+    public static string GetSettingsFilePath()
+    {
+#if PORTABLE
+        string location = Assembly.GetExecutingAssembly().Location;
+        return Path.Combine(Path.GetDirectoryName(location) ?? @".\", Path.ChangeExtension(Path.GetFileName(location), ".config"));
+#else
+        return ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+#endif
     }
 }

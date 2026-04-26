@@ -305,7 +305,7 @@ namespace Hourglass.Properties {
                 this["IgnoreSettingsWriteErrors"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]

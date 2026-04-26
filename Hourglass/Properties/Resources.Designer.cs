@@ -485,6 +485,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open settings file _location.
+        /// </summary>
+        public static string ContextMenuOpenSettingsFileLocationMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuOpenSettingsFileLocationMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order timers by titl_e first then by time left.
         /// </summary>
         public static string ContextMenuOrderByTitleFirstMenuItem {

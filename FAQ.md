@@ -453,7 +453,9 @@ ngen-Hourglass.bat uninstall
 
 ## How to find the Hourglass settings?
 
-The **Hourglass** settings can be located by the following command (to run it press `Win`+`R` and copy-paste command below):
+The **Hourglass** settings file location can be opened directly from the timer window context menu **Open settings file location** in the **Advanced options** submenu.
+
+Alternatively, the settings can be located by the following command (to run it press `Win`+`R` and copy-paste command below):
 
 ```shell
 cmd /k dir "C:\Users\%USERNAME%\AppData\Local\Chris_Dziemborowicz*"
@@ -471,7 +473,20 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 4. Launch the **Hourglass**.
 
 > [!NOTE]
+> If `CheckForUpdates` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="CheckForUpdates" serializeAs="String">
+>   <value>False</value>
+> </setting>
+
+> [!NOTE]
 > To hide **Update** link in the timer window without disabling updates set `ShowUpdateLink` to `False`.
+>
+> If `ShowUpdateLink` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="ShowUpdateLink" serializeAs="String">
+>   <value>False</value>
+> </setting>
 
 ## How to enable editing of the timer start time instead of time left?
 
@@ -480,12 +495,28 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 3. Set `EditTimerStartTime` to `True`.
 4. Launch the **Hourglass**.
 
+> [!NOTE]
+> If `EditTimerStartTime` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="EditTimerStartTime" serializeAs="String">
+>   <value>True</value>
+> </setting>
+> ```
+
 ## How to enable the Hourglass [Jump List](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#jump-lists)?
 
 1. Exit the **Hourglass**.
 2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 3. Set `UseJumpList` to `True`.
 4. Launch the **Hourglass**.
+
+> [!NOTE]
+> If `UseJumpList` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="UseJumpList" serializeAs="String">
+>   <value>True</value>
+> </setting>
+> ```
 
 ## How to disable the Hourglass [thumbnail toolbar](https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions#thumbnail-toolbars)?
 
@@ -494,12 +525,28 @@ The **Hourglass Portable** keeps settings next to the executable in the `Hourgla
 3. Set `ShowTaskbarThumbButtons` to `False`.
 4. Launch the **Hourglass**.
 
+> [!NOTE]
+> If `ShowTaskbarThumbButtons` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="ShowTaskbarThumbButtons" serializeAs="String">
+>   <value>False</value>
+> </setting>
+> ```
+
 ## How to always open the Hourglass timer windows centered?
 
 1. Exit the **Hourglass**.
 2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 3. Set `AlwaysCenterWindow` to `True`.
 4. Launch the **Hourglass**.
+
+> [!NOTE]
+> If `AlwaysCenterWindow` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="AlwaysCenterWindow" serializeAs="String">
+>   <value>True</value>
+> </setting>
+> ```
 
 ## How to allow the Hourglass timer windows to be placed off-screen?
 
@@ -511,6 +558,14 @@ You can disable this check to allow windows to be placed at any position, includ
 2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 3. Set `AllowOffScreen` to `True`.
 4. Launch the **Hourglass**.
+
+> [!NOTE]
+> If `AllowOffScreen` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="AllowOffScreen" serializeAs="String">
+>   <value>True</value>
+> </setting>
+> ```
 
 > [!NOTE]
 > This is particularly useful when starting the **Hourglass** via command-line with the `/b` switch and negative coordinates, e.g. `Hourglass.exe /b "-300,1000,259,159"`.
@@ -531,6 +586,22 @@ By default, when **Close when expired**, **Minimize when expired** or **Shut dow
 4. Launch the **Hourglass**.
 
 > [!NOTE]
+> If any of the above settings are missing, add them under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="CloseWhenExpiredSeconds" serializeAs="String">
+>   <value>30</value>
+> </setting>
+>
+> <setting name="MinimizeWhenExpiredSeconds" serializeAs="String">
+>   <value>30</value>
+> </setting>
+>
+> <setting name="ShutDownWhenExpiredSeconds" serializeAs="String">
+>   <value>30</value>
+> </setting>
+> ```
+
+> [!NOTE]
 > - Setting the value to `0` means the action will be performed immediately.
 > - The maximum allowed timeout value is `3600` seconds (`1 hour`).
 > - These settings only apply when the corresponding **Close when expired**, **Minimize when expired** or **Shut down when expired** options are enabled in the timer window context menu or via command-line.
@@ -543,6 +614,14 @@ If the **Hourglass** [settings](#how-to-find-the-hourglass-settings) file is rea
 2. Open the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 3. Set `IgnoreSettingsWriteErrors` to `True`.
 4. Launch the **Hourglass**.
+
+> [!NOTE]
+> If `IgnoreSettingsWriteErrors` is missing, add it under the `<Hourglass.Properties.Settings>` tag:
+> ```xml
+> <setting name="IgnoreSettingsWriteErrors" serializeAs="String">
+>   <value>True</value>
+> </setting>
+> ```
 
 > [!IMPORTANT]
 > When `IgnoreSettingsWriteErrors` is `True`, any changes made to settings (themes, options, etc.) will not be persisted between sessions.
