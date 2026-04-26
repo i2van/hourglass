@@ -1,0 +1,43 @@
+name: publish winget 
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version to publish (e.g., 1.15.54). Leave empty to use the latest release.'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Get release info
+        id: release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ('${{ inputs.version }}' -ne '') {
+            $tag = '${{ inputs.version }}'
+            $release = gh api "repos/${{ github.repository }}/releases/tags/$tag" | ConvertFrom-Json
+          } else {
+            $release = gh api "repos/${{ github.repository }}/releases/latest" | ConvertFrom-Json
+            $tag = $release.tag_name
+          }
+
+          $asset = $release.assets | Where-Object { $_.name -eq 'HourglassInstaller.exe' }
+          if (-not $asset) { Write-Error 'HourglassInstaller.exe not found in release assets'; exit 1 }
+
+          "version=$tag"             >> $env:GITHUB_OUTPUT
+          "url=$($asset.browser_download_url)" >> $env:GITHUB_OUTPUT
+
+      - name: Publish ${{ steps.release.outputs.version }} to winget
+        uses: vedantmgoyal9/winget-releaser@v2
+        with:
+          identifier: i2van.hourglass
+          version: ${{ steps.release.outputs.version }}
+          installers-regex: 'HourglassInstaller\.exe$'
+          release-tag: ${{ steps.release.outputs.version }}
+          token: ${{ secrets.WINGET_TOKEN }}
