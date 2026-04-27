@@ -976,6 +976,16 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _shutDownWhenExpiredMenuItem.Click += CheckableMenuItemClick;
         advancedOptionsMenuItem.Items.Add(_shutDownWhenExpiredMenuItem);
 
+        advancedOptionsMenuItem.Items.Add(new Separator());
+
+        // Open settings
+        MenuItem openSettingsFileLocationMenuItem = new()
+        {
+            Header = Properties.Resources.ContextMenuOpenSettingsFileLocationMenuItem
+        };
+        openSettingsFileLocationMenuItem.Click += OpenSettingsFileLocationMenuItemClick;
+        advancedOptionsMenuItem.Items.Add(openSettingsFileLocationMenuItem);
+
         Items.Add(new Separator());
 
         // About
@@ -1785,6 +1795,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     {
         _timerWindow.Close();
     }
+
+    private static void OpenSettingsFileLocationMenuItemClick(object sender, RoutedEventArgs e) =>
+        ShellExtensions.OpenFileLocation(SettingsManager.GetSettingsFilePath());
 
     private void ExitFullScreen()
     {

@@ -305,5 +305,17 @@ namespace Hourglass.Properties {
                 this["IgnoreSettingsWriteErrors"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AllowOffScreen {
+            get {
+                return ((bool)(this["AllowOffScreen"]));
+            }
+            set {
+                this["AllowOffScreen"] = value;
+            }
+        }
     }
 }

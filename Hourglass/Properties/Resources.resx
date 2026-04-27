@@ -1408,6 +1408,10 @@ $</value>
     <value>About</value>
     <comment>The text for the about menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuOpenSettingsFileLocationMenuItem" xml:space="preserve">
+    <value>Open settings file _location</value>
+    <comment>The text for the open settings file location menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="License" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\License.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

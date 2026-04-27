@@ -1332,19 +1332,35 @@ public sealed class CommandLineArguments
     /// <summary>
     /// Returns a value indicating whether a string is a command-line switch.
     /// </summary>
+    /// <remarks>
+    /// A switch begins with <c>-</c> or <c>/</c> followed by a letter, or begins with <c>--</c>. Values that
+    /// start with <c>-</c> followed by a digit (e.g. negative numbers such as <c>-300,1000,259,159</c>) are not
+    /// treated as switches.
+    /// </remarks>
     /// <param name="arg">A string.</param>
     /// <returns>A value indicating whether <paramref name="arg"/> is a command-line switch.</returns>
     private static bool IsSwitch(string arg)
     {
-        return arg.StartsWith("-") || arg.StartsWith("/");
+        if (arg.Length < 2)
+        {
+            return false;
+        }
+
+        if (arg.StartsWith("--"))
+        {
+            return true;
+        }
+
+        return (arg.StartsWith("-") || arg.StartsWith("/")) && char.IsLetter(arg[1]);
     }
 
     /// <summary>
     /// Unescapes a command-line value.
     /// </summary>
     /// <remarks>
-    /// A value is any command-line argument not beginning with `-`. If the user must specify a command-line value
-    /// that begins with `-`, the user must escape the `-` with `'`.
+    /// A value is any command-line argument not beginning with a switch prefix. If the user must specify a
+    /// command-line value that begins with <c>-</c> followed by a letter, the user must escape the <c>-</c>
+    /// with <c>'</c>.
     /// </remarks>
     /// <param name="value">An escaped value string.</param>
     /// <returns>The unescaped value.</returns>
