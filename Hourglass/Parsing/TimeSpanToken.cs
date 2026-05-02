@@ -192,6 +192,12 @@ public sealed class TimeSpanToken : TimerStartToken
         {
             provider = Resources.ResourceManager.GetEffectiveProvider(provider);
 
+            TimerStartToken? bareUnitToken = ParseBareUnit(str, provider);
+            if (bareUnitToken is not null)
+            {
+                return bareUnitToken;
+            }
+
             foreach (string pattern in GetPatterns(provider))
             {
                 try
@@ -254,6 +260,32 @@ public sealed class TimeSpanToken : TimerStartToken
 
             // Could not find a matching pattern
             throw new FormatException();
+        }
+
+        /// <summary>
+        /// Parses a bare unit word (e.g., <c>"day"</c>, <c>"week"</c>) with an implied quantity of 1.
+        /// </summary>
+        /// <param name="str">A string representation of a <see cref="TimeSpanToken"/>.</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+        /// <returns>A <see cref="TimeSpanToken"/> with the matched unit set to 1, or <c>null</c> if no match.</returns>
+        private static TimerStartToken? ParseBareUnit(string str, IFormatProvider provider)
+        {
+            string pattern = Resources.ResourceManager.GetString(nameof(Resources.TimeSpanTokenBareUnitPattern), provider);
+            Match match = Regex.Match(str, pattern, RegexOptions);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            if (match.Groups["day"].Success)    return new TimeSpanToken { Days    = 1 };
+            if (match.Groups["hour"].Success)   return new TimeSpanToken { Hours   = 1 };
+            if (match.Groups["minute"].Success) return new TimeSpanToken { Minutes = 1 };
+            if (match.Groups["second"].Success) return new TimeSpanToken { Seconds = 1 };
+            if (match.Groups["week"].Success)   return new TimeSpanToken { Weeks   = 1 };
+            if (match.Groups["month"].Success)  return new TimeSpanToken { Months  = 1 };
+            if (match.Groups["year"].Success)   return new TimeSpanToken { Years   = 1 };
+
+            throw new InvalidOperationException($"Unknown bare unit pattern in \"{str}\".");
         }
 
         /// <summary>

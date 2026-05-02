@@ -1755,6 +1755,63 @@ public sealed class TimeSpanTokenTest
 
     #endregion
 
+    #region Parse Bare Units (No Number)
+
+    /// <summary>
+    /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> returns 1 of the expected
+    /// unit for a bare unit word input (no leading number).
+    /// </summary>
+    [TestMethod]
+    [DataRow("s",0, 0, 0, 0, 0, 0, 1, DisplayName = "s → 1 second")]
+    [DataRow("sec",     0, 0, 0, 0, 0, 0, 1, DisplayName = "sec → 1 second")]
+    [DataRow("secs",    0, 0, 0, 0, 0, 0, 1, DisplayName = "secs → 1 second")]
+    [DataRow("second",  0, 0, 0, 0, 0, 0, 1, DisplayName = "second → 1 second")]
+    [DataRow("seconds", 0, 0, 0, 0, 0, 0, 1, DisplayName = "seconds → 1 second")]
+    [DataRow("m",       0, 0, 0, 0, 0, 1, 0, DisplayName = "m → 1 minute")]
+    [DataRow("min",     0, 0, 0, 0, 0, 1, 0, DisplayName = "min → 1 minute")]
+    [DataRow("mins",    0, 0, 0, 0, 0, 1, 0, DisplayName = "mins → 1 minute")]
+    [DataRow("minute",  0, 0, 0, 0, 0, 1, 0, DisplayName = "minute → 1 minute")]
+    [DataRow("minutes", 0, 0, 0, 0, 0, 1, 0, DisplayName = "minutes → 1 minute")]
+    [DataRow("h",       0, 0, 0, 0, 1, 0, 0, DisplayName = "h → 1 hour")]
+    [DataRow("hr",      0, 0, 0, 0, 1, 0, 0, DisplayName = "hr → 1 hour")]
+    [DataRow("hrs",     0, 0, 0, 0, 1, 0, 0, DisplayName = "hrs → 1 hour")]
+    [DataRow("hour",    0, 0, 0, 0, 1, 0, 0, DisplayName = "hour → 1 hour")]
+    [DataRow("hours",   0, 0, 0, 0, 1, 0, 0, DisplayName = "hours → 1 hour")]
+    [DataRow("d",       0, 0, 0, 1, 0, 0, 0, DisplayName = "d → 1 day")]
+    [DataRow("dy",      0, 0, 0, 1, 0, 0, 0, DisplayName = "dy → 1 day")]
+    [DataRow("dys",     0, 0, 0, 1, 0, 0, 0, DisplayName = "dys → 1 day")]
+    [DataRow("day",     0, 0, 0, 1, 0, 0, 0, DisplayName = "day → 1 day")]
+    [DataRow("days",    0, 0, 0, 1, 0, 0, 0, DisplayName = "days → 1 day")]
+    [DataRow("w",       0, 0, 1, 0, 0, 0, 0, DisplayName = "w → 1 week")]
+    [DataRow("wk",      0, 0, 1, 0, 0, 0, 0, DisplayName = "wk → 1 week")]
+    [DataRow("wks",     0, 0, 1, 0, 0, 0, 0, DisplayName = "wks → 1 week")]
+    [DataRow("week",    0, 0, 1, 0, 0, 0, 0, DisplayName = "week → 1 week")]
+    [DataRow("weeks",   0, 0, 1, 0, 0, 0, 0, DisplayName = "weeks → 1 week")]
+    [DataRow("mo",      0, 1, 0, 0, 0, 0, 0, DisplayName = "mo → 1 month")]
+    [DataRow("mos",     0, 1, 0, 0, 0, 0, 0, DisplayName = "mos → 1 month")]
+    [DataRow("mon",     0, 1, 0, 0, 0, 0, 0, DisplayName = "mon → 1 month")]
+    [DataRow("mons",    0, 1, 0, 0, 0, 0, 0, DisplayName = "mons → 1 month")]
+    [DataRow("month",   0, 1, 0, 0, 0, 0, 0, DisplayName = "month → 1 month")]
+    [DataRow("months",  0, 1, 0, 0, 0, 0, 0, DisplayName = "months → 1 month")]
+    [DataRow("y",       1, 0, 0, 0, 0, 0, 0, DisplayName = "y → 1 year")]
+    [DataRow("yr",      1, 0, 0, 0, 0, 0, 0, DisplayName = "yr → 1 year")]
+    [DataRow("yrs",     1, 0, 0, 0, 0, 0, 0, DisplayName = "yrs → 1 year")]
+    [DataRow("year",    1, 0, 0, 0, 0, 0, 0, DisplayName = "year → 1 year")]
+    [DataRow("years",   1, 0, 0, 0, 0, 0, 0, DisplayName = "years → 1 year")]
+    public void ParseWithBareUnitReturns1OfThatUnit(string str, double expectedYears, double expectedMonths, double expectedWeeks, double expectedDays, double expectedHours, double expectedMinutes, double expectedSeconds)
+    {
+        // Arrange
+        IFormatProvider provider = CultureInfo.GetCultureInfo("en-US");
+
+        // Act
+        TimerStartToken actual = TimeSpanToken.Parser.Instance.Parse(str, provider);
+
+        // Assert
+        AssertAreEqual(actual, expectedYears, expectedMonths, expectedWeeks, expectedDays, expectedHours, expectedMinutes, expectedSeconds);
+    }
+
+    #endregion
+
     #region Helper Methods
 
     /// <summary>

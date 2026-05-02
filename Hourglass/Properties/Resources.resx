@@ -379,6 +379,20 @@
 $</value>
     <comment>A regular expression that matches time spans in a long format (e.g., "5 minutes 30 seconds", "1 day 15 hours 30 minutes", "7 minutes 30", "1.5 hours")</comment>
   </data>
+  <data name="TimeSpanTokenBareUnitPattern" xml:space="preserve">
+    <value>^\s*
+(?:
+    (?&lt;year&gt;   y|yrs?|years?)
+    | (?&lt;month&gt;  mo|mon?s?|months?)
+    | (?&lt;week&gt;   w|wks?|weeks?)
+    | (?&lt;day&gt;    d|dys?|days?)
+    | (?&lt;hour&gt;   h|hrs?|hours?)
+    | (?&lt;minute&gt; m|mins?|minutes?)
+    | (?&lt;second&gt; s|secs?|seconds?)
+)
+\s*$</value>
+    <comment>A regular expression that matches a single bare unit word without a number (e.g., "day", "week", "hour"), implying a quantity of 1</comment>
+  </data>
   <data name="TimeSpanTokenMinutesOnlyPattern" xml:space="preserve">
     <value>^
 \s*

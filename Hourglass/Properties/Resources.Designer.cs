@@ -2696,6 +2696,25 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ^\s*
+        ///(?:
+        ///    (?&lt;year&gt;   y|yrs?|years?)
+        ///    | (?&lt;month&gt;  mo|mon?s?|months?)
+        ///    | (?&lt;week&gt;   w|wks?|weeks?)
+        ///    | (?&lt;day&gt;    d|dys?|days?)
+        ///    | (?&lt;hour&gt;   h|hrs?|hours?)
+        ///    | (?&lt;minute&gt; m|mins?|minutes?)
+        ///    | (?&lt;second&gt; s|secs?|seconds?)
+        ///)
+        ///\s*$.
+        /// </summary>
+        public static string TimeSpanTokenBareUnitPattern {
+            get {
+                return ResourceManager.GetString("TimeSpanTokenBareUnitPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ^
         ///(
         ///    \s*

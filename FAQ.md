@@ -105,6 +105,18 @@ You can also use the short form of the supported units: `s`, `m`, `h`, `d`, `w`,
 - `6mo` - count down for 6 months
 - `2y` - count down for 2 years
 
+**Bare unit** - To start a 1-unit timer, enter just the unit without a number:
+
+- `second` - count down for 1 second
+- `minute` - count down for 1 minute
+- `hour` - count down for 1 hour
+- `day` - count down for 1 day
+- `week` - count down for 1 week
+- `month` - count down for 1 month
+- `year` - count down for 1 year
+
+Short forms work too: `s`, `m`, `h`, `d`, `w`, `mo`, `y`.
+
 **Combining units** - To start a timer using a combination of units, simply concatenate the units:
 
 - `5 minutes 30 seconds` - count down for 5 minutes 30 seconds
