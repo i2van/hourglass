@@ -39,12 +39,12 @@ public sealed class DateTimeToken : TimerStartToken
     /// <summary>
     /// Gets or sets the date part of the date and time represented by this token.
     /// </summary>
-    public DateToken? DateToken { get; set; }
+    public DateToken? DateToken { get; init; }
 
     /// <summary>
     /// Gets or sets the time part of the date and time represented by this token.
     /// </summary>
-    public TimeToken? TimeToken { get; set; }
+    public TimeToken? TimeToken { get; init; }
 
     /// <inheritdoc />
     protected override bool IsValid => DateToken?.IsValid == true && TimeToken?.IsValid == true;
