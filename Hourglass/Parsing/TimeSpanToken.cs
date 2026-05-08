@@ -81,7 +81,7 @@ public sealed class TimeSpanToken : TimerStartToken
 
         if (endTime < startTime)
         {
-            throw new InvalidOperationException(@"The end time is less than the start time");
+            throw new InvalidOperationException("The end time is less than the start time");
         }
 
         return endTime;
@@ -285,7 +285,7 @@ public sealed class TimeSpanToken : TimerStartToken
             if (match.Groups["month"].Success)  return new TimeSpanToken { Months  = 1 };
             if (match.Groups["year"].Success)   return new TimeSpanToken { Years   = 1 };
 
-            throw new InvalidOperationException($"Unknown bare unit pattern in \"{str}\".");
+            throw new FormatException();
         }
 
         /// <summary>

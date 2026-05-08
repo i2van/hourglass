@@ -65,7 +65,7 @@ public sealed class DateTimeToken : TimerStartToken
 
         if (dateTime < startTime)
         {
-            throw new InvalidOperationException(@"dateTime < startTime");
+            throw new InvalidOperationException("dateTime < startTime");
         }
 
         return dateTime;

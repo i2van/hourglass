@@ -145,7 +145,7 @@ public sealed class InterfaceScaler
         // Validate state
         if (_timerWindow is not null)
         {
-            throw new InvalidOperationException(@"The timer window is already created");
+            throw new InvalidOperationException("The timer window is already created");
         }
 
         // Initialize members

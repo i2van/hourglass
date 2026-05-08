@@ -256,7 +256,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         // Validate state
         if (_timerWindow is not null)
         {
-            throw new InvalidOperationException(@"The timer window is already created");
+            throw new InvalidOperationException("The timer window is already created");
         }
 
         SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Display);
