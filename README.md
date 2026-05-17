@@ -32,7 +32,7 @@ Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhour
 
 ## Prerequisites
 
-- [.NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48) (click [here](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-web-installer) to download the runtime Web Installer)
+- [.NET Framework 4.8.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481) (click [here](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net481-web-installer) to download the runtime Web Installer)
 
 ## Hourglass Changes
 
