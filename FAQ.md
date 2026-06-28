@@ -383,7 +383,7 @@ The built-in color themes cannot be deleted.
 
 ## How do I add a custom notification sound?
 
-Save the sound file to the folder where you installed the **Hourglass** (typically `%PROGRAMFILES(x86)%\Hourglass`) or to the `%LOCALAPPDATA%\Hourglass` directory or to the `Sounds` subdirectory.
+Save the sound file to the folder where you installed the **Hourglass** (typically `%PROGRAMFILES(x86)%\Hourglass`) or to the `%LOCALAPPDATA%\Hourglass` or `%APPDATA%\Hourglass` directory or to the `Sounds` subdirectory.
 
 Your sound file should then appear when you `Right Click` on any empty space in the **Hourglass** window and select the **Sound** submenu.
 
@@ -467,15 +467,8 @@ ngen-Hourglass.bat uninstall
 
 The **Hourglass** settings file location can be opened directly from the timer window context menu **Open settings file location** in the **Advanced options** submenu.
 
-Alternatively, the settings can be located by the following command (to run it press `Win`+`R` and copy-paste command below):
-
-```shell
-cmd /k dir "C:\Users\%USERNAME%\AppData\Local\Chris_Dziemborowicz*"
-```
-
-The settings are stored into the corresponding `hourglass.EXE` subdirectories in the `user.config` file.
-
-The **Hourglass Portable** keeps settings next to the executable in the `Hourglass.config` file.
+- The **Hourglass** keeps settings in the `%APPDATA%\Hourglass\Hourglass.config` file.
+- The **Hourglass Portable** keeps settings next to the executable in the `Hourglass.config` file.
 
 ## How to disable the Hourglass updates?
 
@@ -641,7 +634,7 @@ If the **Hourglass** [settings](#how-to-find-the-hourglass-settings) file is rea
 ## What should I do if the Hourglass does not start?
 
 > [!IMPORTANT]
-> The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%USERPROFILE%\AppData\Local\Temp` folder). File mask is the `Hourglass-Crash*.txt`.
+> The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%LOCALAPPDATA%\Temp` folder). File mask is the `Hourglass-Crash*.txt`.
 
 If the **Hourglass** does not start or fails silently
 

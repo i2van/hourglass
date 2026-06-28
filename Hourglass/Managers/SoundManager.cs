@@ -160,13 +160,17 @@ public sealed class SoundManager : Manager
             string appSoundsDirectory = Path.Combine(appDirectory, soundsDirectory);
             string localAppDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Hourglass");
             string localAppDataSoundsDirectory = Path.Combine(localAppDataDirectory, soundsDirectory);
+            string appDataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Hourglass");
+            string appDataSoundsDirectory = Path.Combine(appDataDirectory, soundsDirectory);
 
             List<Sound> list =
             [
                 ..GetUserProvidedSounds(appDirectory),
                 ..GetUserProvidedSounds(appSoundsDirectory),
                 ..GetUserProvidedSounds(localAppDataDirectory),
-                ..GetUserProvidedSounds(localAppDataSoundsDirectory)
+                ..GetUserProvidedSounds(localAppDataSoundsDirectory),
+                ..GetUserProvidedSounds(appDataDirectory),
+                ..GetUserProvidedSounds(appDataSoundsDirectory)
             ];
             list.Sort(static (a, b) => string.Compare(a.Name, b.Name, CultureInfo.CurrentCulture, CompareOptions.StringSort));
             return list;

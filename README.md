@@ -173,7 +173,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - The time left is now used for editing instead of the original launch time.
 - The timer window pops up on the current virtual desktop.
 - The mouse double-click on progress border toggles full screen.
-- The sound file can be placed to the `%LOCALAPPDATA%\Hourglass` or `%LOCALAPPDATA%\Hourglass\Sounds` directories. It can be the symbolic link created by the `mklink` system command.
+- The sound file can be placed to the `%LOCALAPPDATA%\Hourglass`, `%LOCALAPPDATA%\Hourglass\Sounds`, `%APPDATA%\Hourglass` or `%APPDATA%\Hourglass\Sounds` directories. It can be the symbolic link created by the `mklink` system command.
 - [NAudioHourglassPack](https://github.com/i2van/hourglass/blob/main/FAQ.md#what-should-i-do-if-there-is-no-notification-sound) can be used for playing sounds on Windows with no [Windows Media Player](https://en.wikipedia.org/wiki/Windows_Media_Player) installed.
 - The `.ogg` sound file format is supported.
 
