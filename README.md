@@ -28,7 +28,7 @@ creates
   - initially minimized: [`-w`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--window-state) `minimized`
   - has the time left and the timer name displayed in the title: [`-i`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--window-title) `left+title`
 
-Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--help) to display the **Hourglass** [command-line reference](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) or select **Command-line usage** from the notification area context menu.
+Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--help) to display the **Hourglass** [command-line reference](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) or click **Hourglass command-line usage** in the **About Hourglass** dialog.
 
 ## Prerequisites
 
