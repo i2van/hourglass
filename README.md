@@ -98,6 +98,7 @@ ngen-Hourglass.bat uninstall
 - New option [`--minimize-when-expired`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--minimize-when-expired), `-em`, `/em`
 - Renamed option `--prompt-on-exit` to [`--prompt-on-close`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--prompt-on-close)
 - New option [`--save-timer-on-closing`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--save-timer-on-closing), `-sc`, `/sc`
+- New option [`--copy-config`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--copy-config), `-cf`, `/cf`
 
 See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) for details.
 
