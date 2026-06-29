@@ -28,11 +28,11 @@ creates
   - initially minimized: [`-w`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--window-state) `minimized`
   - has the time left and the timer name displayed in the title: [`-i`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--window-title) `left+title`
 
-Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--help) to display the **Hourglass** [command-line reference](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) or select **Command-line usage** from the notification area context menu.
+Run `hourglass` [`-h`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--help) to display the **Hourglass** [command-line reference](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) or click **Hourglass command-line usage** in the **About Hourglass** dialog.
 
 ## Prerequisites
 
-- [.NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48) (click [here](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-web-installer) to download the runtime Web Installer)
+- [.NET Framework 4.8.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net481) (click [here](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net481-web-installer) to download the runtime Web Installer)
 
 ## Hourglass Changes
 
@@ -173,7 +173,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - The time left is now used for editing instead of the original launch time.
 - The timer window pops up on the current virtual desktop.
 - The mouse double-click on progress border toggles full screen.
-- The sound file can be placed to the `%LOCALAPPDATA%\Hourglass` or `%LOCALAPPDATA%\Hourglass\Sounds` directories. It can be the symbolic link created by the `mklink` system command.
+- The sound file can be placed to the `%LOCALAPPDATA%\Hourglass`, `%LOCALAPPDATA%\Hourglass\Sounds`, `%APPDATA%\Hourglass` or `%APPDATA%\Hourglass\Sounds` directories. It can be the symbolic link created by the `mklink` system command.
 - [NAudioHourglassPack](https://github.com/i2van/hourglass/blob/main/FAQ.md#what-should-i-do-if-there-is-no-notification-sound) can be used for playing sounds on Windows with no [Windows Media Player](https://en.wikipedia.org/wiki/Windows_Media_Player) installed.
 - The `.ogg` sound file format is supported.
 

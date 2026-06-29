@@ -17,9 +17,7 @@ using Windows;
 /// <summary>
 /// Application settings.
 /// </summary>
-#if PORTABLE
 [System.Configuration.SettingsProvider(typeof(PortableSettingsProvider))]
-#endif
 internal sealed partial class Settings
 {
     private const int MaxTimeoutSeconds = 60*60;
