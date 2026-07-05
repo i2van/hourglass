@@ -248,6 +248,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         _menu.Bind(this);
         _scaler.Bind(this);
 
+        Settings.Default.PropertyChanged += SettingsPropertyChanged;
+        UpdateShowInTaskbar();
+
         TimerManager.Instance.Add(Timer);
     }
 
@@ -1291,7 +1294,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     private void UpdateTaskbarProgress()
     {
-        if (!Options.ShowProgressInTaskbar)
+        if (!Options.ShowProgressInTaskbar || !ShowInTaskbar)
         {
             TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
             return;
@@ -1518,6 +1521,19 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         UpdateBoundControls();
     }
+
+    private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(Settings.ShowInNotificationArea) or nameof(Settings.HideFromTaskbarWhenInNotificationArea))
+        {
+            UpdateShowInTaskbar();
+            UpdateBoundControls();
+            UpdateShellIntegration();
+        }
+    }
+
+    private void UpdateShowInTaskbar() =>
+        ShowInTaskbar = !(Settings.Default.ShowInNotificationArea && Settings.Default.HideFromTaskbarWhenInNotificationArea);
 
     private void UpdateTimeToolTip()
     {
@@ -2199,6 +2215,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
             PropertyChangedEventManager.RemoveHandler(_theme, ThemePropertyChanged, string.Empty);
             PropertyChangedEventManager.RemoveHandler(UpdateManager.Instance, UpdateManagerPropertyChanged, string.Empty);
+            Settings.Default.PropertyChanged -= SettingsPropertyChanged;
 
             KeepAwakeManager.Instance.StopKeepAwakeFor(ID);
             AppManager.Instance.Persist();

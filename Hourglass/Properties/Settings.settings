@@ -11,6 +11,9 @@
     <Setting Name="ShowInNotificationArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="HideFromTaskbarWhenInNotificationArea" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="TimerInfos" Type="Hourglass.Serialization.TimerInfoList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

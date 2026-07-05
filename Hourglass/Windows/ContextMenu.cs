@@ -77,6 +77,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _showInNotificationAreaMenuItem = null!;
 
     /// <summary>
+    /// The "Hide from taskbar if shown in notification area" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _hideFromTaskbarWhenInNotificationAreaMenuItem = null!;
+
+    /// <summary>
     /// The "Loop timer" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _loopTimerMenuItem = null!;
@@ -381,6 +386,8 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         // Show in notification area
         _showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
+        _hideFromTaskbarWhenInNotificationAreaMenuItem.IsEnabled = Settings.Default.ShowInNotificationArea;
+        _hideFromTaskbarWhenInNotificationAreaMenuItem.IsChecked = Settings.Default.HideFromTaskbarWhenInNotificationArea;
 
         // Loop timer
         // Pause before looping
@@ -508,6 +515,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         // Show in notification area
         Settings.Default.ShowInNotificationArea = _showInNotificationAreaMenuItem.IsChecked;
+        Settings.Default.HideFromTaskbarWhenInNotificationArea = _hideFromTaskbarWhenInNotificationAreaMenuItem.IsChecked;
 
         // Loop timer
         if (_loopTimerMenuItem.IsEnabled)
@@ -797,6 +805,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             Header = Properties.Resources.ContextMenuShowInNotificationAreaMenuItem
         };
         _showInNotificationAreaMenuItem.Click += CheckableMenuItemClick;
+
+        _hideFromTaskbarWhenInNotificationAreaMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuHideFromTaskbarWhenInNotificationAreaMenuItem
+        };
+        _hideFromTaskbarWhenInNotificationAreaMenuItem.Click += CheckableMenuItemClick;
+        _showInNotificationAreaMenuItem.Items.Add(_hideFromTaskbarWhenInNotificationAreaMenuItem);
+
         Items.Add(_showInNotificationAreaMenuItem);
 
         Items.Add(new Separator());
@@ -1817,4 +1833,3 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             (IsCheckable, StaysOpenOnClick) = (true, true);
     }
 }
-
