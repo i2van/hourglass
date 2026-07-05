@@ -251,7 +251,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         TimerManager.Instance.Add(Timer);
 
         UpdateShowInTaskbar();
-        Settings.Default.PropertyChanged += SettingsPropertyChanged;
+        PropertyChangedEventManager.AddHandler(Settings.Default, SettingsPropertyChanged, string.Empty);
     }
 
     private void UpdateShellIntegration()
@@ -1524,7 +1524,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "ShowInNotificationArea" or "HideFromTaskbarWhenInNotificationArea")
+        if (e.PropertyName is nameof(Settings.Default.ShowInNotificationArea) or nameof(Settings.Default.HideFromTaskbarWhenInNotificationArea))
         {
             UpdateShowInTaskbar();
             UpdateBoundControls();
@@ -2215,7 +2215,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
             PropertyChangedEventManager.RemoveHandler(_theme, ThemePropertyChanged, string.Empty);
             PropertyChangedEventManager.RemoveHandler(UpdateManager.Instance, UpdateManagerPropertyChanged, string.Empty);
-            Settings.Default.PropertyChanged -= SettingsPropertyChanged;
+            PropertyChangedEventManager.RemoveHandler(Settings.Default, SettingsPropertyChanged, string.Empty);
 
             KeepAwakeManager.Instance.StopKeepAwakeFor(ID);
             AppManager.Instance.Persist();
