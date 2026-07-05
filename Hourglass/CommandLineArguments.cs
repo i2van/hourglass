@@ -102,6 +102,12 @@ public sealed class CommandLineArguments
     public bool ShowInNotificationArea { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether the timer window should be hidden from the taskbar when it is shown in the
+    /// notification area.
+    /// </summary>
+    public bool HideFromTaskbarWhenInNotificationArea { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether to reverse the progress bar (count backwards).
     /// </summary>
     public bool ReverseProgressBar { get; private set; }
@@ -440,6 +446,7 @@ public sealed class CommandLineArguments
             ShowTimeElapsed = options.ShowTimeElapsed,
             ShowTriggerTime = options.ShowTriggerTime,
             ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
+            HideFromTaskbarWhenInNotificationArea = Settings.Default.HideFromTaskbarWhenInNotificationArea,
             LoopTimer = options.LoopTimer,
             PauseBeforeLoopTimer = options.PauseBeforeLoopTimer,
             PopUpWhenExpired = options.PopUpWhenExpired,
@@ -487,6 +494,7 @@ public sealed class CommandLineArguments
             ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
             ShowTriggerTime = defaultOptions.ShowTriggerTime,
             ShowInNotificationArea = false,
+            HideFromTaskbarWhenInNotificationArea = false,
             LoopTimer = defaultOptions.LoopTimer,
             PauseBeforeLoopTimer = defaultOptions.PauseBeforeLoopTimer,
             PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
@@ -711,6 +719,20 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.ShowInNotificationArea = showInNotificationArea;
                     argumentsBasedOnFactoryDefaults.ShowInNotificationArea = showInNotificationArea;
+                    break;
+
+                case "--hide-from-taskbar-when-in-notification-area":
+                case "-hf":
+                case "/hf":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--hide-from-taskbar-when-in-notification-area");
+
+                    bool hideFromTaskbarWhenInNotificationArea = GetBoolValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.HideFromTaskbarWhenInNotificationArea);
+
+                    argumentsBasedOnMostRecentOptions.HideFromTaskbarWhenInNotificationArea = hideFromTaskbarWhenInNotificationArea;
+                    argumentsBasedOnFactoryDefaults.HideFromTaskbarWhenInNotificationArea = hideFromTaskbarWhenInNotificationArea;
                     break;
 
                 case "--loop-timer":

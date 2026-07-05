@@ -85,6 +85,14 @@ Options:
         Default value   last
         Alias           -n, /n
 
+  --hide-from-taskbar-when-in-notification-area on|off|last
+        Hides the timer window from the taskbar when it is shown in the
+        notification area.
+
+        Required        no
+        Default value   last
+        Alias           -hf, /hf
+
   --reverse-progress-bar on|off|last
         Reverses the direction of the progress bar, causing it to run backwards.
 
@@ -376,6 +384,7 @@ Options:
             --show-progress-in-taskbar    -y  on
             --do-not-keep-awake           -k  off
             --show-in-notification-area   -n  off
+            --hide-from-taskbar-when-in-notification-area -hf off
             --reverse-progress-bar        -g  off
             --activate-next               -an on
             --order-by-title              -ot off

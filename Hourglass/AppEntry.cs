@@ -219,6 +219,7 @@ public sealed class AppEntry : WindowsFormsApplicationBase
     private static void SetGlobalSettingsFromArguments(CommandLineArguments arguments)
     {
         Settings.Default.ShowInNotificationArea = arguments.ShowInNotificationArea;
+        Settings.Default.HideFromTaskbarWhenInNotificationArea = arguments.HideFromTaskbarWhenInNotificationArea;
         Settings.Default.OpenSavedTimersOnStartup = arguments.OpenSavedTimers;
         Settings.Default.SaveTimerOnClosing = arguments.SaveTimerOnClosing;
         Settings.Default.Prefer24HourTime = arguments.Prefer24HourTime;

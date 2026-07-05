@@ -254,6 +254,8 @@ To exit full-screen mode, press `Alt`+`Enter` or `F11` again; `Double Click` on 
 
 To remove the **Hourglass** icon from the notification area and restore any hidden timer windows, `Right Click` on any empty space in the timer window and uncheck **Show in notification area**.
 
+To also hide the timer window from the taskbar while it is shown in the notification area, `Right Click` on any empty space in the timer window and check **Hide from taskbar if shown in notification area**. The command-line option is [`--hide-from-taskbar-when-in-notification-area`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-from-taskbar-when-in-notification-area), `-hf`, `/hf`.
+
 ## What are the timer window keyboard shortcuts?
 
 | Shortcut                  | Action                                                     |
