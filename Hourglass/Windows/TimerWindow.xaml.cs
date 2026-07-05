@@ -248,10 +248,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         _menu.Bind(this);
         _scaler.Bind(this);
 
-        Settings.Default.PropertyChanged += SettingsPropertyChanged;
-        UpdateShowInTaskbar();
-
         TimerManager.Instance.Add(Timer);
+
+        UpdateShowInTaskbar();
+        Settings.Default.PropertyChanged += SettingsPropertyChanged;
     }
 
     private void UpdateShellIntegration()
@@ -1524,7 +1524,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(Settings.ShowInNotificationArea) or nameof(Settings.HideFromTaskbarWhenInNotificationArea))
+        if (e.PropertyName is "ShowInNotificationArea" or "HideFromTaskbarWhenInNotificationArea")
         {
             UpdateShowInTaskbar();
             UpdateBoundControls();
