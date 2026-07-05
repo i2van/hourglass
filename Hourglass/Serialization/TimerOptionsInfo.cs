@@ -118,6 +118,11 @@ public sealed class TimerOptionsInfo
     public WindowTitleMode WindowTitleMode { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the timer window title bar should be hidden.
+    /// </summary>
+    public bool HideWindowTitleBar { get; set; }
+
+    /// <summary>
     /// Gets or sets the size, position, and state of the timer window.
     /// </summary>
     public WindowSizeInfo WindowSize { get; set; } = null!;
