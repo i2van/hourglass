@@ -1499,8 +1499,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         switch (e.PropertyName)
         {
-            case nameof(Options.WindowTitleMode) when Options.WindowTitleMode != WindowTitleMode.None && !Options.HideWindowTitleBar:
-            case nameof(Options.HideWindowTitleBar) when !Options.HideWindowTitleBar && Options.WindowTitleMode != WindowTitleMode.None:
+            case nameof(Options.WindowTitleMode) or nameof(Options.HideWindowTitleBar) when Options.WindowTitleMode != WindowTitleMode.None && !Options.HideWindowTitleBar:
                 Width  = Math.Max(Width,  this.GetMinTrackWidth());
                 Height = Math.Max(Height, this.GetMinTrackHeight());
                 break;
