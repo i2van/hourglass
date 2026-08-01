@@ -315,6 +315,14 @@ Options:
         Default value   last
         Alias           -i, /i
 
+  --hide-window-title-bar on|off|last
+        Hides the timer window title bar, while still using the window title
+        for the taskbar.
+
+        Required        no
+        Default value   last
+        Alias           -hb, /hb
+
   --window-state normal|maximized|minimized|last
         Sets the state of the timer window.
 
@@ -397,6 +405,7 @@ Options:
             --save-timer-on-closing       -sc on
             --prefer-24h-time             -j  off
             --window-title                -i  app
+            --hide-window-title-bar       -hb off
             --window-state                -w  normal
             --window-bounds               -b  auto,auto,355,160
             --lock-interface              -z  off

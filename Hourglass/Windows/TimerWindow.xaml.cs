@@ -366,6 +366,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     public Theme? Theme => _theme;
 
     /// <summary>
+    /// Gets a value indicating whether the window title bar should be hidden.
+    /// </summary>
+    public bool IsWindowTitleBarHidden => Options.WindowTitleMode == WindowTitleMode.None || Options.HideWindowTitleBar;
+
+    /// <summary>
     /// Gets or sets a value indicating whether the window is in full-screen mode.
     /// </summary>
     public bool IsFullScreen
@@ -1494,7 +1499,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         switch (e.PropertyName)
         {
-            case nameof(Options.WindowTitleMode) when Options.WindowTitleMode != WindowTitleMode.None:
+            case nameof(Options.WindowTitleMode) or nameof(Options.HideWindowTitleBar) when Options.WindowTitleMode != WindowTitleMode.None && !Options.HideWindowTitleBar:
                 Width  = Math.Max(Width,  this.GetMinTrackWidth());
                 Height = Math.Max(Height, this.GetMinTrackHeight());
                 break;
@@ -1504,6 +1509,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 PropertyChangedEventManager.AddHandler(_theme, ThemePropertyChanged, string.Empty);
                 SetImmersiveDarkMode();
                 break;
+        }
+
+        if (e.PropertyName is nameof(Options.WindowTitleMode) or nameof(Options.HideWindowTitleBar))
+        {
+            PropertyChanged.Notify(this, nameof(IsWindowTitleBarHidden));
         }
 
         UpdateBoundControls();

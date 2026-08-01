@@ -67,6 +67,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _promptOnExitMenuItem = null!;
 
     /// <summary>
+    /// The "Hide window title bar" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _hideWindowTitleBarMenuItem = null!;
+
+    /// <summary>
     /// The "Show progress in taskbar" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _showProgressInTaskbarMenuItem = null!;
@@ -478,6 +483,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             menuItem.IsChecked = windowTitleMode == _timerWindow.Options.WindowTitleMode;
         }
 
+        // Hide window title bar
+        _hideWindowTitleBarMenuItem.IsChecked = _timerWindow.Options.HideWindowTitleBar;
+
         void UpdatePauseResumeAll()
         {
             var canPauseAll = TimerManager.CanPauseAll();
@@ -584,6 +592,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _timerWindow.Options.WindowTitleMode = selectedWindowTitleMenuItem is not null
             ? (WindowTitleMode)selectedWindowTitleMenuItem.Tag
             : WindowTitleMode.ApplicationName;
+
+        // Hide window title bar
+        _timerWindow.Options.HideWindowTitleBar = _hideWindowTitleBarMenuItem.IsChecked;
     }
 
     /// <summary>
@@ -772,6 +783,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _selectableWindowTitleMenuItems.Add(timerTitlePlusTimeElapsedWindowTitleMenuItem);
 
         Items.Add(windowTitleMenuItem);
+
+        // Hide window title bar
+        _hideWindowTitleBarMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuHideWindowTitleBarMenuItem
+        };
+        _hideWindowTitleBarMenuItem.Click += CheckableMenuItemClick;
+        Items.Add(_hideWindowTitleBarMenuItem);
 
         Items.Add(new Separator());
 

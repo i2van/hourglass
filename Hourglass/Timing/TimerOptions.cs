@@ -95,6 +95,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Sound = Sound.DefaultSound;
         LoopSound = false;
         WindowTitleMode = WindowTitleMode.ApplicationName;
+        HideWindowTitleBar = false;
         WindowSize = new(
             new(double.PositiveInfinity, double.PositiveInfinity, InterfaceScaler.BaseWindowWidth, InterfaceScaler.BaseWindowHeight),
             WindowState.Normal,
@@ -516,6 +517,25 @@ public sealed class TimerOptions : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the timer window title bar should be hidden.
+    /// </summary>
+    public bool HideWindowTitleBar
+    {
+        get;
+
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the size, position, and state of the timer window.
     /// </summary>
     public WindowSize? WindowSize
@@ -608,11 +628,13 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Sound = options.Sound;
         LoopSound = options.LoopSound;
         WindowTitleMode = options.WindowTitleMode;
+        HideWindowTitleBar = options.HideWindowTitleBar;
         WindowSize = WindowSize.FromWindowSize(options.WindowSize);
         LockInterface = options.LockInterface;
 
         PropertyChanged.Notify(this,
             nameof(WindowTitleMode),
+            nameof(HideWindowTitleBar),
             nameof(WindowSize),
             nameof(Title),
             nameof(AlwaysOnTop),
@@ -667,11 +689,13 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Sound = Sound.FromIdentifier(info.SoundIdentifier);
         LoopSound = info.LoopSound;
         WindowTitleMode = info.WindowTitleMode;
+        HideWindowTitleBar = info.HideWindowTitleBar;
         WindowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
         LockInterface = info.LockInterface;
 
         PropertyChanged.Notify(this,
             nameof(WindowTitleMode),
+            nameof(HideWindowTitleBar),
             nameof(WindowSize),
             nameof(Title),
             nameof(AlwaysOnTop),
@@ -722,6 +746,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             SoundIdentifier = Sound?.Identifier,
             LoopSound = LoopSound,
             WindowTitleMode = WindowTitleMode,
+            HideWindowTitleBar = HideWindowTitleBar,
             WindowSize = WindowSizeInfo.FromWindowSize(WindowSize)!,
             LockInterface = LockInterface
         };

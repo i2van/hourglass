@@ -21,7 +21,7 @@
         <Style TargetType="{x:Type Window}">
             <Style.Triggers>
                 <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                <DataTrigger Binding="{Binding Options.WindowTitleMode, RelativeSource={RelativeSource Self}, Mode=OneWay}" Value="None">
+                <DataTrigger Binding="{Binding IsWindowTitleBarHidden, RelativeSource={RelativeSource Self}, Mode=OneWay}" Value="True">
                     <Setter Property="WindowStyle" Value="None"/>
                     <Setter Property="WindowChrome.WindowChrome">
                         <Setter.Value>

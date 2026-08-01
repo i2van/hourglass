@@ -773,6 +773,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide window title _bar.
+        /// </summary>
+        public static string ContextMenuHideWindowTitleBarMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuHideWindowTitleBarMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en-US.
         /// </summary>
         public static string CultureName {

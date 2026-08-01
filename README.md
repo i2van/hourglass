@@ -162,6 +162,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - The **Resume all** timer window context menu command resumes all the paused timers. Command-line command is [`resume`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+resume)
 - The **Pause after each loop** timer window context menu command pauses the loop timer when it expires. Command-line command is [`--pause-after-loop-timer`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--pause-after-loop-timer), `-pl`, `/pl`
 - The **Minimize when expired** timer window context menu command minimizes the timer window when the timer expires. Command-line option is [`--minimize-when-expired`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--minimize-when-expired), `-em`, `/em`
+- The **Hide window title bar** timer window context menu option hides the timer window title bar while still using the timer window title for the taskbar. The command-line option is [`--hide-window-title-bar`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title-bar), `-hb`, `/hb`
 
 #### Other
 
