@@ -249,6 +249,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         _scaler.Bind(this);
 
         TimerManager.Instance.Add(Timer);
+
+        UpdateShowInTaskbar();
+        PropertyChangedEventManager.AddHandler(Settings.Default, SettingsPropertyChanged, string.Empty);
     }
 
     private void UpdateShellIntegration()
@@ -1291,7 +1294,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     private void UpdateTaskbarProgress()
     {
-        if (!Options.ShowProgressInTaskbar)
+        if (!Options.ShowProgressInTaskbar || !ShowInTaskbar)
         {
             TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
             return;
@@ -1518,6 +1521,19 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         UpdateBoundControls();
     }
+
+    private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(Settings.Default.ShowInNotificationArea) or nameof(Settings.Default.HideFromTaskbarWhenInNotificationArea))
+        {
+            UpdateShowInTaskbar();
+            UpdateBoundControls();
+            UpdateShellIntegration();
+        }
+    }
+
+    private void UpdateShowInTaskbar() =>
+        ShowInTaskbar = !(Settings.Default.ShowInNotificationArea && Settings.Default.HideFromTaskbarWhenInNotificationArea);
 
     private void UpdateTimeToolTip()
     {
@@ -2199,6 +2215,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
             PropertyChangedEventManager.RemoveHandler(_theme, ThemePropertyChanged, string.Empty);
             PropertyChangedEventManager.RemoveHandler(UpdateManager.Instance, UpdateManagerPropertyChanged, string.Empty);
+            PropertyChangedEventManager.RemoveHandler(Settings.Default, SettingsPropertyChanged, string.Empty);
 
             KeepAwakeManager.Instance.StopKeepAwakeFor(ID);
             AppManager.Instance.Persist();
