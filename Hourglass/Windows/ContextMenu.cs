@@ -222,6 +222,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _showTriggerTimeMenuItem = null!;
 
     /// <summary>
+    /// The "Reset expired timer when clicked" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _resetExpiredTimerMenuItem = null!;
+
+    /// <summary>
     /// The "Shut down when expired" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _shutDownWhenExpiredMenuItem = null!;
@@ -468,6 +473,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         // Show trigger time
         _showTriggerTimeMenuItem.IsChecked = _timerWindow.Options.ShowTriggerTime;
 
+        // Reset expired timer when clicked
+        _resetExpiredTimerMenuItem.IsChecked = _timerWindow.Options.ResetExpiredTimer;
+
         // Shut down when expired
         if (_timerWindow.Options is { LoopTimer: false, LoopSound: false })
         {
@@ -593,6 +601,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         // Show time elapsed
         _timerWindow.Options.ShowTriggerTime = _showTriggerTimeMenuItem.IsChecked;
+
+        // Reset expired timer when clicked
+        _timerWindow.Options.ResetExpiredTimer = _resetExpiredTimerMenuItem.IsChecked;
 
         // Shut down when expired
         if (_shutDownWhenExpiredMenuItem.IsEnabled)
@@ -952,6 +963,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         };
         _activateNextWindowMenuItem.Click += CheckableMenuItemClick;
         advancedOptionsMenuItem.Items.Add(_activateNextWindowMenuItem);
+
+        // Reset expired timer when clicked
+        _resetExpiredTimerMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuResetExpiredTimerMenuItem
+        };
+        _resetExpiredTimerMenuItem.Click += CheckableMenuItemClick;
+        advancedOptionsMenuItem.Items.Add(_resetExpiredTimerMenuItem);
 
         _orderByTitleFirstMenuItem = new CheckableMenuItem
         {

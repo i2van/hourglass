@@ -16,6 +16,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How do I stop the timer from popping up on top of other windows when it expires?](#how-do-i-stop-the-timer-from-popping-up-on-top-of-other-windows-when-it-expires)
 - [How do I automatically close the timer window when the timer expires?](#how-do-i-automatically-close-the-timer-window-when-the-timer-expires)
 - [How do I automatically shut down Windows when the timer expires?](#how-do-i-automatically-shut-down-windows-when-the-timer-expires)
+- [How do I reset the expired timer by clicking on it?](#how-do-i-reset-the-expired-timer-by-clicking-on-it)
 - [How do I start a timer for a duration or until a date and time that I recently entered?](#how-do-i-start-a-timer-for-a-duration-or-until-a-date-and-time-that-i-recently-entered)
 - [How do I clear recently entered durations and dates and times?](#how-do-i-clear-recently-entered-durations-and-dates-and-times)
 - [How do I resume a timer that I accidentally closed?](#how-do-i-resume-a-timer-that-i-accidentally-closed)
@@ -302,6 +303,12 @@ To also hide the timer window from the taskbar, `Right Click` on any empty space
 
 > [!NOTE]
 > The Windows will not shut down until the notification sound has finished playing.
+
+## How do I reset the expired timer by clicking on it?
+
+`Click` on any empty space in the expired timer window or press `Esc`.
+
+By default, clicking the timer or title text field of the expired timer window only switches it to the input mode, so the timer remains marked as expired in the taskbar and in the notification area until a new timer is started. To also reset the expired timer when its timer or title text field is clicked, `Right Click` on any empty space in the timer window and check **Reset expired timer when clicked** in the **Advanced options** submenu. The command-line option is [`--reset-expired-timer`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--reset-expired-timer), `-rt`, `/rt`.
 
 ## How do I start a timer for a duration or until a date and time that I recently entered?
 

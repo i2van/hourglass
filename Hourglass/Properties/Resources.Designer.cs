@@ -584,6 +584,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset e_xpired timer when clicked.
+        /// </summary>
+        public static string ContextMenuResetExpiredTimerMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuResetExpiredTimerMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Reset position and size.
         /// </summary>
         public static string ContextMenuResetPositionAndSizeMenuItem {

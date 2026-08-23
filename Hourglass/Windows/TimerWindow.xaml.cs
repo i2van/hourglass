@@ -682,6 +682,23 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private record CaretAtEndSelection(TextBox TextBox) : Selection(TextBox, () => TextBox.Text.Length, static () => 0);
 
     /// <summary>
+    /// Stops the expired timer if the <see cref="TimerOptions.ResetExpiredTimer"/> option is set, so the expired
+    /// timer status is cleared in the timer window, in the taskbar and in the notification area.
+    /// </summary>
+    /// <returns>A value indicating whether the expired timer was reset.</returns>
+    private bool ResetExpiredTimer()
+    {
+        if (!Options.ResetExpiredTimer || Options.LockInterface || Timer.State != TimerState.Expired)
+        {
+            return false;
+        }
+
+        Timer.Stop();
+
+        return true;
+    }
+
+    /// <summary>
     /// Sets the window to accept user input to start a new <see cref="Timer"/>.
     /// </summary>
     /// <param name="selection">The <see cref="Selection"/> to do. The default is the <see cref="AllSelection"/> of the <see cref="TimerTextBox"/>.</param>
@@ -689,10 +706,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         Mode = TimerWindowMode.Input;
 
+        bool expiredTimerWasReset = ResetExpiredTimer();
+
         TitleTextBox.Text = Timer.Options.Title ?? string.Empty;
 
         selection ??= new AllSelection(TimerTextBox);
-        if (ReferenceEquals(selection.TextBox, TimerTextBox))
+        if (expiredTimerWasReset || ReferenceEquals(selection.TextBox, TimerTextBox))
         {
             AdjustTimerTextBoxText();
         }
