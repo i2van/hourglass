@@ -122,6 +122,12 @@ public sealed class CommandLineArguments
     public bool ShowTriggerTime { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether to reset the expired timer when the timer window switches to the input
+    /// mode, for example when the user clicks the expired timer window.
+    /// </summary>
+    public bool ResetExpiredTimer { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether to loop the timer continuously.
     /// </summary>
     public bool LoopTimer { get; private set; }
@@ -389,6 +395,7 @@ public sealed class CommandLineArguments
             DigitalClockTime = DigitalClockTime,
             ShowTimeElapsed = ShowTimeElapsed,
             ShowTriggerTime = ShowTriggerTime,
+            ResetExpiredTimer = ResetExpiredTimer,
             LoopTimer = LoopTimer,
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
             StartPaused = StartPaused,
@@ -439,6 +446,7 @@ public sealed class CommandLineArguments
             DigitalClockTime = options.DigitalClockTime,
             ShowTimeElapsed = options.ShowTimeElapsed,
             ShowTriggerTime = options.ShowTriggerTime,
+            ResetExpiredTimer = options.ResetExpiredTimer,
             ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
             LoopTimer = options.LoopTimer,
             PauseBeforeLoopTimer = options.PauseBeforeLoopTimer,
@@ -486,6 +494,7 @@ public sealed class CommandLineArguments
             DigitalClockTime = defaultOptions.DigitalClockTime,
             ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
             ShowTriggerTime = defaultOptions.ShowTriggerTime,
+            ResetExpiredTimer = defaultOptions.ResetExpiredTimer,
             ShowInNotificationArea = false,
             LoopTimer = defaultOptions.LoopTimer,
             PauseBeforeLoopTimer = defaultOptions.PauseBeforeLoopTimer,
@@ -697,6 +706,20 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.ShowTriggerTime = showTriggerTime;
                     argumentsBasedOnFactoryDefaults.ShowTriggerTime = showTriggerTime;
+                    break;
+
+                case "--reset-expired-timer":
+                case "-rt":
+                case "/rt":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--reset-expired-timer");
+
+                    bool resetExpiredTimer = GetBoolValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.ResetExpiredTimer);
+
+                    argumentsBasedOnMostRecentOptions.ResetExpiredTimer = resetExpiredTimer;
+                    argumentsBasedOnFactoryDefaults.ResetExpiredTimer = resetExpiredTimer;
                     break;
 
                 case "--show-in-notification-area":

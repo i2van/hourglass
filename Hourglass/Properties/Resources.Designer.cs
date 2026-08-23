@@ -584,6 +584,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automaticall_y reset expired timer.
+        /// </summary>
+        public static string ContextMenuResetExpiredTimerMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuResetExpiredTimerMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Reset position and size.
         /// </summary>
         public static string ContextMenuResetPositionAndSizeMenuItem {

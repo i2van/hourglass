@@ -60,6 +60,12 @@ public sealed class TimerOptionsInfo
     public bool ShowTriggerTime { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether to reset the expired timer when the timer window switches to the
+    /// input mode, for example when the user clicks the expired timer window.
+    /// </summary>
+    public bool ResetExpiredTimer { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether to loop the timer continuously.
     /// </summary>
     public bool LoopTimer { get; set; }
