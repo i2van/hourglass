@@ -1318,9 +1318,9 @@ $</value>
     <value>&amp;Delete</value>
     <comment>Delete a theme task dialog command</comment>
   </data>
-  <data name="ContextMenuNoWindowTitleMenuItem" xml:space="preserve">
-    <value>_None</value>
-    <comment>The text for the application name menu item, where the character following the optional underscore (_) is the access key</comment>
+  <data name="ContextMenuHideWindowTitleMenuItem" xml:space="preserve">
+    <value>_Hide</value>
+    <comment>The text for the hide window title bar menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuApplicationNameWindowTitleMenuItem" xml:space="preserve">
     <value>_Application name</value>

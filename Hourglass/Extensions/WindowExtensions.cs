@@ -485,6 +485,46 @@ public static class WindowExtensions
 
         public void MoveToCurrentVirtualDesktop() =>
             VirtualDesktopManager.Instance.MoveToCurrentVirtualDesktop(window);
+
+        /// <summary>
+        /// Removes the items that are always disabled, as well as the separators, from the window system menu.
+        /// </summary>
+        /// <remarks>
+        /// The system grays out the "Restore", "Size", "Minimize" and "Maximize" items of the system menu of a window
+        /// which cannot be resized, minimized or maximized, so these items are removed depending on the <see
+        /// cref="Window.ResizeMode"/> together with the separator preceding the "Close" item. The window must have a
+        /// handle, so this method is to be invoked when the <see cref="Window.SourceInitialized"/> event is raised or
+        /// later.
+        /// </remarks>
+        public void RemoveDisabledSystemMenuItems()
+        {
+            uint[] disabledCommands = window.ResizeMode switch
+            {
+                ResizeMode.NoResize => [ScRestore, ScSize, ScMinimize, ScMaximize],
+                ResizeMode.CanMinimize => [ScSize, ScMaximize],
+                _ => []
+            };
+
+            if (disabledCommands.Length == 0)
+            {
+                return;
+            }
+
+            IntPtr handle = new WindowInteropHelper(window).Handle;
+            IntPtr systemMenu = handle != IntPtr.Zero ? GetSystemMenu(handle, false) : IntPtr.Zero;
+
+            if (systemMenu == IntPtr.Zero)
+            {
+                return;
+            }
+
+            foreach (uint command in disabledCommands)
+            {
+                DeleteMenu(systemMenu, command, MfByCommand);
+            }
+
+            RemoveMenuSeparators(systemMenu);
+        }
     }
 
     /// <param name="rect">A <see cref="Rect"/>.</param>
@@ -708,6 +748,72 @@ public static class WindowExtensions
     public static bool IsTextBoxView(this object o) =>
         StringComparer.Ordinal.Equals(o.GetType().FullName, "System.Windows.Controls.TextBoxView");
 
+    /// <summary>
+    /// Removes the separators from the specified menu.
+    /// </summary>
+    /// <param name="menu">A handle to the menu.</param>
+    private static void RemoveMenuSeparators(IntPtr menu)
+    {
+        // Deleting an item shifts the positions of the items following it, so the menu is traversed backwards.
+        for (int position = GetMenuItemCount(menu) - 1; position >= 0; position--)
+        {
+            uint state = GetMenuState(menu, (uint)position, MfByPosition);
+
+            if (state != uint.MaxValue && (state & MfSeparator) != 0)
+            {
+                DeleteMenu(menu, (uint)position, MfByPosition);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The <c>MF_BYCOMMAND</c> flag indicating that a menu item is identified by its command.
+    /// </summary>
+    private const uint MfByCommand = 0x00000000;
+
+    /// <summary>
+    /// The <c>MF_BYPOSITION</c> flag indicating that a menu item is identified by its zero-based position.
+    /// </summary>
+    private const uint MfByPosition = 0x00000400;
+
+    /// <summary>
+    /// The <c>MF_SEPARATOR</c> flag indicating that a menu item is a separator.
+    /// </summary>
+    private const uint MfSeparator = 0x00000800;
+
+    /// <summary>
+    /// The <c>SC_SIZE</c> command of the "Size" system menu item.
+    /// </summary>
+    private const uint ScSize = 0xF000;
+
+    /// <summary>
+    /// The <c>SC_MINIMIZE</c> command of the "Minimize" system menu item.
+    /// </summary>
+    private const uint ScMinimize = 0xF020;
+
+    /// <summary>
+    /// The <c>SC_MAXIMIZE</c> command of the "Maximize" system menu item.
+    /// </summary>
+    private const uint ScMaximize = 0xF030;
+
+    /// <summary>
+    /// The <c>SC_RESTORE</c> command of the "Restore" system menu item.
+    /// </summary>
+    private const uint ScRestore = 0xF120;
+
     [DllImport("user32.dll")]
     private static extern int GetSystemMetrics(int nIndex);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+    [DllImport("user32.dll")]
+    private static extern int GetMenuItemCount(IntPtr hMenu);
+
+    [DllImport("user32.dll")]
+    private static extern uint GetMenuState(IntPtr hMenu, uint uId, uint uFlags);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool DeleteMenu(IntPtr hMenu, uint uPosition, uint uFlags);
 }

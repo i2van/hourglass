@@ -383,6 +383,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
             PropertyChanged.Notify(this);
 
+            UpdateTitleBar();
+
             if (field)
             {
                 WindowState = WindowState.Normal; // Needed to put the window on top of the taskbar
@@ -522,6 +524,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="existingTimer">A timer.</param>
     public void Show(Timer existingTimer)
     {
+        bool wasExpired = existingTimer.State == TimerState.Expired;
+
         // Ensure the timer has up-to-date values before binding to avoid stale progress bar on restore
         existingTimer.Update();
 
@@ -538,7 +542,10 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         // Notify expiration if the existing timer is expired
         if (Timer.State == TimerState.Expired)
         {
-            if (Options.LoopSound)
+            // Play the sound if it is looped or if the timer has expired during the update above, before the
+            // Expired event handler was bound, e.g. when the timer expired while the app was not running,
+            // unless an expiration sound is already being played by another window
+            if ((Options.LoopSound || (!wasExpired && !TimerManager.Instance.SilentMode)) && !IsExpirationSoundPlaying())
             {
                 BeginExpirationAnimationAndSound();
             }
@@ -643,11 +650,14 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         if (Timer.State == TimerState.Stopped && Mode == TimerWindowMode.Input)
         {
-            string input = string.IsNullOrWhiteSpace(TimerTextBox.Text)
-                ? Properties.Resources.TimerWindowBlankTitlePlaceholder
-                : TimerTextBox.Text;
+            // The text boxes may not be initialized yet if the window is still being created.
+            string? timerText = TimerTextBox?.Text;
 
-            string title = TitleTextBox.Text;
+            string input = string.IsNullOrWhiteSpace(timerText)
+                ? Properties.Resources.TimerWindowBlankTitlePlaceholder
+                : timerText!;
+
+            string? title = TitleTextBox?.Text;
 
             string format = string.IsNullOrWhiteSpace(title)
                 ? Properties.Resources.TimerWindowNewTimerFormatString
@@ -949,6 +959,13 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     }
 
     /// <summary>
+    /// Returns a value indicating whether an expiration sound is currently being played by any <see cref="TimerWindow"/>.
+    /// </summary>
+    private static bool IsExpirationSoundPlaying() =>
+        Application.Current?.Windows.OfType<TimerWindow>()
+            .Any(static window => window._soundPlayer is { IsValueCreated: true, Value.IsPlaying: true }) == true;
+
+    /// <summary>
     /// Begins the sound used to notify the user that the timer has expired.
     /// </summary>
     private void BeginExpirationSound()
@@ -1117,6 +1134,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         _theme = Options.Theme;
         PropertyChangedEventManager.AddHandler(_theme, ThemePropertyChanged, string.Empty);
 
+        UpdateTitleBar();
         UpdateBoundControls();
     }
 
@@ -1352,7 +1370,6 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         switch (Options.WindowTitleMode)
         {
-            case WindowTitleMode.None: // Although the title bar is hidden in this mode, the window title is still used for the Taskbar.
             case WindowTitleMode.ApplicationName:
                 Title = Properties.Resources.TimerWindowTitle;
                 break;
@@ -1494,9 +1511,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         switch (e.PropertyName)
         {
-            case nameof(Options.WindowTitleMode) when Options.WindowTitleMode != WindowTitleMode.None:
-                Width  = Math.Max(Width,  this.GetMinTrackWidth());
-                Height = Math.Max(Height, this.GetMinTrackHeight());
+            case nameof(Options.WindowTitleMode):
+            case nameof(Options.HideWindowTitleBar):
+                UpdateTitleBar(true /* keepClientSize */);
                 break;
             case nameof(Options.Theme):
                 PropertyChangedEventManager.RemoveHandler(_theme, ThemePropertyChanged, string.Empty);

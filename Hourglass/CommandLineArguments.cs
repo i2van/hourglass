@@ -199,6 +199,11 @@ public sealed class CommandLineArguments
     public WindowTitleMode WindowTitleMode { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether the timer window title bar is hidden.
+    /// </summary>
+    public bool HideWindowTitleBar { get; private set; }
+
+    /// <summary>
     /// Gets a value that indicates whether the timer window is restored, minimized, or maximized.
     /// </summary>
     public WindowState WindowState { get; private set; }
@@ -399,6 +404,8 @@ public sealed class CommandLineArguments
             Theme = Theme,
             Sound = Sound,
             LoopSound = LoopSound,
+            // HideWindowTitleBar must be set before WindowTitleMode, which overrides it for the obsolete None mode.
+            HideWindowTitleBar = HideWindowTitleBar,
             WindowTitleMode = WindowTitleMode,
             WindowSize = GetWindowSize(),
             LockInterface = LockInterface
@@ -455,6 +462,7 @@ public sealed class CommandLineArguments
             ActivateNextWindow = Settings.Default.ActivateNextWindow,
             OrderByTitleFirst = Settings.Default.OrderByTitleFirst,
             WindowTitleMode = options.WindowTitleMode,
+            HideWindowTitleBar = options.HideWindowTitleBar,
             WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
             RestoreWindowState = windowSize.RestoreWindowState,
             WindowBounds = windowSize.RestoreBounds,
@@ -502,6 +510,7 @@ public sealed class CommandLineArguments
             ActivateNextWindow = true,
             OrderByTitleFirst = false,
             WindowTitleMode = WindowTitleMode.ApplicationName,
+            HideWindowTitleBar = defaultOptions.HideWindowTitleBar,
             WindowState = defaultOptions.WindowSize?.WindowState ?? WindowState.Normal,
             RestoreWindowState = defaultOptions.WindowSize?.RestoreWindowState ?? WindowState.Normal,
             WindowBounds = defaultWindowBoundsWithLocation,
@@ -935,6 +944,20 @@ public sealed class CommandLineArguments
                     argumentsBasedOnFactoryDefaults.WindowTitleMode = windowTitleMode;
                     break;
 
+                case "--hide-window-title":
+                case "-ht":
+                case "/ht":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--hide-window-title");
+
+                    bool hideWindowTitleBar = GetBoolValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.HideWindowTitleBar);
+
+                    argumentsBasedOnMostRecentOptions.HideWindowTitleBar = hideWindowTitleBar;
+                    argumentsBasedOnFactoryDefaults.HideWindowTitleBar = hideWindowTitleBar;
+                    break;
+
                 case "--window-state":
                 case "-w":
                 case "/w":
@@ -1245,7 +1268,7 @@ public sealed class CommandLineArguments
 
         switch (value.ToLowerInvariant())
         {
-            case "none":
+            case "none": // Obsolete. Hides the window title bar and shows the application name instead.
                 return WindowTitleMode.None;
 
             case "app":

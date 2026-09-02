@@ -149,7 +149,7 @@ public static class TimerWindowExtensions
                 _jumpListDisabled = true;
 
                 jumpList.JumpItems.Clear();
-                jumpList.Apply();
+                ApplyJumpList(jumpList);
 
                 return;
             }
@@ -175,17 +175,30 @@ public static class TimerWindowExtensions
                 });
             }
 
-            window.Dispatcher.Invoke(() => ApplyJumpList(++_lastUpdatedJumpListID), force ? DispatcherPriority.Normal : DispatcherPriority.Background);
+            var jumpListID = ++_lastUpdatedJumpListID;
 
-            void ApplyJumpList(int jumpListID)
+            window.Dispatcher.BeginInvoke(() => ApplyLastJumpList(jumpListID), force ? DispatcherPriority.Normal : DispatcherPriority.Background);
+
+            void ApplyLastJumpList(int appliedJumpListID)
             {
-                if (_lastUpdatedJumpListID != jumpListID)
+                if (_lastUpdatedJumpListID != appliedJumpListID)
                 {
                     return;
                 }
 
-                jumpList.Apply();
+                ApplyJumpList(jumpList);
             }
+        }
+    }
+
+    private static void ApplyJumpList(JumpList jumpList)
+    {
+        try
+        {
+            jumpList.Apply();
+        }
+        catch (Exception ex) when (ex.CanBeHandled())
+        {
         }
     }
 

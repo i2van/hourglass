@@ -351,6 +351,8 @@ By default, the timer window title displays the application name **Hourglass**. 
 
 `Right Click` on any empty space in the timer window and then select the appropriate option from the **Window title** submenu.
 
+The **Hide** option from the **Window title** submenu hides the timer window title bar without changing the timer window title itself. The command-line option is [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
+
 ## How do I change the timer window color theme?
 
 `Right Click` on any empty space in the timer window and select a color theme from the **Theme** submenu.

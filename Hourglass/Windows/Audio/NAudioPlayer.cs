@@ -30,7 +30,12 @@ internal class NAudioPlayer : IAudioPlayer
 
     public void Play()
     {
-        _audioFile!.Position = 0;
+        if (_audioFile is null)
+        {
+            return;
+        }
+
+        _audioFile.Position = 0;
         _waveOutEvent.Play();
     }
 

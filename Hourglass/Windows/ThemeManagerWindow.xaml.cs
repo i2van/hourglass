@@ -152,6 +152,14 @@ public sealed partial class ThemeManagerWindow
         }
     }
 
+    /// <inheritdoc />
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        this.RemoveDisabledSystemMenuItems();
+
+        base.OnSourceInitialized(e);
+    }
+
     /// <summary>
     /// Removes focus from all controls.
     /// </summary>

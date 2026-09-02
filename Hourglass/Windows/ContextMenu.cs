@@ -227,6 +227,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private IList<MenuItem> _selectableWindowTitleMenuItems = null!;
 
     /// <summary>
+    /// The "Hide" window title bar <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _hideWindowTitleBarMenuItem = null!;
+
+    /// <summary>
     /// The "Restore" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _restoreMenuItem = null!;
@@ -472,6 +477,8 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             Settings.Default.ShutDownWhenExpiredTimeout);
 
         // Window title
+        _hideWindowTitleBarMenuItem.IsChecked = _timerWindow.Options.HideWindowTitleBar;
+
         foreach (var menuItem in _selectableWindowTitleMenuItems)
         {
             var windowTitleMode = (WindowTitleMode)menuItem.Tag;
@@ -580,6 +587,8 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         }
 
         // Window title
+        _timerWindow.Options.HideWindowTitleBar = _hideWindowTitleBarMenuItem.IsChecked;
+
         var selectedWindowTitleMenuItem = _selectableWindowTitleMenuItems.FirstOrDefault(static mi => mi.IsChecked);
         _timerWindow.Options.WindowTitleMode = selectedWindowTitleMenuItem is not null
             ? (WindowTitleMode)selectedWindowTitleMenuItem.Tag
@@ -664,16 +673,13 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             Header = Properties.Resources.ContextMenuWindowTitleMenuItem
         };
 
-        // No window title
-        MenuItem noWindowTitleMenuItem = new CheckableMenuItem
+        // Hide window title bar
+        _hideWindowTitleBarMenuItem = new CheckableMenuItem
         {
-            Header = Properties.Resources.ContextMenuNoWindowTitleMenuItem,
-            Tag = WindowTitleMode.None
+            Header = Properties.Resources.ContextMenuHideWindowTitleMenuItem
         };
-        noWindowTitleMenuItem.Click += WindowTitleMenuItemClick;
-        noWindowTitleMenuItem.Click += CheckableMenuItemClick;
-        windowTitleMenuItem.Items.Add(noWindowTitleMenuItem);
-        _selectableWindowTitleMenuItems.Add(noWindowTitleMenuItem);
+        _hideWindowTitleBarMenuItem.Click += CheckableMenuItemClick;
+        windowTitleMenuItem.Items.Add(_hideWindowTitleBarMenuItem);
 
         windowTitleMenuItem.Items.Add(new Separator());
 
@@ -1770,8 +1776,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     {
         ExitFullScreen();
 
-        _timerWindow.Width = InterfaceScaler.BaseWindowWidth;
-        _timerWindow.Height = InterfaceScaler.BaseWindowHeight;
+        _timerWindow.ResetSize();
 
         _timerWindow.CenterOnScreen();
     }

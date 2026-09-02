@@ -20,7 +20,8 @@ using Windows;
 public enum WindowTitleMode
 {
     /// <summary>
-    /// Hides the timer window title bar.
+    /// This mode is obsolete. When it is specified, the <see cref="TimerOptions.HideWindowTitleBar"/> option is
+    /// set instead, and the timer window title is set to show the application name.
     /// </summary>
     None,
 
@@ -95,6 +96,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Sound = Sound.DefaultSound;
         LoopSound = false;
         WindowTitleMode = WindowTitleMode.ApplicationName;
+        HideWindowTitleBar = false;
         WindowSize = new(
             new(double.PositiveInfinity, double.PositiveInfinity, InterfaceScaler.BaseWindowWidth, InterfaceScaler.BaseWindowHeight),
             WindowState.Normal,
@@ -505,6 +507,33 @@ public sealed class TimerOptions : INotifyPropertyChanged
 
         set
         {
+            // The None mode is obsolete. Hide the window title bar and show the application name instead.
+            if (value == WindowTitleMode.None)
+            {
+                HideWindowTitleBar = true;
+                value = WindowTitleMode.ApplicationName;
+            }
+
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the timer window title bar is hidden. The timer window title itself
+    /// is not affected.
+    /// </summary>
+    public bool HideWindowTitleBar
+    {
+        get;
+
+        set
+        {
             if (field == value)
             {
                 return;
@@ -607,12 +636,15 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Theme = options.Theme;
         Sound = options.Sound;
         LoopSound = options.LoopSound;
+        // HideWindowTitleBar must be set before WindowTitleMode, which overrides it for the obsolete None mode.
+        HideWindowTitleBar = options.HideWindowTitleBar;
         WindowTitleMode = options.WindowTitleMode;
         WindowSize = WindowSize.FromWindowSize(options.WindowSize);
         LockInterface = options.LockInterface;
 
         PropertyChanged.Notify(this,
             nameof(WindowTitleMode),
+            nameof(HideWindowTitleBar),
             nameof(WindowSize),
             nameof(Title),
             nameof(AlwaysOnTop),
@@ -666,12 +698,15 @@ public sealed class TimerOptions : INotifyPropertyChanged
         Theme = Theme.FromIdentifier(info.ThemeIdentifier);
         Sound = Sound.FromIdentifier(info.SoundIdentifier);
         LoopSound = info.LoopSound;
+        // HideWindowTitleBar must be set before WindowTitleMode, which overrides it for the obsolete None mode.
+        HideWindowTitleBar = info.HideWindowTitleBar;
         WindowTitleMode = info.WindowTitleMode;
         WindowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
         LockInterface = info.LockInterface;
 
         PropertyChanged.Notify(this,
             nameof(WindowTitleMode),
+            nameof(HideWindowTitleBar),
             nameof(WindowSize),
             nameof(Title),
             nameof(AlwaysOnTop),
@@ -722,6 +757,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             SoundIdentifier = Sound?.Identifier,
             LoopSound = LoopSound,
             WindowTitleMode = WindowTitleMode,
+            HideWindowTitleBar = HideWindowTitleBar,
             WindowSize = WindowSizeInfo.FromWindowSize(WindowSize)!,
             LockInterface = LockInterface
         };

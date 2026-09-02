@@ -6,6 +6,7 @@
 
 namespace Hourglass.Managers;
 
+using System;
 using System.Linq;
 using System.Windows;
 
@@ -27,6 +28,12 @@ public sealed class TimerOptionsManager : Manager
     /// The most recent <see cref="TimerOptions"/>.
     /// </summary>
     private TimerOptions _mostRecentOptions = new();
+
+    /// <summary>
+    /// The <see cref="TimerWindow.MenuLastShown"/> date and time for the window the <see cref="_mostRecentOptions"/>
+    /// were taken from.
+    /// </summary>
+    private DateTime _mostRecentOptionsMenuLastShown;
 
     /// <summary>
     /// Prevents a default instance of the <see cref="TimerOptionsManager"/> class from being created.
@@ -71,12 +78,21 @@ public sealed class TimerOptionsManager : Manager
         }
 
         // Get the options most recently shown to the user from a window that is still open
-        var options = Application.Current.Windows.OfType<TimerWindow>()
+        TimerWindow? window = Application.Current.Windows.OfType<TimerWindow>()
             .Where(static window => window.IsVisible)
             .OrderByDescending(static window => window.MenuLastShown)
-            .Select(static window => window.Options);
+            .FirstOrDefault();
 
-        _mostRecentOptions = TimerOptions.FromTimerOptions(options.FirstOrDefault()) ?? _mostRecentOptions;
+        // Keep the most recent options if the window options are older, e.g., when the window is made visible only
+        // to confirm the exit
+        if (window is null || window.MenuLastShown < _mostRecentOptionsMenuLastShown)
+        {
+            return;
+        }
+
+        _mostRecentOptionsMenuLastShown = window.MenuLastShown;
+
+        _mostRecentOptions = TimerOptions.FromTimerOptions(window.Options)!;
 
         // Never save a title
         _mostRecentOptions.Title = string.Empty;
