@@ -68,7 +68,7 @@ jobs:
     # Upload artifacts
 
     - name: Publish ${{env.NAME}} ${{env.CONFIG}} Installer
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         path: |
           ${{env.NAME}}.Bundle/bin/x86/${{env.CONFIG}}/${{env.NAME}}Installer.exe
@@ -76,7 +76,7 @@ jobs:
         retention-days: ${{env.RETENTION_DAYS}}
 
     - name: Publish ${{env.NAME}} ${{env.CONFIG_PORTABLE}}
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: ${{env.NAME}}Portable
         path: |
@@ -87,7 +87,7 @@ jobs:
         retention-days: ${{env.RETENTION_DAYS}}
 
     - name: Publish ${{env.NAUDIO_ARTIFACT}}
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: ${{env.NAUDIO_ARTIFACT}}
         path: |
