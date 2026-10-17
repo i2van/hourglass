@@ -1186,6 +1186,10 @@ $</value>
     <value>Show _trigger time</value>
     <comment>The text for the show trigger time menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuResetExpiredTimerMenuItem" xml:space="preserve">
+    <value>Automaticall_y reset expired timer</value>
+    <comment>The text for the automatically reset expired timer menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuDoNotKeepComputerAwakeMenuItem" xml:space="preserve">
     <value>Do not _keep computer awake</value>
     <comment>The text for the do not keep computer awake menu item, where the character following the optional underscore (_) is the access key</comment>

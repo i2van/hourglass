@@ -85,6 +85,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         DigitalClockTime = false;
         ShowTimeElapsed = false;
         ShowTriggerTime = false;
+        ResetExpiredTimer = false;
         LoopTimer = false;
         PauseBeforeLoopTimer = false;
         StartPaused = false;
@@ -291,6 +292,26 @@ public sealed class TimerOptions : INotifyPropertyChanged
     /// Gets or sets a value indicating whether to show the trigger time.
     /// </summary>
     public bool ShowTriggerTime
+    {
+        get;
+
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to reset the expired timer when the timer window switches to the
+    /// input mode, for example when the user clicks the expired timer window.
+    /// </summary>
+    public bool ResetExpiredTimer
     {
         get;
 
@@ -626,6 +647,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         DigitalClockTime = options.DigitalClockTime;
         ShowTimeElapsed = options.ShowTimeElapsed;
         ShowTriggerTime = options.ShowTriggerTime;
+        ResetExpiredTimer = options.ResetExpiredTimer;
         LoopTimer = options.LoopTimer;
         PauseBeforeLoopTimer = options.PauseBeforeLoopTimer;
         StartPaused = options.StartPaused;
@@ -654,6 +676,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             nameof(ReverseProgressBar),
             nameof(DigitalClockTime),
             nameof(ShowTimeElapsed),
+            nameof(ResetExpiredTimer),
             nameof(LoopTimer),
             nameof(PauseBeforeLoopTimer),
             nameof(StartPaused),
@@ -688,6 +711,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         DigitalClockTime = info.DigitalClockTime;
         ShowTimeElapsed = info.ShowTimeElapsed;
         ShowTriggerTime = info.ShowTriggerTime;
+        ResetExpiredTimer = info.ResetExpiredTimer;
         LoopTimer = info.LoopTimer;
         PauseBeforeLoopTimer = info.PauseBeforeLoopTimer;
         StartPaused = info.StartPaused;
@@ -716,6 +740,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             nameof(ReverseProgressBar),
             nameof(DigitalClockTime),
             nameof(ShowTimeElapsed),
+            nameof(ResetExpiredTimer),
             nameof(LoopTimer),
             nameof(PauseBeforeLoopTimer),
             nameof(StartPaused),
@@ -746,6 +771,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             DigitalClockTime = DigitalClockTime,
             ShowTimeElapsed = ShowTimeElapsed,
             ShowTriggerTime = ShowTriggerTime,
+            ResetExpiredTimer = ResetExpiredTimer,
             LoopTimer = LoopTimer,
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
             StartPaused = StartPaused,

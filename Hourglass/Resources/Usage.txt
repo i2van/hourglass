@@ -131,6 +131,16 @@ Options:
         Default value   last
         Alias           -st, /st
 
+  --reset-expired-timer on|off|last
+        Resets the expired timer when its window switches to the input mode,
+        for example when the expired timer window is clicked, so the expired
+        timer is no longer marked as expired in the timer window, in the
+        taskbar and in the notification area.
+
+        Required        no
+        Default value   last
+        Alias           -rt, /rt
+
   --multi-timers on|off
         Treats each <input> command-line argument as an individual timer.
 
@@ -388,6 +398,7 @@ Options:
             --digital-clock-time          -c  off
             --show-time-elapsed           -u  off
             --show-trigger-time           -st off
+            --reset-expired-timer         -rt off
             --multi-timers                -mt off
             --loop-timer                  -l  off
             --pause-after-loop-timer      -pl off
