@@ -1541,7 +1541,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
     private void SettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(Settings.Default.ShowInNotificationArea) or nameof(Settings.Default.HideFromTaskbarWhenInNotificationArea))
+        if (e.PropertyName is nameof(Settings.Default.ShowInNotificationArea) or nameof(Settings.Default.HideFromTaskbar))
         {
             UpdateShowInTaskbar();
             UpdateBoundControls();
@@ -1549,8 +1549,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
     }
 
+    /// <summary>
+    /// Hides the window from the taskbar if <see cref="Settings.HideFromTaskbar"/> is <c>true</c> and
+    /// <see cref="Settings.ShowInNotificationArea"/> is <c>true</c>; shows it in the taskbar otherwise.
+    /// </summary>
     private void UpdateShowInTaskbar() =>
-        ShowInTaskbar = !(Settings.Default.ShowInNotificationArea && Settings.Default.HideFromTaskbarWhenInNotificationArea);
+        ShowInTaskbar = !(Settings.Default.ShowInNotificationArea && Settings.Default.HideFromTaskbar);
 
     private void UpdateTimeToolTip()
     {

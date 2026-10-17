@@ -862,9 +862,9 @@ $</value>
     <value>S_how in notification area</value>
     <comment>The text for the show in notification area menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
-  <data name="ContextMenuHideFromTaskbarWhenInNotificationAreaMenuItem" xml:space="preserve">
-    <value>_Hide from taskbar if shown in notification area</value>
-    <comment>The text for the hide from taskbar if shown in notification area menu item, where the character following the optional underscore (_) is the access key</comment>
+  <data name="ContextMenuHideFromTaskbarMenuItem" xml:space="preserve">
+    <value>Hide from task_bar</value>
+    <comment>The text for the hide from taskbar menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuSoundMenuItem" xml:space="preserve">
     <value>_Sound</value>

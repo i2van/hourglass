@@ -61,12 +61,12 @@ namespace Hourglass.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool HideFromTaskbarWhenInNotificationArea {
+        public bool HideFromTaskbar {
             get {
-                return ((bool)(this["HideFromTaskbarWhenInNotificationArea"]));
+                return ((bool)(this["HideFromTaskbar"]));
             }
             set {
-                this["HideFromTaskbarWhenInNotificationArea"] = value;
+                this["HideFromTaskbar"] = value;
             }
         }
         

@@ -656,11 +656,11 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Hide from taskbar if shown in notification area.
+        ///   Looks up a localized string similar to Hide from task_bar.
         /// </summary>
-        public static string ContextMenuHideFromTaskbarWhenInNotificationAreaMenuItem {
+        public static string ContextMenuHideFromTaskbarMenuItem {
             get {
-                return ResourceManager.GetString("ContextMenuHideFromTaskbarWhenInNotificationAreaMenuItem", resourceCulture);
+                return ResourceManager.GetString("ContextMenuHideFromTaskbarMenuItem", resourceCulture);
             }
         }
         
