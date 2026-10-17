@@ -656,6 +656,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide from task_bar.
+        /// </summary>
+        public static string ContextMenuHideFromTaskbarMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuHideFromTaskbarMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to S_how progress in taskbar.
         /// </summary>
         public static string ContextMenuShowProgressInTaskbarMenuItem {

@@ -60,6 +60,18 @@ namespace Hourglass.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HideFromTaskbar {
+            get {
+                return ((bool)(this["HideFromTaskbar"]));
+            }
+            set {
+                this["HideFromTaskbar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::Hourglass.Serialization.TimerInfoList TimerInfos {
             get {
                 return ((global::Hourglass.Serialization.TimerInfoList)(this["TimerInfos"]));

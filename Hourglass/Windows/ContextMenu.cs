@@ -77,6 +77,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _showInNotificationAreaMenuItem = null!;
 
     /// <summary>
+    /// The "Hide from taskbar" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _hideFromTaskbarMenuItem = null!;
+
+    /// <summary>
     /// The "Loop timer" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _loopTimerMenuItem = null!;
@@ -385,7 +390,10 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _showProgressInTaskbarMenuItem.IsChecked = _timerWindow.Options.ShowProgressInTaskbar;
 
         // Show in notification area
+        // Hide from taskbar
         _showInNotificationAreaMenuItem.IsChecked = Settings.Default.ShowInNotificationArea;
+        _hideFromTaskbarMenuItem.IsEnabled = Settings.Default.ShowInNotificationArea;
+        _hideFromTaskbarMenuItem.IsChecked = _hideFromTaskbarMenuItem.IsEnabled && Settings.Default.HideFromTaskbar;
 
         // Loop timer
         // Pause before looping
@@ -515,6 +523,12 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         // Show in notification area
         Settings.Default.ShowInNotificationArea = _showInNotificationAreaMenuItem.IsChecked;
+
+        // Hide from taskbar
+        if (_hideFromTaskbarMenuItem.IsEnabled)
+        {
+            Settings.Default.HideFromTaskbar = _hideFromTaskbarMenuItem.IsChecked;
+        }
 
         // Loop timer
         if (_loopTimerMenuItem.IsEnabled)
@@ -804,6 +818,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         };
         _showInNotificationAreaMenuItem.Click += CheckableMenuItemClick;
         Items.Add(_showInNotificationAreaMenuItem);
+
+        // Hide from taskbar
+        _hideFromTaskbarMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuHideFromTaskbarMenuItem
+        };
+        _hideFromTaskbarMenuItem.Click += CheckableMenuItemClick;
+        Items.Add(_hideFromTaskbarMenuItem);
 
         Items.Add(new Separator());
 
@@ -1822,4 +1844,3 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             (IsCheckable, StaysOpenOnClick) = (true, true);
     }
 }
-

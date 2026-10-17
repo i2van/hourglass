@@ -102,6 +102,12 @@ public sealed class CommandLineArguments
     public bool ShowInNotificationArea { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether the timer window should be hidden from the taskbar. Applies only if
+    /// <see cref="ShowInNotificationArea"/> is <c>true</c>.
+    /// </summary>
+    public bool HideFromTaskbar { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether to reverse the progress bar (count backwards).
     /// </summary>
     public bool ReverseProgressBar { get; private set; }
@@ -447,6 +453,7 @@ public sealed class CommandLineArguments
             ShowTimeElapsed = options.ShowTimeElapsed,
             ShowTriggerTime = options.ShowTriggerTime,
             ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
+            HideFromTaskbar = Settings.Default.HideFromTaskbar,
             LoopTimer = options.LoopTimer,
             PauseBeforeLoopTimer = options.PauseBeforeLoopTimer,
             PopUpWhenExpired = options.PopUpWhenExpired,
@@ -495,6 +502,7 @@ public sealed class CommandLineArguments
             ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
             ShowTriggerTime = defaultOptions.ShowTriggerTime,
             ShowInNotificationArea = false,
+            HideFromTaskbar = false,
             LoopTimer = defaultOptions.LoopTimer,
             PauseBeforeLoopTimer = defaultOptions.PauseBeforeLoopTimer,
             PopUpWhenExpired = defaultOptions.PopUpWhenExpired,
@@ -720,6 +728,20 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.ShowInNotificationArea = showInNotificationArea;
                     argumentsBasedOnFactoryDefaults.ShowInNotificationArea = showInNotificationArea;
+                    break;
+
+                case "--hide-from-taskbar":
+                case "-hw":
+                case "/hw":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--hide-from-taskbar");
+
+                    bool hideFromTaskbar = GetBoolValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.HideFromTaskbar);
+
+                    argumentsBasedOnMostRecentOptions.HideFromTaskbar = hideFromTaskbar;
+                    argumentsBasedOnFactoryDefaults.HideFromTaskbar = hideFromTaskbar;
                     break;
 
                 case "--loop-timer":

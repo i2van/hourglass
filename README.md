@@ -100,6 +100,7 @@ ngen-Hourglass.bat uninstall
 - New option [`--save-timer-on-closing`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--save-timer-on-closing), `-sc`, `/sc`
 - New option [`--copy-config`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--copy-config), `-cf`, `/cf`
 - New option [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
+- New option [`--hide-from-taskbar`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-from-taskbar), `-hw`, `/hw`
 
 See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) for details.
 
@@ -162,6 +163,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - The **Pause all** timer window context menu command pauses all the running timers. Command-line command is [`pause`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+pause)
 - The **Resume all** timer window context menu command resumes all the paused timers. Command-line command is [`resume`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+resume)
 - The **Pause after each loop** timer window context menu command pauses the loop timer when it expires. Command-line command is [`--pause-after-loop-timer`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--pause-after-loop-timer), `-pl`, `/pl`
+- The **Hide from taskbar** timer window context menu option hides the timer window from the taskbar. It is available only when the **Show in notification area** option is checked. Command-line option is [`--hide-from-taskbar`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-from-taskbar), `-hw`, `/hw`
 - The **Minimize when expired** timer window context menu command minimizes the timer window when the timer expires. Command-line option is [`--minimize-when-expired`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--minimize-when-expired), `-em`, `/em`
 
 #### Other
