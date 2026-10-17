@@ -82,6 +82,14 @@ public sealed partial class UsageDialog
     }
 
     /// <inheritdoc />
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        this.RemoveDisabledSystemMenuItems();
+
+        base.OnSourceInitialized(e);
+    }
+
+    /// <inheritdoc />
     protected override void OnActivated(EventArgs e)
     {
         Application.Current.ClearJumpList();

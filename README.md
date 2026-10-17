@@ -99,6 +99,7 @@ ngen-Hourglass.bat uninstall
 - Renamed option `--prompt-on-exit` to [`--prompt-on-close`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--prompt-on-close)
 - New option [`--save-timer-on-closing`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--save-timer-on-closing), `-sc`, `/sc`
 - New option [`--copy-config`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--copy-config), `-cf`, `/cf`
+- New option [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
 
 See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) for details.
 
@@ -149,7 +150,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 
 - All the timer window commands are available in the timer window context menu.
 - The shortcuts are displayed in the timer window context menu.
-- The **Window title** submenu is available directly from the timer window context menu.
+- The **Window title** submenu is available directly from the timer window context menu. The **Hide** option hides the timer window title bar without changing the timer window title itself. The command-line option is [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
 - The **Reset position and size** menu command sets the timer window default position and size.
 - The **Restore**, **Minimize** and **Maximize** timer window commands are always present in the timer window context menu.
 - The **Advanced options** / **Display time in the digital clock format** timer window context menu option toggles the displayed time digital clock time format. The command-line option is [`--digital-clock-time`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--digital-clock-time), `-c`, `/c`

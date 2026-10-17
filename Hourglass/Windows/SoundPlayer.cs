@@ -126,7 +126,10 @@ public sealed class SoundPlayer : IDisposable
         }
         catch (Exception ex) when (ex.CanBeHandled())
         {
-            // Ignore.
+            // Nothing is being played
+            IsPlaying = false;
+            _isLooping = false;
+            ReleaseSoundPlayerStream();
         }
     }
 
@@ -143,12 +146,10 @@ public sealed class SoundPlayer : IDisposable
             IsPlaying = false;
             _isLooping = false;
 
-            // Stop the sound player
-            _soundPlayer.Stop();
             _dispatcherTimer.Stop();
 
-            _soundPlayer.Stream?.Dispose();
-            _soundPlayer.Stream = null;
+            // Stop the sound player
+            StopSoundPlayer();
 
             // Stop the audio player
             _audioPlayer.Stop();
@@ -159,6 +160,33 @@ public sealed class SoundPlayer : IDisposable
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Stops the sound player and releases its stream if a sound has been loaded into it.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="System.Media.SoundPlayer.Stop"/> stops all the sounds being played by the process, including the ones
+    /// started by the other <see cref="SoundPlayer"/> instances, so it is invoked only if this instance has a sound loaded.
+    /// </remarks>
+    private void StopSoundPlayer()
+    {
+        if (_soundPlayer.Stream is null)
+        {
+            return;
+        }
+
+        _soundPlayer.Stop();
+        ReleaseSoundPlayerStream();
+    }
+
+    /// <summary>
+    /// Releases the sound player stream.
+    /// </summary>
+    private void ReleaseSoundPlayerStream()
+    {
+        _soundPlayer.Stream?.Dispose();
+        _soundPlayer.Stream = null;
     }
 
     /// <summary>
@@ -188,12 +216,11 @@ public sealed class SoundPlayer : IDisposable
             IsPlaying = false;
             _isLooping = false;
 
-            // Dispose the sound player
-            _soundPlayer.Stop();
-            _soundPlayer.Stream?.Dispose();
-            _soundPlayer.Dispose();
-
             _dispatcherTimer.Stop();
+
+            // Dispose the sound player
+            StopSoundPlayer();
+            _soundPlayer.Dispose();
 
             // Dispose the media player
             _audioPlayer.Dispose();
@@ -219,6 +246,11 @@ public sealed class SoundPlayer : IDisposable
     private void DispatcherTimerTick(object sender, EventArgs e)
     {
         _dispatcherTimer.Stop();
+
+        // The sound has been played, so the sound player should not be stopped anymore
+        IsPlaying = false;
+        ReleaseSoundPlayerStream();
+
         PlaybackCompleted?.Invoke(this, EventArgs.Empty);
     }
 
@@ -229,12 +261,27 @@ public sealed class SoundPlayer : IDisposable
     /// <param name="e">The event data.</param>
     private void OnAudioStopped(object sender, EventArgs e)
     {
+        if (_disposed)
+        {
+            return;
+        }
+
         if (!_isLooping)
         {
+            IsPlaying = false;
             PlaybackCompleted?.Invoke(this, EventArgs.Empty);
             return;
         }
 
-        _audioPlayer.Play();
+        try
+        {
+            _audioPlayer.Play();
+        }
+        catch (Exception ex) when (ex.CanBeHandled())
+        {
+            // Stop looping if the sound cannot be replayed, e.g. when the audio device is not ready after resuming from sleep.
+            IsPlaying = false;
+            _isLooping = false;
+        }
     }
 }

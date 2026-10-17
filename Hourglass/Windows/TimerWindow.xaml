@@ -17,25 +17,6 @@
         PreviewKeyDown="WindowPreviewKeyDown"
         ToolTip="{Binding TimeToolTip, Mode=OneWay, RelativeSource={RelativeSource Self}}"
         ToolTipService.IsEnabled="{Binding ShowTimeToolTip, Mode=OneWay, RelativeSource={RelativeSource Self}}">
-    <Window.Style>
-        <Style TargetType="{x:Type Window}">
-            <Style.Triggers>
-                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                <DataTrigger Binding="{Binding Options.WindowTitleMode, RelativeSource={RelativeSource Self}, Mode=OneWay}" Value="None">
-                    <Setter Property="WindowStyle" Value="None"/>
-                    <Setter Property="WindowChrome.WindowChrome">
-                        <Setter.Value>
-                            <WindowChrome CaptionHeight="0" UseAeroCaptionButtons="False"/>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                <DataTrigger Binding="{Binding IsFullScreen, RelativeSource={RelativeSource Self}, Mode=OneWay}" Value="True">
-                    <Setter Property="WindowStyle" Value="None"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Style>
     <Window.CommandBindings>
         <CommandBinding Command="local:TimerWindow.NewTimerCommand" Executed="NewTimerCommandExecuted"/>
         <CommandBinding Command="local:TimerWindow.StartCommand" Executed="StartCommandExecuted"/>

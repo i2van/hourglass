@@ -19,7 +19,7 @@ namespace Hourglass.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -179,6 +179,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot copy config while Hourglass is running. Close all running timers first.
+        /// </summary>
+        public static string CommandLineArgumentsParseExceptionConfigFileAlreadyRunning {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionConfigFileAlreadyRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config file not found &quot;{0}&quot;.
+        /// </summary>
+        public static string CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString {
+            get {
+                return ResourceManager.GetString("CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duplicate switch &quot;{0}&quot;.
         /// </summary>
         public static string CommandLineArgumentsParseExceptionDuplicateSwitchFormatString {
@@ -220,24 +238,6 @@ namespace Hourglass.Properties {
         public static string CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString {
             get {
                 return ResourceManager.GetString("CommandLineArgumentsParseExceptionUnrecognizedSwitchFormatString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Config file not found &quot;{0}&quot;.
-        /// </summary>
-        public static string CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString {
-            get {
-                return ResourceManager.GetString("CommandLineArgumentsParseExceptionConfigFileNotFoundFormatString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot copy config while Hourglass is running. Close all running timers first.
-        /// </summary>
-        public static string CommandLineArgumentsParseExceptionConfigFileAlreadyRunning {
-            get {
-                return ResourceManager.GetString("CommandLineArgumentsParseExceptionConfigFileAlreadyRunning", resourceCulture);
             }
         }
         
@@ -395,6 +395,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Hide.
+        /// </summary>
+        public static string ContextMenuHideWindowTitleMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuHideWindowTitleMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Light theme.
         /// </summary>
         public static string ContextMenuLightThemeMenuItem {
@@ -472,15 +481,6 @@ namespace Hourglass.Properties {
         public static string ContextMenuNoSoundMenuItem {
             get {
                 return ResourceManager.GetString("ContextMenuNoSoundMenuItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _None.
-        /// </summary>
-        public static string ContextMenuNoWindowTitleMenuItem {
-            get {
-                return ResourceManager.GetString("ContextMenuNoWindowTitleMenuItem", resourceCulture);
             }
         }
         

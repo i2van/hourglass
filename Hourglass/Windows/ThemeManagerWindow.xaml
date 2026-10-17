@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hourglass.Windows"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Manage Themes"
         Width="525"
@@ -23,7 +24,7 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" x:Name="ThemesComboBox" Margin="4" SelectionChanged="ThemesComboBoxSelectionChanged"/>
+                <ComboBox Grid.Column="0" x:Name="ThemesComboBox" Margin="4" MaxDropDownHeight="{x:Static system:Double.PositiveInfinity}" SelectionChanged="ThemesComboBoxSelectionChanged"/>
                 <Button Grid.Column="1" x:Name="NewButton" Content="_New" Margin="4" MinWidth="75" Click="NewButtonClick"/>
                 <TextBox Grid.Column="2" x:Name="NameTextBox" Margin="4" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="NameTextBoxTextChanged"/>
                 <Button Grid.Column="3" x:Name="DeleteButton" Content="_Delete" Margin="4" MinWidth="75" Click="DeleteButtonClick"/>

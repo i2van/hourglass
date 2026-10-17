@@ -54,6 +54,14 @@ public sealed partial class ErrorDialog
         ShowDialog();
     }
 
+    /// <inheritdoc />
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        this.RemoveDisabledSystemMenuItems();
+
+        base.OnSourceInitialized(e);
+    }
+
     /// <summary>
     /// Initializes localized resources.
     /// </summary>

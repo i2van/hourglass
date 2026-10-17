@@ -1,0 +1,36 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Debug Portable" />
+    <BuildType Name="Release" />
+    <BuildType Name="Release Portable" />
+    <Platform Name="Any CPU" />
+    <Platform Name="Mixed Platforms" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Hourglass.Bundle/Hourglass.Bundle.wixproj">
+    <BuildDependency Project="Hourglass.Setup/Hourglass.Setup.wixproj" />
+    <BuildType Solution="Debug Portable|*" Project="Debug" />
+    <BuildType Solution="Release Portable|*" Project="Release" />
+    <Platform Project="x86" />
+    <Build Solution="Debug|*" />
+    <Build Solution="Release|*" />
+  </Project>
+  <Project Path="Hourglass.Setup/Hourglass.Setup.wixproj">
+    <BuildType Solution="Debug Portable|*" Project="Debug" />
+    <BuildType Solution="Release Portable|*" Project="Release" />
+    <Platform Project="x86" />
+    <Build Solution="Debug|*" />
+    <Build Solution="Release|*" />
+  </Project>
+  <Project Path="Hourglass.Test/Hourglass.Test.csproj">
+    <BuildType Solution="Debug Portable|*" Project="Debug" />
+    <BuildType Solution="Release Portable|*" Project="Release" />
+    <Build Solution="Debug|x86" Project="false" />
+    <Build Solution="Release|x86" Project="false" />
+  </Project>
+  <Project Path="Hourglass/Hourglass.csproj">
+    <Build Solution="Debug|x86" Project="false" />
+    <Build Solution="Release|x86" Project="false" />
+  </Project>
+</Solution>
