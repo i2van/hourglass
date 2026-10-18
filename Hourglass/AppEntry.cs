@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 using Extensions;
 using Managers;
@@ -111,7 +112,25 @@ public sealed class AppEntry : WindowsFormsApplicationBase
     /// <inheritdoc />
     protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
     {
-        CommandLineArguments arguments = CommandLineArguments.Parse(eventArgs.CommandLine);
+        // This method runs under the execution context of the remoting call that forwarded the command line, which
+        // impersonates the caller and carries its principal. Anything started from here, e.g. the DispatcherTimer of
+        // a timer, keeps capturing that context and retains the caller's WindowsIdentity, including its token
+        // handle, for as long as it runs. Dispatch the work so that it runs under the UI thread's own context.
+        IList<string> commandLine = eventArgs.CommandLine;
+
+        using (System.Threading.ExecutionContext.SuppressFlow())
+        {
+            Dispatcher.CurrentDispatcher.BeginInvoke(() => HandleNextInstanceCommandLine(commandLine));
+        }
+    }
+
+    /// <summary>
+    /// Handles the command-line arguments forwarded by a subsequent instance of the application.
+    /// </summary>
+    /// <param name="commandLine">Command-line arguments of the subsequent instance.</param>
+    private static void HandleNextInstanceCommandLine(IList<string> commandLine)
+    {
+        CommandLineArguments arguments = CommandLineArguments.Parse(commandLine);
         if (arguments.ShouldShowUsage || arguments.HasParseError)
         {
             CommandLineArguments.ShowUsage(arguments.ParseErrorMessage);
