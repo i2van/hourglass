@@ -19,28 +19,30 @@ internal static class TypefaceExtensions
 
     private static IDWriteFactory? _factory;
 
-    /// <summary>
-    /// Returns a handle holding the DirectWrite font face of the specified <see cref="Typeface"/>. The font file
-    /// stays open as long as the handle is referenced; the font face is released when the handle is garbage
-    /// collected.
-    /// </summary>
     /// <param name="typeface">A <see cref="Typeface"/>.</param>
-    /// <returns>A handle holding the font face, or <c>null</c> if the font face could not be created.</returns>
-    public static object? HoldFontFace(this Typeface typeface)
+    extension(Typeface typeface)
     {
-        if (!typeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface) || !glyphTypeface.FontUri.IsFile)
+        /// <summary>
+        /// Returns a handle holding the DirectWrite font face of the <see cref="Typeface"/>. The font file stays
+        /// open as long as the handle is referenced; the font face is released when the handle is garbage collected.
+        /// </summary>
+        /// <returns>A handle holding the font face, or <c>null</c> if the font face could not be created.</returns>
+        public object? HoldFontFace()
         {
-            return null;
-        }
+            if (!typeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface) || !glyphTypeface.FontUri.IsFile)
+            {
+                return null;
+            }
 
-        try
-        {
-            return CreateFontFace(glyphTypeface.FontUri);
-        }
-        catch
-        {
-            // Holding the font face is an optimization only.
-            return null;
+            try
+            {
+                return CreateFontFace(glyphTypeface.FontUri);
+            }
+            catch
+            {
+                // Holding the font face is an optimization only.
+                return null;
+            }
         }
     }
 
