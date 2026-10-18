@@ -22,6 +22,12 @@ public sealed class SizeToFitTextBox : TextBox
     private FormattedText? _formattedText;
 
     /// <summary>
+    /// The DirectWrite font face of <see cref="_formattedText"/> held to keep the font file open, see
+    /// <see cref="TypefaceExtensions.HoldFontFace"/>.
+    /// </summary>
+    private object? _fontFace;
+
+    /// <summary>
     /// Identifies the minimum font size <see cref="DependencyProperty"/>.
     /// </summary>
     public static readonly DependencyProperty MinFontSizeProperty = DependencyProperty.Register(
@@ -128,6 +134,10 @@ public sealed class SizeToFitTextBox : TextBox
                 FontStyle,
                 FontWeight,
                 FontStretch);
+
+            // The text is shaped again on every change. Hold the font face so that WPF does not reopen the font
+            // file every time.
+            _fontFace = typeface.HoldFontFace();
 
             _formattedText = new(
                 Text,

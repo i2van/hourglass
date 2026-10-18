@@ -29,6 +29,24 @@ internal enum DwmWindowAttribute : uint
 }
 
 /// <summary>
+/// Specifies the type of DirectWrite factory object.
+/// </summary>
+internal enum DWriteFactoryType
+{
+    /// <summary>
+    /// A shared factory allows for re-use of cached font data across multiple in-process components. Such factories
+    /// also take advantage of cross-process font caching components for better performance.
+    /// </summary>
+    Shared,
+
+    /// <summary>
+    /// Objects created from the isolated factory do not interact with internal DirectWrite state from other
+    /// components.
+    /// </summary>
+    Isolated
+}
+
+/// <summary>
 /// The thread's execution requirements.
 /// </summary>
 [Flags]
@@ -127,6 +145,16 @@ internal static class NativeMethods
     /// <returns>A handle to the timer object if the call succeeds, or <see cref="IntPtr.Zero"/> otherwise.</returns>
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern IntPtr CreateWaitableTimer(IntPtr lpTimerAttributes, bool bManualReset, string? lpTimerName);
+
+    /// <summary>
+    /// Creates a DirectWrite factory object that is used for subsequent creation of individual DirectWrite objects.
+    /// </summary>
+    /// <param name="factoryType">A value that specifies whether the factory object will be shared or isolated.
+    /// </param>
+    /// <param name="iid">A GUID value that identifies the DirectWrite factory interface.</param>
+    /// <param name="factory">An address of a pointer to the newly created DirectWrite factory object.</param>
+    [DllImport("dwrite.dll", PreserveSig = false)]
+    public static extern void DWriteCreateFactory(DWriteFactoryType factoryType, ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object factory);
 
     /// <summary>
     /// Enables an application to inform the system that it is in use, thereby preventing the system from entering
