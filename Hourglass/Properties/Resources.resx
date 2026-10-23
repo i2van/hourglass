@@ -1350,6 +1350,18 @@ $</value>
     <value>Win_dow title</value>
     <comment>The text for the window title menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuOpacityMenuItem" xml:space="preserve">
+    <value>Opacit_y</value>
+    <comment>The text for the opacity menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuOpacityPercentMenuItemFormat" xml:space="preserve">
+    <value>_{0}%</value>
+    <comment>The format string for a translucent opacity menu item, where {0} is the opacity percentage and the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuOpaqueMenuItem" xml:space="preserve">
+    <value>_Opaque</value>
+    <comment>The text for the opaque opacity menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="TimerWindowCouldNotLaunchWebBrowserErrorMessage" xml:space="preserve">
     <value>To update Hourglass, visit {0} in your web browser.</value>
     <comment>The message in the error dialog shown when the web browser could not be launched to open the download page for the latest version of the app</comment>

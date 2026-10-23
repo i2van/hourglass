@@ -247,6 +247,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _hideWindowTitleBarMenuItem = null!;
 
     /// <summary>
+    /// The "Opacity" <see cref="MenuItem"/>s associated with opacity values.
+    /// </summary>
+    private IList<MenuItem> _selectableOpacityMenuItems = null!;
+
+    /// <summary>
     /// The "Restore" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _restoreMenuItem = null!;
@@ -297,6 +302,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _selectableThemeMenuItems = [];
         _selectableSoundMenuItems = [];
         _selectableWindowTitleMenuItems = [];
+        _selectableOpacityMenuItems = [];
 
         // Build the menu
         BuildMenu();
@@ -507,6 +513,12 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
             menuItem.IsChecked = windowTitleMode == _timerWindow.Options.WindowTitleMode;
         }
 
+        // Opacity
+        foreach (var menuItem in _selectableOpacityMenuItems)
+        {
+            menuItem.IsChecked = (int)menuItem.Tag == _timerWindow.Options.Opacity;
+        }
+
         void UpdatePauseResumeAll()
         {
             var canPauseAll = TimerManager.CanPauseAll();
@@ -625,6 +637,13 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _timerWindow.Options.WindowTitleMode = selectedWindowTitleMenuItem is not null
             ? (WindowTitleMode)selectedWindowTitleMenuItem.Tag
             : WindowTitleMode.ApplicationName;
+
+        // Opacity
+        var selectedOpacityMenuItem = _selectableOpacityMenuItems.FirstOrDefault(static mi => mi.IsChecked);
+        if (selectedOpacityMenuItem is not null)
+        {
+            _timerWindow.Options.Opacity = (int)selectedOpacityMenuItem.Tag;
+        }
     }
 
     /// <summary>
@@ -810,6 +829,29 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _selectableWindowTitleMenuItems.Add(timerTitlePlusTimeElapsedWindowTitleMenuItem);
 
         Items.Add(windowTitleMenuItem);
+
+        // Opacity
+        MenuItem opacityMenuItem = new()
+        {
+            Header = Properties.Resources.ContextMenuOpacityMenuItem
+        };
+
+        for (int opacity = TimerOptions.MinOpacity; opacity <= TimerOptions.MaxOpacity; opacity += TimerOptions.OpacityStep)
+        {
+            var opacityValueMenuItem = new CheckableMenuItem
+            {
+                Header = opacity < TimerOptions.MaxOpacity
+                    ? string.Format(Properties.Resources.ContextMenuOpacityPercentMenuItemFormat, opacity)
+                    : Properties.Resources.ContextMenuOpaqueMenuItem,
+                Tag = opacity
+            };
+            opacityValueMenuItem.Click += OpacityMenuItemClick;
+            opacityValueMenuItem.Click += CheckableMenuItemClick;
+            opacityMenuItem.Items.Add(opacityValueMenuItem);
+            _selectableOpacityMenuItems.Add(opacityValueMenuItem);
+        }
+
+        Items.Add(opacityMenuItem);
 
         Items.Add(new Separator());
 
@@ -1781,6 +1823,19 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private void WindowTitleMenuItemClick(object sender, RoutedEventArgs e)
     {
         foreach (var menuItem in _selectableWindowTitleMenuItems)
+        {
+            menuItem.IsChecked = ReferenceEquals(menuItem, sender);
+        }
+    }
+
+    /// <summary>
+    /// Invoked when an opacity <see cref="MenuItem"/> is clicked.
+    /// </summary>
+    /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+    /// <param name="e">The event data.</param>
+    private void OpacityMenuItemClick(object sender, RoutedEventArgs e)
+    {
+        foreach (var menuItem in _selectableOpacityMenuItems)
         {
             menuItem.IsChecked = ReferenceEquals(menuItem, sender);
         }

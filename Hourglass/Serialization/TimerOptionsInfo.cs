@@ -129,6 +129,14 @@ public sealed class TimerOptionsInfo
     public bool HideWindowTitleBar { get; set; }
 
     /// <summary>
+    /// Gets or sets the timer window opacity, in percent.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <see cref="TimerOptions.MaxOpacity"/> for settings and saved timers serialized without it.
+    /// </remarks>
+    public int Opacity { get; set; } = TimerOptions.MaxOpacity;
+
+    /// <summary>
     /// Gets or sets the size, position, and state of the timer window.
     /// </summary>
     public WindowSizeInfo WindowSize { get; set; } = null!;

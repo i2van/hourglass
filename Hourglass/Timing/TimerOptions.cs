@@ -72,6 +72,21 @@ public enum WindowTitleMode
 public sealed class TimerOptions : INotifyPropertyChanged
 {
     /// <summary>
+    /// The minimum timer window opacity, in percent.
+    /// </summary>
+    public const int MinOpacity = 10;
+
+    /// <summary>
+    /// The maximum timer window opacity, in percent. The timer window is opaque.
+    /// </summary>
+    public const int MaxOpacity = 100;
+
+    /// <summary>
+    /// The timer window opacity step, in percent. The timer window opacity is always a multiple of it.
+    /// </summary>
+    public const int OpacityStep = 10;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="TimerOptions"/> class.
     /// </summary>
     public TimerOptions()
@@ -98,6 +113,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
         LoopSound = false;
         WindowTitleMode = WindowTitleMode.ApplicationName;
         HideWindowTitleBar = false;
+        Opacity = MaxOpacity;
         WindowSize = new(
             new(double.PositiveInfinity, double.PositiveInfinity, InterfaceScaler.BaseWindowWidth, InterfaceScaler.BaseWindowHeight),
             WindowState.Normal,
@@ -566,6 +582,28 @@ public sealed class TimerOptions : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Gets or sets the timer window opacity, in percent. The value is clamped by <see cref="ClampOpacity"/>. The
+    /// opacity applies to the whole timer window, including the title bar and the system buttons.
+    /// </summary>
+    public int Opacity
+    {
+        get;
+
+        set
+        {
+            value = ClampOpacity(value);
+
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            PropertyChanged.Notify(this);
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the size, position, and state of the timer window.
     /// </summary>
     public WindowSize? WindowSize
@@ -627,6 +665,18 @@ public sealed class TimerOptions : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Returns the specified timer window opacity limited to the range from <see cref="MinOpacity"/> to <see
+    /// cref="MaxOpacity"/> and rounded to the nearest multiple of <see cref="OpacityStep"/>.
+    /// </summary>
+    /// <param name="opacity">A timer window opacity, in percent.</param>
+    /// <returns>The specified timer window opacity limited to the range from <see cref="MinOpacity"/> to <see cref="MaxOpacity"/> and rounded to the nearest multiple of <see cref="OpacityStep"/>.</returns>
+    public static int ClampOpacity(int opacity)
+    {
+        int clampedOpacity = Math.Max(MinOpacity, Math.Min(MaxOpacity, opacity));
+        return (int)Math.Round(clampedOpacity / (double)OpacityStep, MidpointRounding.AwayFromZero) * OpacityStep;
+    }
+
+    /// <summary>
     /// Sets all the options from another instance of the <see cref="TimerOptions"/> class.
     /// </summary>
     /// <param name="options">A <see cref="TimerOptions"/>.</param>
@@ -661,12 +711,14 @@ public sealed class TimerOptions : INotifyPropertyChanged
         // HideWindowTitleBar must be set before WindowTitleMode, which overrides it for the obsolete None mode.
         HideWindowTitleBar = options.HideWindowTitleBar;
         WindowTitleMode = options.WindowTitleMode;
+        Opacity = options.Opacity;
         WindowSize = WindowSize.FromWindowSize(options.WindowSize);
         LockInterface = options.LockInterface;
 
         PropertyChanged.Notify(this,
             nameof(WindowTitleMode),
             nameof(HideWindowTitleBar),
+            nameof(Opacity),
             nameof(WindowSize),
             nameof(Title),
             nameof(AlwaysOnTop),
@@ -725,12 +777,14 @@ public sealed class TimerOptions : INotifyPropertyChanged
         // HideWindowTitleBar must be set before WindowTitleMode, which overrides it for the obsolete None mode.
         HideWindowTitleBar = info.HideWindowTitleBar;
         WindowTitleMode = info.WindowTitleMode;
+        Opacity = info.Opacity;
         WindowSize = WindowSize.FromWindowSizeInfo(info.WindowSize);
         LockInterface = info.LockInterface;
 
         PropertyChanged.Notify(this,
             nameof(WindowTitleMode),
             nameof(HideWindowTitleBar),
+            nameof(Opacity),
             nameof(WindowSize),
             nameof(Title),
             nameof(AlwaysOnTop),
@@ -784,6 +838,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
             LoopSound = LoopSound,
             WindowTitleMode = WindowTitleMode,
             HideWindowTitleBar = HideWindowTitleBar,
+            Opacity = Opacity,
             WindowSize = WindowSizeInfo.FromWindowSize(WindowSize)!,
             LockInterface = LockInterface
         };

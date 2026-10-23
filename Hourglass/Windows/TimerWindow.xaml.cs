@@ -1166,6 +1166,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         PropertyChangedEventManager.AddHandler(_theme, ThemePropertyChanged, string.Empty);
 
         UpdateTitleBar();
+        UpdateOpacity();
         UpdateBoundControls();
     }
 
@@ -1316,6 +1317,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     private void UpdateBoundTheme()
     {
+        Background = Theme?.BackgroundBrush;
         InnerGrid.Background = Theme?.BackgroundBrush;
         ProgressBar.Foreground = Theme?.ProgressBarBrush;
         ProgressBar.Background = Theme?.ProgressBackgroundBrush;
@@ -1546,11 +1548,15 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             case nameof(Options.HideWindowTitleBar):
                 UpdateTitleBar(true /* keepClientSize */);
                 break;
+            case nameof(Options.Opacity):
+                UpdateOpacity();
+                break;
             case nameof(Options.Theme):
                 PropertyChangedEventManager.RemoveHandler(_theme, ThemePropertyChanged, string.Empty);
                 _theme = Options.Theme;
                 PropertyChangedEventManager.AddHandler(_theme, ThemePropertyChanged, string.Empty);
                 SetImmersiveDarkMode();
+                UpdateOpacity();
                 break;
         }
 
@@ -1564,6 +1570,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="e">The event data.</param>
     private void ThemePropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        UpdateOpacity();
         UpdateBoundControls();
     }
 
@@ -2322,6 +2329,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private void WindowSourceInitialized(object sender, EventArgs e)
     {
         this.AddWindowProcHook();
+
+        UpdateOpacity();
 
         if (Settings.Default.AlwaysCenterWindow)
         {

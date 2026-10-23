@@ -94,6 +94,9 @@ public sealed partial class TimerWindow
         WindowStyle = windowStyle;
         WindowChrome.SetWindowChrome(this, windowChrome);
 
+        // Removing the window chrome resets the window background color.
+        UpdateOpacity();
+
         if (!clientSize.IsEmpty)
         {
             Size newClientSize = GetClientSize();

@@ -216,6 +216,11 @@ public sealed class CommandLineArguments
     public bool HideWindowTitleBar { get; private set; }
 
     /// <summary>
+    /// Gets the timer window opacity, in percent.
+    /// </summary>
+    public int Opacity { get; private set; }
+
+    /// <summary>
     /// Gets a value that indicates whether the timer window is restored, minimized, or maximized.
     /// </summary>
     public WindowState WindowState { get; private set; }
@@ -431,6 +436,7 @@ public sealed class CommandLineArguments
             // HideWindowTitleBar must be set before WindowTitleMode, which overrides it for the obsolete None mode.
             HideWindowTitleBar = HideWindowTitleBar,
             WindowTitleMode = WindowTitleMode,
+            Opacity = Opacity,
             WindowSize = GetWindowSize(),
             LockInterface = LockInterface
         };
@@ -496,6 +502,7 @@ public sealed class CommandLineArguments
             OrderByTitleFirst = Settings.Default.OrderByTitleFirst,
             WindowTitleMode = options.WindowTitleMode,
             HideWindowTitleBar = options.HideWindowTitleBar,
+            Opacity = options.Opacity,
             WindowState = windowSize.WindowState != WindowState.Minimized ? windowSize.WindowState : windowSize.RestoreWindowState,
             RestoreWindowState = windowSize.RestoreWindowState,
             WindowBounds = windowSize.RestoreBounds,
@@ -548,6 +555,7 @@ public sealed class CommandLineArguments
             OrderByTitleFirst = false,
             WindowTitleMode = WindowTitleMode.ApplicationName,
             HideWindowTitleBar = defaultOptions.HideWindowTitleBar,
+            Opacity = defaultOptions.Opacity,
             WindowState = defaultOptions.WindowSize?.WindowState ?? WindowState.Normal,
             RestoreWindowState = defaultOptions.WindowSize?.RestoreWindowState ?? WindowState.Normal,
             WindowBounds = defaultWindowBoundsWithLocation,
@@ -1041,6 +1049,20 @@ public sealed class CommandLineArguments
                     argumentsBasedOnFactoryDefaults.HideWindowTitleBar = hideWindowTitleBar;
                     break;
 
+                case "--opacity":
+                case "-op":
+                case "/op":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--opacity");
+
+                    int opacity = GetOpacityValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.Opacity);
+
+                    argumentsBasedOnMostRecentOptions.Opacity = opacity;
+                    argumentsBasedOnFactoryDefaults.Opacity = opacity;
+                    break;
+
                 case "--window-state":
                 case "-w":
                 case "/w":
@@ -1398,6 +1420,46 @@ public sealed class CommandLineArguments
 
                 throw new ParseException(message);
         }
+    }
+
+    /// <summary>
+    /// Returns the next opacity value in <paramref name="remainingArgs"/>, or throws an exception if <paramref name="remainingArgs"/> is empty or the next argument is not an integer from 0 to 100, "opaque", or "last".
+    /// </summary>
+    /// <remarks>
+    /// The opacity value is clamped by <see cref="TimerOptions.ClampOpacity"/>. "opaque" is the same as <see cref="TimerOptions.MaxOpacity"/>.
+    /// </remarks>
+    /// <param name="arg">The name of the argument for which the value is to be returned.</param>
+    /// <param name="remainingArgs">The unparsed arguments.</param>
+    /// <param name="last">The value of the argument returned when the user specifies "last".</param>
+    /// <returns>The next opacity value in <paramref name="remainingArgs"/>.</returns>
+    /// <exception cref="ParseException">If <paramref name="remainingArgs"/> is empty or the next argument is not an integer from 0 to 100, "opaque", or "last".</exception>
+    private static int GetOpacityValue(string arg, Queue<string> remainingArgs, int last)
+    {
+        string value = GetRequiredValue(arg, remainingArgs);
+
+        if (string.Equals(value, "opaque", StringComparison.OrdinalIgnoreCase))
+        {
+            return TimerOptions.MaxOpacity;
+        }
+
+        if (string.Equals(value, "last", StringComparison.OrdinalIgnoreCase))
+        {
+            return last;
+        }
+
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int opacity) &&
+            opacity is >= 0 and <= TimerOptions.MaxOpacity)
+        {
+            return TimerOptions.ClampOpacity(opacity);
+        }
+
+        string message = string.Format(
+            Resources.ResourceManager.GetEffectiveProvider(),
+            Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+            arg,
+            value);
+
+        throw new ParseException(message);
     }
 
     /// <summary>

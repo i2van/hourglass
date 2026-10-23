@@ -25,6 +25,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How do I set a title for a timer?](#how-do-i-set-a-title-for-a-timer)
 - [How do I set a time for a timer?](#how-do-i-set-a-time-for-a-timer)
 - [How do I change what is displayed in the timer window title?](#how-do-i-change-what-is-displayed-in-the-timer-window-title)
+- [How do I make the timer window translucent?](#how-do-i-make-the-timer-window-translucent)
 - [How do I change the timer window color theme?](#how-do-i-change-the-timer-window-color-theme)
 - [Is there a dark color theme available?](#is-there-a-dark-color-theme-available)
 - [How do I add a custom color theme?](#how-do-i-add-a-custom-color-theme)
@@ -366,6 +367,12 @@ By default, the timer window title displays the application name **Hourglass**. 
 `Right Click` on any empty space in the timer window and then select the appropriate option from the **Window title** submenu.
 
 The **Hide** option from the **Window title** submenu hides the timer window title bar without changing the timer window title itself. The command-line option is [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
+
+## How do I make the timer window translucent?
+
+`Right Click` on any empty space in the timer window and then select **10%** to **90%** from the **Opacity** submenu. Select **Opaque** to make the timer window opaque again.
+
+The command-line option is [`--opacity`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--opacity), `-op`, `/op`. It accepts any opacity from 0 to 100 percent, rounded to the nearest multiple of 10, with a minimum of 10. Both `100` and `opaque` make the timer window opaque.
 
 ## How do I change the timer window color theme?
 

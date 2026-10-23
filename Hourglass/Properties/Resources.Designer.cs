@@ -494,6 +494,33 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opacit_y.
+        /// </summary>
+        public static string ContextMenuOpacityMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuOpacityMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _{0}%.
+        /// </summary>
+        public static string ContextMenuOpacityPercentMenuItemFormat {
+            get {
+                return ResourceManager.GetString("ContextMenuOpacityPercentMenuItemFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Opaque.
+        /// </summary>
+        public static string ContextMenuOpaqueMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuOpaqueMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Open all saved timers.
         /// </summary>
         public static string ContextMenuOpenAllSavedTimersMenuItem {

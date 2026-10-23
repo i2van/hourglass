@@ -103,6 +103,7 @@ ngen-Hourglass.bat uninstall
 - New option [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
 - New option [`--hide-from-taskbar`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-from-taskbar), `-hw`, `/hw`
 - New option [`--cascade-windows`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--cascade-windows), `-cw`, `/cw`
+- New option [`--opacity`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--opacity), `-op`, `/op`
 
 See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt) for details.
 
@@ -154,6 +155,7 @@ See [command-line usage](https://github.com/i2van/hourglass/blob/main/Hourglass/
 - All the timer window commands are available in the timer window context menu.
 - The shortcuts are displayed in the timer window context menu.
 - The **Window title** submenu is available directly from the timer window context menu. The **Hide** option hides the timer window title bar without changing the timer window title itself. The command-line option is [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
+- The **Opacity** submenu sets the whole timer window opacity. The command-line option is [`--opacity`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--opacity), `-op`, `/op`
 - The **Reset position and size** menu command sets the timer window default position and size.
 - The **Restore**, **Minimize** and **Maximize** timer window commands are always present in the timer window context menu.
 - The **Advanced options** / **Display time in the digital clock format** timer window context menu option toggles the displayed time digital clock time format. The command-line option is [`--digital-clock-time`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--digital-clock-time), `-c`, `/c`

@@ -364,6 +364,15 @@ Options:
         Default value   last
         Alias           -ht, /ht
 
+  --opacity <percent>|opaque|last
+        Sets the timer window opacity in percent, from 0 to 100. The value is
+        rounded to the nearest multiple of 10, with a minimum of 10. Both 100
+        and opaque make the timer window opaque.
+
+        Required        no
+        Default value   last
+        Alias           -op, /op
+
   --window-state normal|maximized|minimized|last
         Sets the state of the timer window.
 
@@ -450,6 +459,7 @@ Options:
             --prefer-24h-time             -j  off
             --window-title                -i  app
             --hide-window-title           -ht off
+            --opacity                     -op opaque
             --window-state                -w  normal
             --window-bounds               -b  auto,auto,355,160
             --lock-interface              -z  off
