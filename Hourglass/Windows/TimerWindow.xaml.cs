@@ -704,6 +704,9 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="selection">The <see cref="Selection"/> to do. The default is the <see cref="AllSelection"/> of the <see cref="TimerTextBox"/>.</param>
     private void SwitchToInputMode(Selection? selection = null)
     {
+        // In status mode, the stopped or expired timer text box shows the timer state or the title instead of the time.
+        bool timerTextBoxShowsStateOrTitle = Mode == TimerWindowMode.Status && Timer.State is TimerState.Stopped or TimerState.Expired;
+
         Mode = TimerWindowMode.Input;
 
         bool expiredTimerWasReset = ResetExpiredTimer();
@@ -711,7 +714,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         TitleTextBox.Text = Timer.Options.Title ?? string.Empty;
 
         selection ??= new AllSelection(TimerTextBox);
-        if (expiredTimerWasReset || ReferenceEquals(selection.TextBox, TimerTextBox))
+        if (timerTextBoxShowsStateOrTitle || expiredTimerWasReset || ReferenceEquals(selection.TextBox, TimerTextBox))
         {
             AdjustTimerTextBoxText();
         }
