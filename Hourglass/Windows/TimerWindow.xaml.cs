@@ -532,6 +532,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         // Ensure the timer has up-to-date values before binding to avoid stale progress bar on restore
         existingTimer.Update();
 
+        // Keep track of the input, so it is restored when the existing timer is stopped or reset
+        if (existingTimer.TimerStart is not null)
+        {
+            LastTimerStart = existingTimer.TimerStart;
+        }
+
         // Show the status of the existing timer
         Timer = existingTimer;
         SwitchToStatusMode();
