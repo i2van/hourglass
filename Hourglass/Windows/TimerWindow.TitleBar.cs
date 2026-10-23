@@ -61,9 +61,10 @@ public sealed partial class TimerWindow
     /// Shows or hides the window title bar depending on the <see cref="TimerOptions.HideWindowTitleBar"/> and on
     /// whether the window is in full-screen mode.
     /// </summary>
-    /// <param name="keepClientSize">A value indicating whether the size of the window client area is kept
-    /// unchanged by growing or shrinking the window by the size of the title bar being shown or hidden.</param>
-    private void UpdateTitleBar(bool keepClientSize = false)
+    /// <param name="keepClientArea">A value indicating whether the position and the size of the window client area
+    /// are kept unchanged by moving and resizing the window by the size of the title bar and the window border being
+    /// shown or hidden.</param>
+    private void UpdateTitleBar(bool keepClientArea = false)
     {
         bool isTitleBarHidden = IsTitleBarHidden;
 
@@ -85,11 +86,12 @@ public sealed partial class TimerWindow
             return;
         }
 
-        // The window rectangle is left intact when the title bar is shown or hidden, so the client area grows or
-        // shrinks by the size of the title bar unless the window is resized by the very same size.
-        Size clientSize = keepClientSize && !IsFullScreen && WindowState == WindowState.Normal
-            ? GetClientSize()
-            : Size.Empty;
+        // The window rectangle is left intact when the title bar is shown or hidden, so the client area moves and
+        // grows or shrinks by the size of the title bar and the window border unless the window is moved and resized
+        // by the very same size.
+        Rect clientBounds = keepClientArea && !IsFullScreen && WindowState == WindowState.Normal
+            ? GetClientBounds()
+            : Rect.Empty;
 
         WindowStyle = windowStyle;
         WindowChrome.SetWindowChrome(this, windowChrome);
@@ -97,14 +99,16 @@ public sealed partial class TimerWindow
         // Removing the window chrome resets the window background color.
         UpdateOpacity();
 
-        if (!clientSize.IsEmpty)
+        if (!clientBounds.IsEmpty)
         {
-            Size newClientSize = GetClientSize();
+            Rect newClientBounds = GetClientBounds();
 
-            if (!newClientSize.IsEmpty)
+            if (!newClientBounds.IsEmpty)
             {
-                Width  += clientSize.Width  - newClientSize.Width;
-                Height += clientSize.Height - newClientSize.Height;
+                Left   += clientBounds.Left   - newClientBounds.Left;
+                Top    += clientBounds.Top    - newClientBounds.Top;
+                Width  += clientBounds.Width  - newClientBounds.Width;
+                Height += clientBounds.Height - newClientBounds.Height;
             }
         }
 
@@ -119,18 +123,33 @@ public sealed partial class TimerWindow
     }
 
     /// <summary>
-    /// Returns the size of the window client area in device-independent units, or <see cref="Size.Empty"/> if the
-    /// window has no handle yet.
+    /// Returns the bounds of the window client area in screen coordinates in device-independent units, or <see
+    /// cref="Rect.Empty"/> if the window has no handle yet.
     /// </summary>
-    /// <returns>The size of the window client area in device-independent units, or <see cref="Size.Empty"/> if the
-    /// window has no handle yet.</returns>
-    private Size GetClientSize()
+    /// <returns>The bounds of the window client area in screen coordinates in device-independent units, or <see
+    /// cref="Rect.Empty"/> if the window has no handle yet.</returns>
+    private Rect GetClientBounds()
     {
         IntPtr handle = new WindowInteropHelper(this).Handle;
 
-        return handle != IntPtr.Zero && GetClientRect(handle, out RECT clientRect)
-            ? GetDeviceIndependentSize(clientRect)
-            : Size.Empty;
+        if (handle == IntPtr.Zero || !GetClientRect(handle, out RECT clientRect))
+        {
+            return Rect.Empty;
+        }
+
+        POINT topLeft     = new() { x = clientRect.left,  y = clientRect.top    };
+        POINT bottomRight = new() { x = clientRect.right, y = clientRect.bottom };
+
+        if (!ClientToScreen(handle, ref topLeft) || !ClientToScreen(handle, ref bottomRight))
+        {
+            return Rect.Empty;
+        }
+
+        // The rectangle is normalized, as the client corners are swapped horizontally if the window layout is mirrored.
+        Rect clientBounds = new(new Point(topLeft.x, topLeft.y), new Point(bottomRight.x, bottomRight.y));
+        clientBounds.Transform(GetTransformFromDevice());
+
+        return clientBounds;
     }
 
     /// <summary>
@@ -155,13 +174,18 @@ public sealed partial class TimerWindow
     /// <returns>The size of the specified rectangle in device-independent units.</returns>
     private Size GetDeviceIndependentSize(RECT rect)
     {
-        Matrix transformFromDevice = PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice ?? Matrix.Identity;
-
-        Vector size = transformFromDevice.Transform(
+        Vector size = GetTransformFromDevice().Transform(
             new Vector(rect.right - rect.left, rect.bottom - rect.top));
 
         return new(size.X, size.Y);
     }
+
+    /// <summary>
+    /// Returns the matrix that transforms the coordinates from device pixels to device-independent units.
+    /// </summary>
+    /// <returns>The matrix that transforms the coordinates from device pixels to device-independent units.</returns>
+    private Matrix GetTransformFromDevice() =>
+        PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice ?? Matrix.Identity;
 
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT
@@ -172,9 +196,20 @@ public sealed partial class TimerWindow
         public int bottom;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct POINT
+    {
+        public int x;
+        public int y;
+    }
+
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
 
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]

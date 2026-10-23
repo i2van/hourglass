@@ -1546,7 +1546,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         {
             case nameof(Options.WindowTitleMode):
             case nameof(Options.HideWindowTitleBar):
-                UpdateTitleBar(true /* keepClientSize */);
+                UpdateTitleBar(true /* keepClientArea */);
                 break;
             case nameof(Options.Opacity):
                 UpdateOpacity();
