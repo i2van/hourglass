@@ -12,7 +12,9 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Linq;
 
-using Extensions;
+using Microsoft.Win32;
+
+using Hourglass.Extensions;
 using Properties;
 using Timing;
 
@@ -232,6 +234,22 @@ public sealed class ThemeManager : Manager
 
         GetThemeByIdentifier(DefaultThemeIdentifier)!.ProgressBarColor = progressBarColor;
         GetThemeByIdentifier(DefaultDarkThemeIdentifier)!.ProgressBarColor = progressBarColor;
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether Windows apps are set to use the dark theme.
+    /// </summary>
+    public static bool IsWindowsDarkModeEnabled()
+    {
+        try
+        {
+            using RegistryKey? key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            return key?.GetValue("AppsUseLightTheme") is 0;
+        }
+        catch (Exception ex) when (ex.CanBeHandled())
+        {
+            return false;
+        }
     }
 
     // https://learn.microsoft.com/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-themes-windowcolor#values

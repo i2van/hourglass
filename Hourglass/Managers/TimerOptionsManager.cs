@@ -58,6 +58,11 @@ public sealed class TimerOptionsManager : Manager
     public override void Initialize()
     {
         _mostRecentOptions = Settings.Default.MostRecentOptions;
+
+        if (SettingsManager.IsFirstRun && ThemeManager.IsWindowsDarkModeEnabled())
+        {
+            _mostRecentOptions.Theme = ThemeManager.Instance.DefaultDarkTheme;
+        }
     }
 
     /// <inheritdoc />

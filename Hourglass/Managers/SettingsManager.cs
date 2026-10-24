@@ -7,6 +7,7 @@
 namespace Hourglass.Managers;
 
 using System;
+using System.IO;
 
 using Properties;
 
@@ -29,9 +30,16 @@ public sealed class SettingsManager : Manager
     {
     }
 
+    /// <summary>
+    /// Gets a value indicating whether no settings file existed when the application was initialized.
+    /// </summary>
+    public static bool IsFirstRun { get; private set; }
+
     /// <inheritdoc />
     public override void Initialize()
     {
+        IsFirstRun = !File.Exists(GetSettingsFilePath());
+
         if (Settings.Default.UpgradeRequired)
         {
             Settings.Default.Upgrade();
