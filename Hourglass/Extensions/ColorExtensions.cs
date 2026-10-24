@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides utility methods for the <see cref="Color"/> struct.

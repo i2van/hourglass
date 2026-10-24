@@ -4,13 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-using Properties;
+using Hourglass.Properties;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides extensions methods for the <see cref="TimeSpan"/> struct.

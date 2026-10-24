@@ -4,14 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Linq;
 using System.Windows;
 
-using Extensions;
-using Serialization;
+using Hourglass.Extensions;
+using Hourglass.Serialization;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// The size, position, and state of a window.

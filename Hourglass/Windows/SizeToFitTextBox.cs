@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using Extensions;
+using Hourglass.Extensions;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// A <see cref="TextBox"/> that automatically adjusts the font size to ensure that the text is entirely visible.

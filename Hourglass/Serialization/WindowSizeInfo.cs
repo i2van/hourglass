@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Serialization;
-
 using System.Windows;
 
-using Windows;
+using Hourglass.Windows;
+
+namespace Hourglass.Serialization;
 
 /// <summary>
 /// The representation of a <see cref="WindowSize"/> used for XML serialization.

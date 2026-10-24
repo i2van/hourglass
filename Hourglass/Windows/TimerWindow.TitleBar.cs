@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -13,8 +11,10 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shell;
 
-using Extensions;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// Shows and hides the <see cref="TimerWindow"/> title bar.

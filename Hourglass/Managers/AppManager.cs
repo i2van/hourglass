@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System.Linq;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages the app.

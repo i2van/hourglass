@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Parsing;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-using Extensions;
-using Properties;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+
+namespace Hourglass.Parsing;
 
 // ReSharper disable ExceptionNotDocumented
 

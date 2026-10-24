@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Timing;
-
 using System;
 using System.IO;
 
 using static System.IO.Path;
 
-using Managers;
-using Extensions;
+using Hourglass.Managers;
+using Hourglass.Extensions;
+
+namespace Hourglass.Timing;
 
 // ReSharper disable ExceptionNotDocumented
 

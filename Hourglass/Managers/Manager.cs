@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// A base class for singleton manager classes.

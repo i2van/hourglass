@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Timing;
-
 using System;
 using System.ComponentModel;
 using System.Windows;
 
-using Extensions;
-using Serialization;
-using Windows;
+using Hourglass.Extensions;
+using Hourglass.Serialization;
+using Hourglass.Windows;
+
+namespace Hourglass.Timing;
 
 /// <summary>
 /// Modes indicating what information to display in the timer window title.

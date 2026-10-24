@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Serialization;
+using Hourglass.Parsing;
+using Hourglass.Timing;
 
-using Parsing;
-using Timing;
+namespace Hourglass.Serialization;
 
 /// <summary>
 /// The representation of a <see cref="TimerStart"/> used for XML serialization.

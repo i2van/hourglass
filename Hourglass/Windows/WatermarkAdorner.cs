@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +11,9 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-using Extensions;
+using Hourglass.Extensions;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// An <see cref="Adorner"/> that displays a watermark on a <see cref="TextBox"/> or <see cref="ComboBox"/> control.

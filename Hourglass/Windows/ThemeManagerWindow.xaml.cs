@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +11,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-using Extensions;
-using Managers;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable LocalSuppression
 

@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Properties;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -18,7 +16,9 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-using Extensions;
+using Hourglass.Extensions;
+
+namespace Hourglass.Properties;
 
 /// <summary>
 /// A <see cref="SettingsProvider"/> that stores settings in an XML document. In the portable build the document

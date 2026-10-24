@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,9 +12,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 
-using Extensions;
-using Properties;
-using Windows;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+using Hourglass.Windows;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages global errors.

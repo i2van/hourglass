@@ -4,12 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.IO;
 
-using Properties;
+using Hourglass.Properties;
+
+namespace Hourglass.Managers;
 
 // ReSharper disable ExceptionNotDocumented
 

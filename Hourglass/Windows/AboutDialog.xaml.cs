@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Navigation;
 
-using Extensions;
-using Managers;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable ExceptionNotDocumented
 // ReSharper disable MismatchedFileName

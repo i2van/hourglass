@@ -4,14 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.Linq;
 
-using Extensions;
+using Hourglass.Extensions;
 
 using Microsoft.Win32;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Schedules the computer to wake up when the next timer expires if the computer is not being kept awake while one

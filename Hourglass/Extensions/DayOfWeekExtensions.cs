@@ -4,14 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using Properties;
+using Hourglass.Properties;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides extensions methods for the <see cref="DayOfWeek"/> enumeration.

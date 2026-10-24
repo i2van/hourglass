@@ -4,13 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Windows.Controls;
 
-using Extensions;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// Scales a <see cref="TimerWindow"/> to ensure that controls shrink and grow with the window size, and updates a

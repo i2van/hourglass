@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Serialization;
-
 using System.Collections.Generic;
+
+namespace Hourglass.Serialization;
 
 /// <summary>
 /// A list of <see cref="TimerInfo"/> objects used for XML serialization.

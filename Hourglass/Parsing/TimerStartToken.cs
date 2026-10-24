@@ -4,16 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Parsing;
-
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-using Extensions;
-using Properties;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+using Hourglass.Timing;
+
+namespace Hourglass.Parsing;
 
 // ReSharper disable ExceptionNotDocumented
 

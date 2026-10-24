@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Serialization;
+using Hourglass.Timing;
 
-using Timing;
+namespace Hourglass.Serialization;
 
 /// <summary>
 /// The representation of a <see cref="TimerOptions"/> used for XML serialization.

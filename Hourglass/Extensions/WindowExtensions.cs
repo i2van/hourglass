@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -17,8 +15,10 @@ using System.Windows.Threading;
 
 using KPreisser.UI;
 
-using Managers;
-using Windows;
+using Hourglass.Managers;
+using Hourglass.Windows;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Specifies options for restoring a <see cref="WindowSize"/> to a <see cref="Window"/>.

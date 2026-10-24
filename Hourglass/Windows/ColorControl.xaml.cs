@@ -4,16 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 
-using Extensions;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable MismatchedFileName
 

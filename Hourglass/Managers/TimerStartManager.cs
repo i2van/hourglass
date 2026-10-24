@@ -4,13 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System.Collections.Generic;
 using System.Linq;
 
-using Properties;
-using Timing;
+using Hourglass.Properties;
+using Hourglass.Timing;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages recent <see cref="TimerStart"/> objects.

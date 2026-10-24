@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides information about the current environment and platform.

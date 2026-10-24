@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System.Windows;
 
-using Windows;
+using Hourglass.Windows;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// An interface for windows whose size, position, and state of windows can be saved and restored.

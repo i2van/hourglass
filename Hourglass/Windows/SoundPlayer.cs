@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-using Audio;
-using Extensions;
-using Timing;
+using Hourglass.Windows.Audio;
+using Hourglass.Extensions;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable ExceptionNotDocumented
 

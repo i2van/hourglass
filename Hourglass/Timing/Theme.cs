@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Timing;
-
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
 
-using Extensions;
-using Managers;
-using Serialization;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Serialization;
+
+namespace Hourglass.Timing;
 
 /// <summary>
 /// The type of theme.

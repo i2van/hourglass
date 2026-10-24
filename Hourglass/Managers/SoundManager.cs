@@ -4,17 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 
-using Extensions;
-using Properties;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+using Hourglass.Timing;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages notification sounds.

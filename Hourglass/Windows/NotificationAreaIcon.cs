@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,13 +18,15 @@ using System.Windows.Threading;
 
 using KPreisser.UI;
 
-using Extensions;
-using Managers;
-using Properties;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Properties;
+using Hourglass.Timing;
 
 using Application = System.Windows.Application;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable ExceptionNotDocumented
 

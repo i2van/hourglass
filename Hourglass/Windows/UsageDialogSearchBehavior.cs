@@ -1,11 +1,11 @@
-namespace Hourglass.Windows;
-
 using System;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// Encapsulates the search bar logic for <see cref="UsageDialog"/>.

@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Parsing;
-
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+namespace Hourglass.Parsing;
 
 /// <summary>
 /// Represents an unspecified time.

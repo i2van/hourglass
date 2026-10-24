@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System.Windows;
 using System.Windows.Input;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides extensions methods for the <see cref="FrameworkElementExtensions"/> class.

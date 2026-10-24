@@ -4,14 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Timing;
-
 using System;
 using System.ComponentModel;
 using System.Windows.Threading;
 
-using Extensions;
-using Serialization;
+using Hourglass.Extensions;
+using Hourglass.Serialization;
+
+namespace Hourglass.Timing;
 
 /// <summary>
 /// The state of a timer.

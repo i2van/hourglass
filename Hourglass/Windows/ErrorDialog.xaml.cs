@@ -4,17 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Threading;
 
-using Extensions;
+using Hourglass.Extensions;
 
 using static System.Windows.SystemParameters;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable MismatchedFileName
 

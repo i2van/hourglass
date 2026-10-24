@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -15,9 +13,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-using Extensions;
-using Properties;
-using Serialization;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+using Hourglass.Serialization;
+
+namespace Hourglass.Managers;
 
 // ReSharper disable LocalSuppression
 

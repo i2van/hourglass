@@ -4,14 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Test;
-
 using System;
 using System.Globalization;
 
-using Parsing;
+using Hourglass.Parsing;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Hourglass.Test;
 
 /// <summary>
 /// Contains tests for the <see cref="DateTimeToken"/> class.

@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System.Collections.Generic;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages the thread-state of the main user interface thread to keep the computer from sleeping while a timer is running in any window.

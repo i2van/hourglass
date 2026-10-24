@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +11,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// Provides a <see cref="DependencyProperty"/> that allows a watermark to be applied to <see cref="TextBox"/> and

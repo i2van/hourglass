@@ -4,12 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass;
-
 using System;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
+
+namespace Hourglass;
 
 /// <summary>
 /// Flags used to specify window attributes for Desktop Window Manager (DWM) non-client rendering.

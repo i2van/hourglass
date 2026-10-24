@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
+using Hourglass.Windows;
 
-using Windows;
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages the <see cref="NotificationAreaIcon"/>.

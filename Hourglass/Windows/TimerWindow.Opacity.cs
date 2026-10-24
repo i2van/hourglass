@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-using Timing;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// Changes the <see cref="TimerWindow"/> opacity.

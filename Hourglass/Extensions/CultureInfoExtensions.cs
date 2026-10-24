@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+
+namespace Hourglass.Extensions;
 
 // ReSharper disable ExceptionNotDocumented
 

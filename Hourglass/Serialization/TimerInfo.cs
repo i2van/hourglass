@@ -4,12 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Serialization;
-
 using System;
 using System.Xml.Serialization;
 
-using Timing;
+using Hourglass.Timing;
+
+namespace Hourglass.Serialization;
 
 /// <summary>
 /// The representation of a <see cref="Timer"/> used for XML serialization.

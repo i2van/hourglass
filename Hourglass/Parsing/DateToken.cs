@@ -4,13 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Parsing;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+
+namespace Hourglass.Parsing;
 
 /// <summary>
 /// Represents the date part of an instant in time.

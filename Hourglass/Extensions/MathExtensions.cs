@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Runtime.CompilerServices;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides constants and static methods for trigonometric, logarithmic, and other common mathematical functions

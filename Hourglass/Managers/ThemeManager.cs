@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,8 +13,10 @@ using System.Linq;
 using Microsoft.Win32;
 
 using Hourglass.Extensions;
-using Properties;
-using Timing;
+using Hourglass.Properties;
+using Hourglass.Timing;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages themes.

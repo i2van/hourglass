@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Properties;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Serialization;
-using Timing;
-using Windows;
+using Hourglass.Serialization;
+using Hourglass.Timing;
+using Hourglass.Windows;
+
+namespace Hourglass.Properties;
 
 /// <summary>
 /// Application settings.

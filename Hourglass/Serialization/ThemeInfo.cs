@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Serialization;
-
 using System.Windows.Media;
 
-using Timing;
+using Hourglass.Timing;
+
+namespace Hourglass.Serialization;
 
 /// <summary>
 /// The representation of a <see cref="Theme"/> used for XML serialization.

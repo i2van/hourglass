@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Extensions;
-
 using System;
 using System.Linq;
 using System.Management;
+
+namespace Hourglass.Extensions;
 
 /// <summary>
 /// Provides utility methods for interacting with the Windows environment.

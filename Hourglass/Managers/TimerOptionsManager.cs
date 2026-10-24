@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Managers;
-
 using System;
 using System.Linq;
 using System.Windows;
 
-using Properties;
-using Timing;
-using Windows;
+using Hourglass.Properties;
+using Hourglass.Timing;
+using Hourglass.Windows;
+
+namespace Hourglass.Managers;
 
 /// <summary>
 /// Manages <see cref="TimerOptions"/>s.
