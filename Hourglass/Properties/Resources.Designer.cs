@@ -728,7 +728,7 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show _iteration {0}.
+        ///   Looks up a localized string similar to Show _iteration (current is {0}).
         /// </summary>
         public static string ContextMenuShowIterationMenuItem {
             get {

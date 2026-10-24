@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,11 +14,13 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 
-using Extensions;
-using Managers;
-using Properties;
-using Timing;
-using Windows;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Properties;
+using Hourglass.Timing;
+using Hourglass.Windows;
+
+namespace Hourglass;
 
 /// <summary>
 /// Parsed command-line arguments.
@@ -64,6 +64,11 @@ public sealed class CommandLineArguments
     /// Gets a <see cref="TimerStart"/> values, or empty if no time was specified on the command line.
     /// </summary>
     public IEnumerable<TimerStart> TimerStart { get; private set; } = [];
+
+    /// <summary>
+    /// Gets the date-time <see cref="TimerStart"/> the timer counts from, or <see langword="null"/> to start the timer now.
+    /// </summary>
+    public TimerStart? StartTime { get; private set; }
 
     /// <summary>
     /// Gets a user-specified title for the timer.
@@ -860,6 +865,31 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.StartPaused = startPaused;
                     argumentsBasedOnFactoryDefaults.StartPaused = startPaused;
+                    break;
+
+                case "--start-time":
+                case "-ss":
+                case "/ss":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--start-time");
+
+                    string startTimeValue = GetRequiredValue(arg, remainingArgs);
+
+                    Settings.Default.Prefer24HourTime = argumentsBasedOnMostRecentOptions.Prefer24HourTime; // Required for parsing.
+
+                    Timing.TimerStart? startTime = Timing.TimerStart.FromString(startTimeValue);
+                    if (startTime is null || !startTime.TryGetStartTime(DateTime.Now, out _))
+                    {
+                        string message = string.Format(
+                            Resources.ResourceManager.GetEffectiveProvider(),
+                            Resources.CommandLineArgumentsParseExceptionInvalidValueForSwitchFormatString,
+                            arg,
+                            startTimeValue);
+
+                        throw new ParseException(message);
+                    }
+
+                    argumentsBasedOnMostRecentOptions.StartTime = startTime;
+                    argumentsBasedOnFactoryDefaults.StartTime = startTime;
                     break;
 
                 case "--pop-up-when-expired":

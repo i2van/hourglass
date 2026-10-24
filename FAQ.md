@@ -39,6 +39,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How do I show the time elapsed rather than the time left?](#how-do-i-show-the-time-elapsed-rather-than-the-time-left)
 - [How do I create a shortcut that automatically starts a timer with the Hourglass?](#how-do-i-create-a-shortcut-that-automatically-starts-a-timer-with-the-hourglass)
 - [What command-line arguments does the Hourglass accept?](#what-command-line-arguments-does-the-hourglass-accept)
+- [How do I start a timer as if it had already started?](#how-do-i-start-a-timer-as-if-it-had-already-started)
 - [How do I search in the command-line usage dialog?](#how-do-i-search-in-the-command-line-usage-dialog)
 - [How to launch the Hourglass on Windows startup?](#how-to-launch-the-hourglass-on-windows-startup)
 - [How to speed up the Portable Hourglass startup?](#how-to-speed-up-the-portable-hourglass-startup)
@@ -406,7 +407,7 @@ The built-in color themes cannot be deleted.
 
 `Right Click` on any empty space in the timer window and select a sound from the **Sound** submenu.
 
-The command-line option is [`--sound`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--sound), `-s`, `/s`. The sound name is case-insensitive and must be surrounded by double quotes if it contains spaces, e.g. `Hourglass.exe --sound "Loud beep" "5 minutes"`. Use `none` to disable the sound.
+The command-line option is [`--sound`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--sound), `-s`, `/s`. The sound name is case-insensitive and must be surrounded by double quotes if it contains spaces, e.g., `Hourglass.exe --sound "Loud beep" "5 minutes"`. Use `none` to disable the sound.
 
 The built-in sounds are (copy with double quotes included):
 
@@ -455,6 +456,19 @@ You can also specify additional [command-line](https://github.com/i2van/hourglas
 You can launch the **Hourglass** and immediately start a timer by running `Hourglass.exe "<duration or date and time>"`. For example, to launch the **Hourglass** and start a 5-minute timer, run `Hourglass.exe "5 minutes"`.
 
 You can also set any option that you can set using the user interface by specifying additional command-line arguments. To view a full list of command-line arguments, run `Hourglass.exe --help` or click [here](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt).
+
+## How do I start a timer as if it had already started?
+
+Use the `--start-time` (or `-ss`) command-line argument to start the timer as if it had started at a specified moment. The progress bar then shows the time elapsed since that moment and the time remaining until the end of the timer.
+
+The start time accepts either a date and time or a time span:
+
+- **Date and time**: starts the timer at its most recent occurrence, e.g., `Hourglass.exe --start-time "2024-01-01 09:00" "5 hours"`.
+- **Time span**: starts the timer that much time before the current time, e.g., `Hourglass.exe --start-time 2h "5 hours"` starts a 5-hour timer that began 2 hours ago.
+
+The timer end is calculated from the start time. If the end is already past, the timer is shown as expired. A date and time must have occurred within the last two years.
+
+The start time is never remembered. Restarting the timer starts it from the current time.
 
 ## How do I search in the command-line usage dialog?
 
@@ -591,7 +605,7 @@ The **Hourglass** settings file location can be opened directly from the timer w
 
 ## How to allow the Hourglass timer windows to be placed off-screen?
 
-By default, the **Hourglass** checks whether the timer window is visible on screen after restoring its position. If the window would appear off-screen (e.g. on a disconnected monitor or at negative coordinates), it is automatically centered instead.
+By default, the **Hourglass** checks whether the timer window is visible on screen after restoring its position. If the window would appear off-screen (e.g., on a disconnected monitor or at negative coordinates), it is automatically centered instead.
 
 You can disable this check to allow windows to be placed at any position, including negative coordinates or outside the current screen bounds.
 
@@ -609,7 +623,7 @@ You can disable this check to allow windows to be placed at any position, includ
 > ```
 
 > [!NOTE]
-> This is particularly useful when starting the **Hourglass** via command-line with the `/b` switch and negative coordinates, e.g. `Hourglass.exe /b "-300,1000,259,159"`.
+> This is particularly useful when starting the **Hourglass** via command-line with the `/b` switch and negative coordinates, e.g., `Hourglass.exe /b "-300,1000,259,159"`.
 
 > [!WARNING]
 > When `AllowOffScreen` is `True`, timer windows may appear on disconnected or unavailable monitors and become inaccessible.

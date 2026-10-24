@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Timing;
-
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
-using Extensions;
-using Properties;
-using Serialization;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+using Hourglass.Serialization;
+
+namespace Hourglass.Timing;
 
 // ReSharper disable ExceptionNotDocumented
 
@@ -21,6 +21,11 @@ using Serialization;
 /// </summary>
 public sealed class Timer : TimerBase
 {
+    /// <summary>
+    /// The explicit start time the timer was started at, or <see langword="null"/> if the timer was started at the current time.
+    /// </summary>
+    private DateTime? _explicitStart;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Timer"/> class.
     /// </summary>
@@ -117,10 +122,12 @@ public sealed class Timer : TimerBase
     /// </summary>
     /// <param name="newTimerStart">A <see cref="TimerStart"/>.</param>
     /// <param name="startPaused">A value indicating whether to start the timer in a paused state.</param>
+    /// <param name="startTime">A date-time <see cref="TimerStart"/> identifying the most recent moment the timer
+    /// counts from, or <see langword="null"/> to start the timer now.</param>
     /// <returns>A value indicating whether the timer was started successfully.</returns>
     /// <exception cref="ObjectDisposedException">If the timer has been disposed.</exception>
-    public bool Start(TimerStart newTimerStart, bool startPaused = false) =>
-        StartWithIteration(newTimerStart, 1, startPaused);
+    public bool Start(TimerStart newTimerStart, bool startPaused = false, TimerStart? startTime = null) =>
+        StartWithIteration(newTimerStart, 1, startPaused, startTime);
 
     /// <summary>
     /// Starts the timer with the specified iteration. The iteration is set before the timer start is published so the UI never shows an intermediate value.
@@ -128,12 +135,20 @@ public sealed class Timer : TimerBase
     /// <param name="newTimerStart">The timer start.</param>
     /// <param name="iteration">The iteration to start with.</param>
     /// <param name="startPaused">Whether to start the timer paused.</param>
+    /// <param name="startTime">The date-time <see cref="TimerStart"/> identifying the moment the timer counts from, or
+    /// <see langword="null"/> to start the timer now.</param>
     /// <returns>A value indicating whether the timer was started successfully.</returns>
-    private bool StartWithIteration(TimerStart newTimerStart, uint iteration, bool startPaused)
+    private bool StartWithIteration(TimerStart newTimerStart, uint iteration, bool startPaused, TimerStart? startTime)
     {
         ThrowIfDisposed();
 
-        DateTime start = DateTime.Now;
+        DateTime now = DateTime.Now;
+        DateTime start = now;
+        if (startTime is not null && !startTime.TryGetStartTime(now, out start))
+        {
+            return false;
+        }
+
         if (newTimerStart.TryGetEndTime(start, out var end))
         {
             SetIteration(iteration);
@@ -141,6 +156,7 @@ public sealed class Timer : TimerBase
             TimerStart = newTimerStart;
             OnPropertyChanged(nameof(TimerStart));
 
+            _explicitStart = startTime is null ? null : start;
             Start(start, end);
 
             if (startPaused && SupportsPause)
@@ -159,9 +175,10 @@ public sealed class Timer : TimerBase
     {
         ThrowIfDisposed();
 
+        DateTime referenceTime = _explicitStart ?? DateTime.Now;
         if (State != TimerState.Paused ||
             TimerStart?.Type != TimerStartType.DateTime ||
-            !TimerStart.TryGetEndTime(DateTime.Now, out var fixedEnd) ||
+            !TimerStart.TryGetEndTime(referenceTime, out var fixedEnd) ||
             fixedEnd <= DateTime.Now)
         {
             base.Resume();
@@ -199,7 +216,7 @@ public sealed class Timer : TimerBase
         {
             uint nextIteration = Iteration + 1;
             Stop();
-            StartWithIteration(actualTimerStart, nextIteration, false);
+            StartWithIteration(actualTimerStart, nextIteration, false, null);
         }
     }
 

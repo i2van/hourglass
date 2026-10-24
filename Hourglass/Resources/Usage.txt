@@ -155,7 +155,7 @@ Options:
         Alias           -st, /st
 
   --show-iteration on|off|last
-        Shows the timer iteration next to the timer title, for example
+        Shows the timer iteration next to the timer title, e.g.,
         "Timer 1 × 2" in the timer window title, tooltip and context
         menus. The iteration starts at 1 and increases each time the
         timer is restarted or looped.
@@ -209,6 +209,31 @@ Options:
         Required        no
         Default value   off
         Alias           -sp, /sp
+
+  --start-time <date-time | time-span>
+        Starts the timer as if it had started at the specified moment, so the
+        progress bar shows the time elapsed since that moment and the time
+        remaining until the end of the timer.
+
+        Accepts the same date-time formats as the timer input, for example:
+            --start-time "2024-01-01 09:00"
+        A date-time starts the timer at its most recent occurrence.
+
+        Accepts a time span, for example:
+            --start-time 2h
+        A time span starts the timer that much time before the current time.
+
+        The timer end is calculated from the start time. If the end is already
+        past, the timer is shown as expired. A timer input in the form of a time
+        span (e.g., 5h) ends at the start time plus that time span.
+
+        A date-time must have occurred within the last two years.
+
+        This option is never remembered. Restarting the timer starts it from the
+        current time.
+
+        Required        no
+        Default value   (none)
 
   --pop-up-when-expired on|off|last
         Pops up the timer window when the timer expires.
@@ -458,6 +483,7 @@ Options:
             --loop-timer                  -l  off
             --pause-after-loop-timer      -pl off
             --start-paused                -sp off
+            --start-time                  -ss (none)
             --pop-up-when-expired         -p  on
             --close-when-expired          -e  off
             --minimize-when-expired       -em off

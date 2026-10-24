@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,15 +12,17 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-using Extensions;
-using Managers;
-using Properties;
-using Timing;
-using Windows;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Properties;
+using Hourglass.Timing;
+using Hourglass.Windows;
 
 using Microsoft.VisualBasic.ApplicationServices;
 
 using StartupEventArgs = Microsoft.VisualBasic.ApplicationServices.StartupEventArgs;
+
+namespace Hourglass;
 
 /// <summary>
 /// Handles application start up, command-line arguments, and ensures that only one instance of the application is
@@ -208,7 +208,7 @@ public sealed class AppEntry : WindowsFormsApplicationBase
     /// <param name="windowSize">The size, position, and state of the window.</param>
     private static void ShowNewTimerWindow(CommandLineArguments arguments, TimerStart? timerStart, WindowSize windowSize)
     {
-        TimerWindow window = new(timerStart);
+        TimerWindow window = new(timerStart, arguments.StartTime);
         window.Options.Set(arguments.GetTimerOptions());
         window.Restore(windowSize, RestoreOptions.AllowMinimized);
         window.Show();

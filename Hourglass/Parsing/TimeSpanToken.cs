@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Parsing;
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-using Extensions;
-using Properties;
+using Hourglass.Extensions;
+using Hourglass.Properties;
+
+namespace Hourglass.Parsing;
 
 /// <summary>
 /// Represents a time interval.
@@ -85,6 +85,40 @@ public sealed class TimeSpanToken : TimerStartToken
         }
 
         return endTime;
+    }
+
+    /// <summary>
+    /// Returns the start time for which <see cref="GetEndTime"/> yields the specified end time, by undoing each unit in
+    /// reverse order.
+    /// </summary>
+    /// <param name="endTime">The end time.</param>
+    /// <param name="startTime">The start time if it could be computed, or <see cref="DateTime.MinValue"/> otherwise.</param>
+    /// <returns><see langword="true"/> if the start time could be computed, or <see langword="false"/> otherwise.</returns>
+    public bool TryGetStartTime(DateTime endTime, out DateTime startTime)
+    {
+        ThrowIfNotValid();
+
+        startTime = DateTime.MinValue;
+
+        try
+        {
+            DateTime result = endTime;
+
+            result = result.AddYears(-Years);
+            result = result.AddMonths(-Months);
+            result = result.AddWeeks(-Weeks);
+            result = result.AddDays(-Days);
+            result = result.AddHours(-Hours);
+            result = result.AddMinutes(-Minutes);
+            result = result.AddSeconds(-Seconds);
+
+            startTime = result;
+            return true;
+        }
+        catch (Exception ex) when (ex.CanBeHandled())
+        {
+            return false;
+        }
     }
 
     /// <inheritdoc />

@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +12,12 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-using Extensions;
-using Managers;
-using Properties;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Properties;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 // ReSharper disable ExceptionNotDocumented
 
@@ -376,6 +376,7 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     {
         LastShown = DateTime.Now;
         UpdateSavedTimersHeaders();
+        UpdateShowIterationHeader();
     }
 
     /// <summary>
@@ -493,9 +494,8 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _showTriggerTimeMenuItem.IsChecked = _timerWindow.Options.ShowTriggerTime;
 
         // Show iteration
-        _showIterationMenuItem.Header = string.Format(Properties.Resources.ContextMenuShowIterationMenuItem, string.Format(Properties.Resources.IterationOnlyFormat, _timerWindow.Timer.Iteration));
+        UpdateShowIterationHeader();
         _showIterationMenuItem.IsChecked = _timerWindow.Options.ShowIteration;
-        _resetIterationMenuItem.IsEnabled = _timerWindow.Options.ShowIteration;
 
         // Reset expired timer when clicked
         _resetExpiredTimerMenuItem.IsChecked = _timerWindow.Options.ResetExpiredTimer;
@@ -1339,6 +1339,18 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
                 menuItem.Icon = GetIconForTimer(timer);
             }
         }
+    }
+
+    /// <summary>
+    /// Updates the <see cref="MenuItem.Header"/> of the <see cref="_showIterationMenuItem"/> with the current iteration of the timer,
+    /// and enables the <see cref="_resetIterationMenuItem"/> only when iteration is shown and greater than 1.
+    /// </summary>
+    private void UpdateShowIterationHeader()
+    {
+        _showIterationMenuItem.Header = string.Format(
+            Properties.Resources.ContextMenuShowIterationMenuItem,
+            string.Format(Properties.Resources.IterationOnlyFormat, _timerWindow.Timer.Iteration));
+        _resetIterationMenuItem.IsEnabled = _timerWindow.Options.ShowIteration && _timerWindow.Timer.Iteration > 1;
     }
 
     /// <summary>

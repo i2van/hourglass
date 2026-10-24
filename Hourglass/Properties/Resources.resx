@@ -1191,7 +1191,7 @@ $</value>
     <comment>The text for the show trigger time menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuShowIterationMenuItem" xml:space="preserve">
-    <value>Show _iteration {0}</value>
+    <value>Show _iteration (current is {0})</value>
     <comment>The text for the show iteration menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
   <data name="ContextMenuResetIterationMenuItem" xml:space="preserve">

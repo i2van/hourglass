@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Windows;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,10 +20,12 @@ using System.Windows.Shell;
 
 using KPreisser.UI;
 
-using Extensions;
-using Managers;
-using Properties;
-using Timing;
+using Hourglass.Extensions;
+using Hourglass.Managers;
+using Hourglass.Properties;
+using Hourglass.Timing;
+
+namespace Hourglass.Windows;
 
 /// <summary>
 /// The mode of a <see cref="TimerWindow"/>.
@@ -195,6 +195,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private TimerStart? _timerStartToStartOnLoad;
 
     /// <summary>
+    /// The date-time <see cref="TimerStart"/> the timer started on load counts from, or <see langword="null"/> to start the timer
+    /// now.
+    /// </summary>
+    private TimerStart? _startTimeOnLoad;
+
+    /// <summary>
     /// The currently loaded theme.
     /// </summary>
     private Theme? _theme;
@@ -275,10 +281,13 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// </summary>
     /// <param name="timerStart">The <see cref="TimerStart"/> to start when the window loads, or <see langword="null"/> if no
     /// <see cref="TimerStart"/> is to be started.</param>
-    public TimerWindow(TimerStart? timerStart)
+    /// <param name="startTime">A date-time <see cref="TimerStart"/> identifying the most recent moment the timer
+    /// counts from, or <see langword="null"/> to start the timer now.</param>
+    public TimerWindow(TimerStart? timerStart, TimerStart? startTime = null)
         : this()
     {
         _timerStartToStartOnLoad = timerStart;
+        _startTimeOnLoad = startTime;
     }
 
     /// <summary>
@@ -476,14 +485,16 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <param name="timerStart">A <see cref="TimerStart"/>.</param>
     /// <param name="remember">A value indicating whether to remember the <see cref="TimerStart"/> as a recent
     /// input.</param>
-    public void Show(TimerStart timerStart, bool remember = true)
+    /// <param name="startTime">A date-time <see cref="TimerStart"/> identifying the most recent moment the timer
+    /// counts from, or <see langword="null"/> to start the timer now. Timers started at an explicit time are never remembered.</param>
+    public void Show(TimerStart timerStart, bool remember = true, TimerStart? startTime = null)
     {
         // Keep track of the input
         LastTimerStart = timerStart;
 
         // Start a new timer
         Timer newTimer = new(Options);
-        if (!newTimer.Start(timerStart, Options.StartPaused))
+        if (!newTimer.Start(timerStart, Options.StartPaused, startTime))
         {
             // The user has started a timer that expired in the past
             if (Options.LockInterface)
@@ -511,7 +522,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         TimerManager.Instance.Add(newTimer);
 
-        if (remember)
+        if (remember && startTime is null)
         {
             timerStart.Title = Options.Title;
             TimerStartManager.Instance.Add(timerStart);
@@ -2137,7 +2148,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         // Deal with any input or timer set in the constructor
         if (_timerStartToStartOnLoad is not null)
         {
-            Show(_timerStartToStartOnLoad);
+            Show(_timerStartToStartOnLoad, true /* remember */, _startTimeOnLoad);
         }
         else if (Options.LockInterface)
         {
@@ -2151,6 +2162,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
 
         _timerStartToStartOnLoad = null;
+        _startTimeOnLoad = null;
         _timerToResumeOnLoad = null;
 
         // Minimize to notification area if required

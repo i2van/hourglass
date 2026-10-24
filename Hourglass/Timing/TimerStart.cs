@@ -4,13 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Hourglass.Timing;
-
 using System;
 
-using Parsing;
-using Properties;
-using Serialization;
+using Hourglass.Parsing;
+using Hourglass.Properties;
+using Hourglass.Serialization;
+
+namespace Hourglass.Timing;
 
 /// <summary>
 /// Represents the <see cref="TimerStart"/> type.
@@ -33,6 +33,12 @@ public enum TimerStartType
 /// </summary>
 public sealed class TimerStart
 {
+    /// <summary>
+    /// The maximum number of occurrences examined when searching for the latest occurrence of a <see
+    /// cref="TimerStart"/>.
+    /// </summary>
+    private const int MaxOccurrenceSearchSteps = 10000;
+
     /// <summary>
     /// A <see cref="TimerStartToken"/>.
     /// </summary>
@@ -135,6 +141,56 @@ public sealed class TimerStart
     public bool TryGetEndTime(DateTime startTime, out DateTime endTime)
     {
         return _timerStartToken.TryGetEndTime(startTime, out endTime);
+    }
+
+    /// <summary>
+    /// Returns the time a timer started with this <see cref="TimerStart"/> counts from, given the current time. For a
+    /// date-time, this is the latest occurrence not after the specified time; for a time span, this is the specified
+    /// time minus the time span.
+    /// </summary>
+    /// <param name="now">The current time.</param>
+    /// <param name="start">The start time if it could be computed, or <see cref="DateTime.MinValue"/> otherwise.</param>
+    /// <returns><see langword="true"/> if the start time could be computed, or <see langword="false"/> otherwise.</returns>
+    public bool TryGetStartTime(DateTime now, out DateTime start)
+    {
+        if (_timerStartToken is TimeSpanToken timeSpanToken)
+        {
+            return timeSpanToken.TryGetStartTime(now, out start);
+        }
+
+        return TryGetLatestOccurrence(now, out start);
+    }
+
+    /// <summary>
+    /// Returns the latest occurrence of a <see cref="DateTime"/> <see cref="TimerStart"/> that is not after a specified
+    /// time. Only occurrences within the two years before the specified time are considered.
+    /// </summary>
+    /// <param name="time">The time to search up to.</param>
+    /// <param name="occurrence">The latest occurrence not after the specified time if one was found, or <see
+    /// cref="DateTime.MinValue"/> otherwise.</param>
+    /// <returns><see langword="true"/> if an occurrence was found, or <see langword="false"/> otherwise.</returns>
+    public bool TryGetLatestOccurrence(DateTime time, out DateTime occurrence)
+    {
+        occurrence = DateTime.MinValue;
+
+        if (Type != TimerStartType.DateTime)
+        {
+            return false;
+        }
+
+        DateTime probe = time.AddYears(-2);
+        for (int i = 0; i < MaxOccurrenceSearchSteps; i++)
+        {
+            if (!_timerStartToken.TryGetEndTime(probe, out DateTime next) || next <= probe || next > time)
+            {
+                break;
+            }
+
+            occurrence = next;
+            probe = next;
+        }
+
+        return occurrence != DateTime.MinValue;
     }
 
     /// <inheritdoc />
