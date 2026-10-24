@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using System.Windows.Shell;
 using System.Windows.Threading;
 
+using Hourglass.Managers;
 using Hourglass.Properties;
 using Hourglass.Timing;
 using Hourglass.Windows;
@@ -286,6 +287,11 @@ public static class TimerWindowExtensions
                 ExecuteJumpCommand(wParam.ToInt32());
 
                 handled = true;
+            }
+
+            if (msg == 0x0320 /* WM_DWMCOLORIZATIONCOLORCHANGED */)
+            {
+                ThemeManager.Instance.UpdateAccentThemes();
             }
 
             return IntPtr.Zero;

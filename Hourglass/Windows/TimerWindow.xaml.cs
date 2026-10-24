@@ -2367,6 +2367,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         this.AddWindowProcHook();
 
+        ThemeManager.Instance.UpdateAccentThemes();
+
         UpdateOpacity();
 
         if (Settings.Default.AlwaysCenterWindow)

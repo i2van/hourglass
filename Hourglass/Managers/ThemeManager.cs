@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Linq;
 
+using Extensions;
 using Properties;
 using Timing;
 
@@ -220,6 +221,17 @@ public sealed class ThemeManager : Manager
         }
 
         _themes.Remove(theme);
+    }
+
+    /// <summary>
+    /// Updates the progress bar colors of the accent themes to match the current Windows accent color.
+    /// </summary>
+    public void UpdateAccentThemes()
+    {
+        var progressBarColor = ColorExtensions.FromString(GetWindowsAccentColor());
+
+        GetThemeByIdentifier(DefaultThemeIdentifier)!.ProgressBarColor = progressBarColor;
+        GetThemeByIdentifier(DefaultDarkThemeIdentifier)!.ProgressBarColor = progressBarColor;
     }
 
     // https://learn.microsoft.com/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-themes-windowcolor#values
