@@ -92,7 +92,7 @@ public sealed class TaskDialogRadioButton : TaskDialogControl
     /// 
     /// </summary>
     /// <remarks>
-    /// This property can be set to <c>true</c> while the dialog is shown (except
+    /// This property can be set to <see langword="true"/> while the dialog is shown (except
     /// from within the <see cref="CheckedChanged"/> event).
     /// </remarks>
     public bool Checked

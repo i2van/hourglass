@@ -255,7 +255,7 @@ public sealed class AppEntry : WindowsFormsApplicationBase
     /// <summary>
     /// Copies the specified config file over the current settings file, if the paths differ.
     /// </summary>
-    /// <param name="configFilePath">The path to the config file, or <c>null</c> to do nothing.</param>
+    /// <param name="configFilePath">The path to the config file, or <see langword="null"/> to do nothing.</param>
     private static void CopyConfigFile(string? configFilePath)
     {
         if (configFilePath is null)

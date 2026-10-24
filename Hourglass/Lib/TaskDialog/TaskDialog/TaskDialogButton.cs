@@ -27,7 +27,7 @@ public abstract class TaskDialogButton : TaskDialogControl
     /// will raise the <see cref="TaskDialogPage.Help"/> event afterwards).
     /// To prevent the dialog from closing, set the
     /// <see cref="TaskDialogButtonClickedEventArgs.CancelClose"/> property to
-    /// <c>true</c>.
+    /// <see langword="true"/>.
     /// </remarks>
     public event EventHandler<TaskDialogButtonClickedEventArgs> Click;
 

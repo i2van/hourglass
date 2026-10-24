@@ -60,7 +60,7 @@ public sealed class Timer : TimerBase
     public TimerOptions Options { get; }
 
     /// <summary>
-    /// Gets the <see cref="TimerStart"/> used to start this timer, or <c>null</c> if the <see
+    /// Gets the <see cref="TimerStart"/> used to start this timer, or <see langword="null"/> if the <see
     /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
     /// </summary>
     public TimerStart? TimerStart { get; private set; }

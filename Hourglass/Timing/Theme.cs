@@ -95,7 +95,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// </summary>
     /// <param name="type">The type of this theme.</param>
     /// <param name="identifier">A unique identifier for this theme.</param>
-    /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
+    /// <param name="name">The friendly name for this theme, or <see langword="null"/> if no friendly name is specified.</param>
     /// <param name="backgroundColor">The background color of the window.</param>
     /// <param name="progressBarColor">The color of the progress bar.</param>
     /// <param name="progressBackgroundColor">The background color of the progress bar.</param>
@@ -145,7 +145,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// </summary>
     /// <param name="type">The type of this theme.</param>
     /// <param name="identifier">A unique identifier for this theme.</param>
-    /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
+    /// <param name="name">The friendly name for this theme, or <see langword="null"/> if no friendly name is specified.</param>
     /// <param name="backgroundColor">The background color of the window.</param>
     /// <param name="progressBarColor">The color of the progress bar.</param>
     /// <param name="progressBackgroundColor">The background color of the progress bar.</param>
@@ -192,7 +192,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// </summary>
     /// <param name="type">The type of this theme.</param>
     /// <param name="identifier">A unique identifier for this theme.</param>
-    /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
+    /// <param name="name">The friendly name for this theme, or <see langword="null"/> if no friendly name is specified.</param>
     /// <param name="theme">A theme from which to copy colors.</param>
     public Theme(ThemeType type, string identifier, string name, Theme theme)
         : this(
@@ -257,7 +257,7 @@ public sealed class Theme : INotifyPropertyChanged
     public string Identifier { get; }
 
     /// <summary>
-    /// Gets or sets the friendly name of this theme, or <c>null</c> if no friendly name is specified.
+    /// Gets or sets the friendly name of this theme, or <see langword="null"/> if no friendly name is specified.
     /// </summary>
     public string Name
     {
@@ -565,10 +565,10 @@ public sealed class Theme : INotifyPropertyChanged
     public Theme DarkVariant => ThemeManager.Instance.GetDarkVariantForTheme(this);
 
     /// <summary>
-    /// Returns the theme for the specified identifier, or <c>null</c> if no such theme is loaded.
+    /// Returns the theme for the specified identifier, or <see langword="null"/> if no such theme is loaded.
     /// </summary>
     /// <param name="identifier">The identifier for the theme.</param>
-    /// <returns>The theme for the specified identifier, or <c>null</c> if no such theme is loaded.</returns>
+    /// <returns>The theme for the specified identifier, or <see langword="null"/> if no such theme is loaded.</returns>
     public static Theme FromIdentifier(string? identifier)
     {
         return ThemeManager.Instance.GetThemeOrDefaultByIdentifier(identifier);
@@ -579,7 +579,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// </summary>
     /// <param name="type">The type of this theme.</param>
     /// <param name="identifier">A unique identifier for this theme.</param>
-    /// <param name="name">The friendly name for this theme, or <c>null</c> if no friendly name is specified.</param>
+    /// <param name="name">The friendly name for this theme, or <see langword="null"/> if no friendly name is specified.</param>
     /// <param name="theme">A theme from which to copy colors.</param>
     /// <returns>A <see cref="Theme"/> that is a copy of another <see cref="Theme"/>.</returns>
     public static Theme FromTheme(ThemeType type, string identifier, string name, Theme theme)
@@ -588,12 +588,12 @@ public sealed class Theme : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Returns a <see cref="Theme"/> for the specified <see cref="ThemeInfo"/>, or <c>null</c> if the specified
-    /// <see cref="ThemeInfo"/> is <c>null</c>.
+    /// Returns a <see cref="Theme"/> for the specified <see cref="ThemeInfo"/>, or <see langword="null"/> if the specified
+    /// <see cref="ThemeInfo"/> is <see langword="null"/>.
     /// </summary>
     /// <param name="info">A <see cref="ThemeInfo"/>.</param>
-    /// <returns>A <see cref="Theme"/> for the specified <see cref="ThemeInfo"/>, or <c>null</c> if the specified
-    /// <see cref="ThemeInfo"/> is <c>null</c>.</returns>
+    /// <returns>A <see cref="Theme"/> for the specified <see cref="ThemeInfo"/>, or <see langword="null"/> if the specified
+    /// <see cref="ThemeInfo"/> is <see langword="null"/>.</returns>
     public static Theme? FromThemeInfo(ThemeInfo? info)
     {
         return info is not null ? new Theme(info) : null;

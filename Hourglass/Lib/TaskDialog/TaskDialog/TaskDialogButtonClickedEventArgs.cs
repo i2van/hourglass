@@ -21,7 +21,7 @@ public class TaskDialogButtonClickedEventArgs : EventArgs
     /// after the event handler returns.
     /// </summary>
     /// <remarks>
-    /// When you don't set this property to <c>true</c>, the
+    /// When you don't set this property to <see langword="true"/>, the
     /// <see cref="TaskDialog.Closing"/> event will occur afterwards.
     /// </remarks>
     public bool CancelClose

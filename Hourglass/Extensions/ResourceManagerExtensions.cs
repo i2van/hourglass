@@ -49,7 +49,7 @@ public static class ResourceManagerExtensions
         /// </summary>
         /// <param name="name">The name of the resource to retrieve.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/> that is a <see cref="CultureInfo"/>.</param>
-        /// <returns>The value of the resource localized for the specified culture, or <c>null</c> if <paramref
+        /// <returns>The value of the resource localized for the specified culture, or <see langword="null"/> if <paramref
         /// name="name"/> cannot be found in a resource set.</returns>
         public string GetString(string name, IFormatProvider provider)
         {

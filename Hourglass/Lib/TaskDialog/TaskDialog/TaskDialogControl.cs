@@ -89,7 +89,7 @@ public abstract class TaskDialogControl
     /// flags to be specified before the task dialog is displayed or navigated.
     /// </summary>
     /// <remarks>
-    /// This method will only be called if <see cref="IsCreatable"/> returns <c>true</c>.
+    /// This method will only be called if <see cref="IsCreatable"/> returns <see langword="true"/>.
     /// </remarks>
     /// <returns></returns>
     private protected virtual TaskDialogFlags BindCore()
@@ -112,7 +112,7 @@ public abstract class TaskDialogControl
     /// is displayed or navigated.
     /// </summary>
     /// <remarks>
-    /// This method will only be called if <see cref="IsCreatable"/> returns <c>true</c>.
+    /// This method will only be called if <see cref="IsCreatable"/> returns <see langword="true"/>.
     /// </remarks>
     private protected virtual void ApplyInitializationCore()
     {

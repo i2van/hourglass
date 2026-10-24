@@ -23,13 +23,13 @@ public sealed class TimerInfo
 
     /// <summary>
     /// Gets or sets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
-    /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+    /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <see langword="null"/> otherwise.
     /// </summary>
     public DateTime? StartTime { get; set; }
 
     /// <summary>
     /// Gets or sets the <see cref="DateTime"/> that this timer will expire or has expired if the <see
-    /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c>
+    /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <see langword="null"/>
     /// otherwise.
     /// </summary>
     public DateTime? EndTime { get; set; }
@@ -37,7 +37,7 @@ public sealed class TimerInfo
     /// <summary>
     /// Gets or sets a <see cref="TimeSpan"/> representing the time elapsed since this timer started if the <see
     /// cref="State"/> is <see cref="TimerState.Running"/>, <see cref="TimerState.Paused"/>, or <see
-    /// cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+    /// cref="TimerState.Expired"/>, or <see langword="null"/> otherwise.
     /// </summary>
     [XmlIgnore]
     public TimeSpan? TimeElapsed { get; set; }
@@ -58,7 +58,7 @@ public sealed class TimerInfo
     /// <summary>
     /// Gets or sets a <see cref="TimeSpan"/> representing the time left until this timer expires if the <see
     /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, <see
-    /// cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see cref="TimerState.Expired"/>, or <c>null</c>
+    /// cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see cref="TimerState.Expired"/>, or <see langword="null"/>
     /// otherwise.
     /// </summary>
     [XmlIgnore]
@@ -80,7 +80,7 @@ public sealed class TimerInfo
     /// <summary>
     /// Gets or sets a <see cref="TimeSpan"/> representing the time since this timer has expired if the <see
     /// cref="State"/> is <see cref="TimerState.Expired"/>, <see cref="TimeSpan.Zero"/> if the <see cref="State"/>
-    /// is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <c>null</c> otherwise.
+    /// is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <see langword="null"/> otherwise.
     /// </summary>
     [XmlIgnore]
     public TimeSpan? TimeExpired { get; set; }
@@ -101,7 +101,7 @@ public sealed class TimerInfo
     /// <summary>
     /// Gets or sets a <see cref="TimeSpan"/> representing the total time that this timer will run for or has run
     /// for if the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
-    /// <c>null</c> otherwise.
+    /// <see langword="null"/> otherwise.
     /// </summary>
     [XmlIgnore]
     public TimeSpan? TotalTime { get; set; }
@@ -120,7 +120,7 @@ public sealed class TimerInfo
     }
 
     /// <summary>
-    /// Gets or sets the <see cref="TimerStart"/> used to start this timer, or <c>null</c> if the <see
+    /// Gets or sets the <see cref="TimerStart"/> used to start this timer, or <see langword="null"/> if the <see
     /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
     /// </summary>
     public TimerStartInfo? TimerStart { get; set; }

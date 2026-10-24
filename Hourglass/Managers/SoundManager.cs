@@ -81,10 +81,10 @@ public sealed class SoundManager : Manager
     }
 
     /// <summary>
-    /// Returns the sound for the specified identifier, or <c>null</c> if no such sound is loaded.
+    /// Returns the sound for the specified identifier, or <see langword="null"/> if no such sound is loaded.
     /// </summary>
     /// <param name="identifier">The identifier for the sound.</param>
-    /// <returns>The sound for the specified identifier, or <c>null</c> if no such sound is loaded.</returns>
+    /// <returns>The sound for the specified identifier, or <see langword="null"/> if no such sound is loaded.</returns>
     public Sound? GetSoundByIdentifier(string? identifier)
     {
         return string.IsNullOrWhiteSpace(identifier)
@@ -105,12 +105,12 @@ public sealed class SoundManager : Manager
     }
 
     /// <summary>
-    /// Returns the first sound for the specified name, or <c>null</c> if no such sound is loaded.
+    /// Returns the first sound for the specified name, or <see langword="null"/> if no such sound is loaded.
     /// </summary>
     /// <param name="name">The name for the sound.</param>
     /// <param name="stringComparison">One of the enumeration values that specifies how the strings will be
     /// compared.</param>
-    /// <returns>The first sound for the specified name, or <c>null</c> if no such sound is loaded.</returns>
+    /// <returns>The first sound for the specified name, or <see langword="null"/> if no such sound is loaded.</returns>
     public Sound? GetSoundByName(string name, StringComparison stringComparison = StringComparison.Ordinal)
     {
         return string.IsNullOrWhiteSpace(name)

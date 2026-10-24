@@ -23,7 +23,7 @@ public sealed class DateTimeTokenTest
 
     /// <summary>
     /// Tests that <see cref="DateTimeToken.Parser.Parse(string,IFormatProvider)"/> throws a <see
-    /// cref="ArgumentNullException"/> for <c>null</c> input.
+    /// cref="ArgumentNullException"/> for <see langword="null"/> input.
     /// </summary>
     [TestMethod]
     public void ParseWithNullInputThrowsArgumentNullException()

@@ -21,7 +21,7 @@ public sealed class ThemeInfo
     public string Identifier { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the friendly name for this theme, or <c>null</c> if no friendly name is specified.
+    /// Gets or sets the friendly name for this theme, or <see langword="null"/> if no friendly name is specified.
     /// </summary>
     public string Name { get; set; } = null!;
 

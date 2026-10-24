@@ -23,7 +23,7 @@ public sealed class TimeSpanTokenTest
 
     /// <summary>
     /// Tests that <see cref="TimeSpanToken.Parser.Parse(string,IFormatProvider)"/> throws a <see
-    /// cref="ArgumentNullException"/> for <c>null</c> input.
+    /// cref="ArgumentNullException"/> for <see langword="null"/> input.
     /// </summary>
     [TestMethod]
     public void ParseWithNullInputThrowsArgumentNullException()

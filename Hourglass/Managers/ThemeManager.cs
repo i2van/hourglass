@@ -135,10 +135,10 @@ public sealed class ThemeManager : Manager
     }
 
     /// <summary>
-    /// Returns the theme for the specified identifier, or <c>null</c> if no such theme is loaded.
+    /// Returns the theme for the specified identifier, or <see langword="null"/> if no such theme is loaded.
     /// </summary>
     /// <param name="identifier">The identifier for the theme.</param>
-    /// <returns>The theme for the specified identifier, or <c>null</c> if no such theme is loaded.</returns>
+    /// <returns>The theme for the specified identifier, or <see langword="null"/> if no such theme is loaded.</returns>
     public Theme? GetThemeByIdentifier(string? identifier)
     {
         if (string.IsNullOrWhiteSpace(identifier))
@@ -160,12 +160,12 @@ public sealed class ThemeManager : Manager
     }
 
     /// <summary>
-    /// Returns the first theme for the specified name, or <c>null</c> if no such theme is loaded.
+    /// Returns the first theme for the specified name, or <see langword="null"/> if no such theme is loaded.
     /// </summary>
     /// <param name="name">The name for the theme.</param>
     /// <param name="stringComparison">One of the enumeration values that specifies how the strings will be
     /// compared.</param>
-    /// <returns>The first theme for the specified name, or <c>null</c> if no such theme is loaded.</returns>
+    /// <returns>The first theme for the specified name, or <see langword="null"/> if no such theme is loaded.</returns>
     public Theme? GetThemeByName(string name, StringComparison stringComparison = StringComparison.Ordinal)
     {
         if (string.IsNullOrWhiteSpace(name))

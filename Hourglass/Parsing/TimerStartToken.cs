@@ -35,11 +35,11 @@ public abstract class TimerStartToken
     public string? OriginalInput { get; set; }
 
     /// <summary>
-    /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// Returns a <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="TimerStartToken"/>.
     /// </summary>
     /// <param name="str">A string.</param>
-    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="TimerStartToken"/>.</returns>
     public static TimerStartToken? FromString(string str)
     {
@@ -47,12 +47,12 @@ public abstract class TimerStartToken
     }
 
     /// <summary>
-    /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// Returns a <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="TimerStartToken"/>.
     /// </summary>
     /// <param name="str">A string.</param>
     /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="TimerStartToken"/>.</returns>
     private static TimerStartToken? FromString(string? str, IFormatProvider provider)
     {
@@ -88,7 +88,7 @@ public abstract class TimerStartToken
     /// <param name="startTime">The time the timer is started.</param>
     /// <param name="endTime">The end time for a timer started with this token at the specified time if the end
     /// time could be computed, or <see cref="DateTime.MinValue"/> otherwise.</param>
-    /// <returns><c>true</c> if the end time could be computed, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the end time could be computed, or <see langword="false"/> otherwise.</returns>
     public bool TryGetEndTime(DateTime startTime, out DateTime endTime)
     {
         try
@@ -117,7 +117,7 @@ public abstract class TimerStartToken
     protected abstract string ToString(IFormatProvider provider);
 
     /// <summary>
-    /// Throws an <see cref="InvalidOperationException"/> if <see cref="IsValid"/> is <c>false</c>.
+    /// Throws an <see cref="InvalidOperationException"/> if <see cref="IsValid"/> is <see langword="false"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">If not valid.</exception>
     protected void ThrowIfNotValid()
@@ -130,10 +130,10 @@ public abstract class TimerStartToken
 
     /// <summary>
     /// Returns a <see cref="TimerStartToken"/> that is a <see cref="DateTimeToken"/> for the specified string, or
-    /// <c>null</c> if the string is not a supported representation of a <see cref="DateTimeToken"/>.
+    /// <see langword="null"/> if the string is not a supported representation of a <see cref="DateTimeToken"/>.
     /// </summary>
     /// <param name="str">A string.</param>
-    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="DateTimeToken"/>.</returns>
     private static TimerStartToken? FromDateTime(string str)
     {
@@ -146,12 +146,12 @@ public abstract class TimerStartToken
     }
 
     /// <summary>
-    /// Returns a <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// Returns a <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="TimerStartToken"/> favoring a <see cref="TimeSpanToken"/> over a
     /// <see cref="DateTimeToken"/> in the case ambiguity.
     /// </summary>
     /// <param name="str">A string.</param>
-    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <c>null</c> if the string is not a
+    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
     /// supported representation of a <see cref="TimerStartToken"/>.</returns>
     private static TimerStartToken? FromTimeSpanOrDateTimeString(string str)
     {
@@ -187,7 +187,7 @@ public abstract class TimerStartToken
         /// <param name="str">A string representation of a <see cref="TimerStartToken"/>.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
         /// <returns>The <see cref="TimerStartToken"/> parsed from the string.</returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="str"/> or <paramref name="provider"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="str"/> or <paramref name="provider"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException">If <paramref name="str"/> is not a supported representation of a <see cref="TimerStartToken"/>.</exception>
         public TimerStartToken Parse(string? str, IFormatProvider provider)
         {
@@ -215,10 +215,10 @@ public abstract class TimerStartToken
         /// This overload uses the <see cref="CultureInfo.CurrentCulture"/> as the <see cref="IFormatProvider"/>.
         /// </remarks>
         /// <param name="str">A string representation of a <see cref="TimerStartToken"/>.</param>
-        /// <param name="timerStartToken">The <see cref="TimerStartToken"/> parsed from the string, or <c>null</c>
+        /// <param name="timerStartToken">The <see cref="TimerStartToken"/> parsed from the string, or <see langword="null"/>
         /// if the string is not a supported representation of a <see cref="TimerStartToken"/>.</param>
-        /// <returns><c>true</c> if the <see cref="TimerStartToken"/> was successfully parsed from <paramref
-        /// name="str"/>, or <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the <see cref="TimerStartToken"/> was successfully parsed from <paramref
+        /// name="str"/>, or <see langword="false"/> otherwise.</returns>
         public bool TryParse(string str, out TimerStartToken? timerStartToken)
         {
             return TryParse(str, CultureInfo.CurrentCulture, out timerStartToken);
@@ -229,10 +229,10 @@ public abstract class TimerStartToken
         /// </summary>
         /// <param name="str">A string representation of a <see cref="TimerStartToken"/>.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <param name="timerStartToken">The <see cref="TimerStartToken"/> parsed from the string, or <c>null</c>
+        /// <param name="timerStartToken">The <see cref="TimerStartToken"/> parsed from the string, or <see langword="null"/>
         /// if the string is not a supported representation of a <see cref="TimerStartToken"/>.</param>
-        /// <returns><c>true</c> if the <see cref="TimerStartToken"/> was successfully parsed from <paramref
-        /// name="str"/>, or <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the <see cref="TimerStartToken"/> was successfully parsed from <paramref
+        /// name="str"/>, or <see langword="false"/> otherwise.</returns>
         public bool TryParse(string str, IFormatProvider provider, out TimerStartToken? timerStartToken)
         {
             try
@@ -253,7 +253,7 @@ public abstract class TimerStartToken
         /// <param name="str">A string representation of a <see cref="TimerStartToken"/>.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
         /// <returns>The <see cref="TimerStartToken"/> parsed from the string.</returns>
-        /// <exception cref="ArgumentNullException">If <paramref name="str"/> or <paramref name="provider"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="str"/> or <paramref name="provider"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException">If <paramref name="str"/> is not a supported representation of a <see cref="TimerStartToken"/>.</exception>
         protected abstract TimerStartToken ParseInternal(string str, IFormatProvider provider);
     }

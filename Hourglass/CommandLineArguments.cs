@@ -51,7 +51,7 @@ public sealed class CommandLineArguments
     public bool HasParseError { get; private set; }
 
     /// <summary>
-    /// Gets an error message if the command-line arguments were not successfully parsed, or <c>null</c> otherwise.
+    /// Gets an error message if the command-line arguments were not successfully parsed, or <see langword="null"/> otherwise.
     /// </summary>
     public string? ParseErrorMessage { get; private set; }
 
@@ -103,7 +103,7 @@ public sealed class CommandLineArguments
 
     /// <summary>
     /// Gets a value indicating whether the timer window should be hidden from the taskbar. Applies only if
-    /// <see cref="ShowInNotificationArea"/> is <c>true</c>.
+    /// <see cref="ShowInNotificationArea"/> is <see langword="true"/>.
     /// </summary>
     public bool HideFromTaskbar { get; private set; }
 
@@ -180,7 +180,7 @@ public sealed class CommandLineArguments
     public Theme? Theme { get; private set; }
 
     /// <summary>
-    /// Gets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
+    /// Gets the sound to play when the timer expires, or <see langword="null"/> if no sound is to be played.
     /// </summary>
     public Sound? Sound { get; private set; }
 
@@ -263,7 +263,7 @@ public sealed class CommandLineArguments
 
     /// <summary>
     /// Gets or sets a value indicating whether <see cref="WindowBounds"/> location is taken from a sibling window,
-    /// in which case it is offset by <see cref="GetWindowSize"/> if <see cref="CascadeWindows"/> is <c>true</c>.
+    /// in which case it is offset by <see cref="GetWindowSize"/> if <see cref="CascadeWindows"/> is <see langword="true"/>.
     /// </summary>
     private bool IsSiblingWindowLocation { get; set; }
 
@@ -339,7 +339,7 @@ public sealed class CommandLineArguments
     /// Extracts the config file path from the <c>--copy-config</c> command-line argument, if present.
     /// </summary>
     /// <param name="args">The command-line arguments.</param>
-    /// <returns>The config file path, or <c>null</c> if the argument is not present.</returns>
+    /// <returns>The config file path, or <see langword="null"/> if the argument is not present.</returns>
     /// <exception cref="ParseException">If the config file path is missing or the file does not exist.</exception>
     public static string? GetConfigFilePath(IList<string> args)
     {
@@ -453,7 +453,7 @@ public sealed class CommandLineArguments
     /// </summary>
     /// <remarks>
     /// The <see cref="WindowSize"/> is offset slightly from the sibling window it is taken from, if any, when <see
-    /// cref="Settings.CascadeWindows"/> is <c>true</c>.
+    /// cref="Settings.CascadeWindows"/> is <see langword="true"/>.
     /// </remarks>
     /// <returns>The <see cref="WindowSize"/> specified in the parsed command-line arguments.</returns>
     public WindowSize GetWindowSize()
@@ -1564,7 +1564,7 @@ public sealed class CommandLineArguments
     /// </summary>
     /// <param name="remainingArgs">The unparsed arguments.</param>
     /// <param name="multiTimers">Treat each timer argument as a separate timer.</param>
-    /// <returns>The <see cref="TimerStart"/> value corresponding to the concatenation of all <paramref name="remainingArgs"/> or individual timer values if <paramref name="multiTimers"/> if <c>true</c>.</returns>
+    /// <returns>The <see cref="TimerStart"/> value corresponding to the concatenation of all <paramref name="remainingArgs"/> or individual timer values if <paramref name="multiTimers"/> if <see langword="true"/>.</returns>
     /// <exception cref="ParseException">If the concatenation of all <paramref name="remainingArgs"/> is not a valid representation of a <see cref="TimerStart"/>.</exception>
     private static IEnumerable<TimerStart> GetTimerStartValue(IEnumerable<string> remainingArgs, bool multiTimers)
     {
@@ -1672,7 +1672,7 @@ public sealed class CommandLineArguments
         /// Initializes a new instance of the <see cref="ParseException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
-        /// <param name="innerException">The exception that is the cause of the current exception, or a <c>null</c> reference if no inner exception is specified.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a <see langword="null"/> reference if no inner exception is specified.</param>
         public ParseException(string message, Exception innerException)
             : base(message, innerException)
         {

@@ -68,11 +68,11 @@ public sealed class WindowSize
     public bool IsFullScreen { get; }
 
     /// <summary>
-    /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the
-    /// specified <see cref="WindowSize"/> is <c>null</c>.
+    /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <see langword="null"/> if the
+    /// specified <see cref="WindowSize"/> is <see langword="null"/>.
     /// </summary>
     /// <param name="windowSize">A <see cref="WindowSize"/>.</param>
-    /// <returns>A <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the specified <see cref="WindowSize"/> is <c>null</c>.</returns>
+    /// <returns>A <see cref="WindowSize"/> for the specified <see cref="WindowSize"/>, or <see langword="null"/> if the specified <see cref="WindowSize"/> is <see langword="null"/>.</returns>
     public static WindowSize? FromWindowSize(WindowSize? windowSize)
     {
         return windowSize is null
@@ -85,11 +85,11 @@ public sealed class WindowSize
     }
 
     /// <summary>
-    /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSizeInfo"/>, or <c>null</c> if the
-    /// specified <see cref="WindowSizeInfo"/> is <c>null</c>.
+    /// Returns a <see cref="WindowSize"/> for the specified <see cref="WindowSizeInfo"/>, or <see langword="null"/> if the
+    /// specified <see cref="WindowSizeInfo"/> is <see langword="null"/>.
     /// </summary>
     /// <param name="info">A <see cref="WindowSizeInfo"/>.</param>
-    /// <returns>A <see cref="WindowSize"/> for the specified <see cref="WindowSizeInfo"/>, or <c>null</c> if the specified <see cref="WindowSizeInfo"/> is <c>null</c>.</returns>
+    /// <returns>A <see cref="WindowSize"/> for the specified <see cref="WindowSizeInfo"/>, or <see langword="null"/> if the specified <see cref="WindowSizeInfo"/> is <see langword="null"/>.</returns>
     public static WindowSize? FromWindowSizeInfo(WindowSizeInfo? info)
     {
         return info is null
@@ -102,12 +102,12 @@ public sealed class WindowSize
     }
 
     /// <summary>
-    /// Returns a <see cref="WindowSize"/> for the specified window, or <c>null</c> if the specified window is
-    /// <c>null</c>.
+    /// Returns a <see cref="WindowSize"/> for the specified window, or <see langword="null"/> if the specified window is
+    /// <see langword="null"/>.
     /// </summary>
     /// <typeparam name="T">The type of the window.</typeparam>
     /// <param name="window">A window.</param>
-    /// <returns>A <see cref="WindowSize"/> for the specified window, or <c>null</c> if the specified window is <c>null</c>.</returns>
+    /// <returns>A <see cref="WindowSize"/> for the specified window, or <see langword="null"/> if the specified window is <see langword="null"/>.</returns>
     public static WindowSize? FromWindow<T>(T? window)
         where T : Window, IRestorableWindow
     {
@@ -124,13 +124,13 @@ public sealed class WindowSize
 
     /// <summary>
     /// Returns a <see cref="WindowSize"/> for the latest created visible window of type <typeparamref name="T"/>, or
-    /// <c>null</c> if there is no visible window of type <typeparamref name="T"/>.
+    /// <see langword="null"/> if there is no visible window of type <typeparamref name="T"/>.
     /// </summary>
     /// <remarks>
     /// <see cref="Application.Windows"/> lists the windows in the order they were created.
     /// </remarks>
     /// <typeparam name="T">The type of the window.</typeparam>
-    /// <returns>A <see cref="WindowSize"/> for the latest created visible window of type <typeparamref name="T"/>, or <c>null</c> if there is no visible window of type <typeparamref name="T"/>.</returns>
+    /// <returns>A <see cref="WindowSize"/> for the latest created visible window of type <typeparamref name="T"/>, or <see langword="null"/> if there is no visible window of type <typeparamref name="T"/>.</returns>
     public static WindowSize? FromWindowOfType<T>()
         where T : Window, IRestorableWindow
     {
@@ -148,7 +148,7 @@ public sealed class WindowSize
 
     /// <summary>
     /// Returns a <see cref="WindowSize"/> for the latest created other visible window of the same type, or for the
-    /// latest created other window of the same type if none of them is visible, or <c>null</c> if there is no other
+    /// latest created other window of the same type if none of them is visible, or <see langword="null"/> if there is no other
     /// window of the same type.
     /// </summary>
     /// <remarks>
@@ -156,7 +156,7 @@ public sealed class WindowSize
     /// </remarks>
     /// <typeparam name="T">The type of the window.</typeparam>
     /// <param name="window">A window.</param>
-    /// <returns>A <see cref="WindowSize"/> for the latest created other visible or other window of the same type, or <c>null</c> if there is no other window of the same type.</returns>
+    /// <returns>A <see cref="WindowSize"/> for the latest created other visible or other window of the same type, or <see langword="null"/> if there is no other window of the same type.</returns>
     public static WindowSize? FromSiblingOfWindow<T>(T window)
         where T : Window, IRestorableWindow
     {

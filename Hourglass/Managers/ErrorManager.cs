@@ -98,7 +98,7 @@ public sealed class ErrorManager : Manager
     /// </summary>
     /// <param name="errorMessage">An error message.</param>
     /// <param name="dumpPath">The path of the that was written.</param>
-    /// <returns><c>true</c> if the error message is successfully written, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the error message is successfully written, or <see langword="false"/> otherwise.</returns>
     private static bool TryDumpError(string errorMessage, out string? dumpPath)
     {
         try
@@ -118,7 +118,7 @@ public sealed class ErrorManager : Manager
     /// Tries to limit the number of error messages written to files in the temporary files folder to <see
     /// cref="MaxErrorDumps"/>.
     /// </summary>
-    /// <returns><c>true</c> if the limit was successfully applied, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the limit was successfully applied, or <see langword="false"/> otherwise.</returns>
     private static bool TryCleanErrorDumps()
     {
         try

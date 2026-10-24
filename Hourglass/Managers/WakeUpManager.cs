@@ -84,9 +84,9 @@ public sealed class WakeUpManager : Manager
     }
 
     /// <summary>
-    /// Returns the next expiry time for any running timer, or <c>null</c> if there are no running timers.
+    /// Returns the next expiry time for any running timer, or <see langword="null"/> if there are no running timers.
     /// </summary>
-    /// <returns>The next expiry time for any running timer, or <c>null</c> if there are no running timers.</returns>
+    /// <returns>The next expiry time for any running timer, or <see langword="null"/> if there are no running timers.</returns>
     private static DateTime? GetNextTimerExpiry()
     {
         return TimerManager.Instance.RunningTimers

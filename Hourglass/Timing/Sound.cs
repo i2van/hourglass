@@ -110,16 +110,16 @@ public sealed class Sound
     public string? Path { get; }
 
     /// <summary>
-    /// Gets the length of the sound, or <c>null</c> if the length of the sound is unknown.
+    /// Gets the length of the sound, or <see langword="null"/> if the length of the sound is unknown.
     /// </summary>
     public TimeSpan? Duration { get; }
 
     /// <summary>
-    /// Returns a <see cref="Sound"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c>
+    /// Returns a <see cref="Sound"/> for the specified identifier, or <see langword="null"/> if the identifier is <see langword="null"/>
     /// or empty.
     /// </summary>
     /// <param name="identifier">The identifier for the sound.</param>
-    /// <returns>A <see cref="Sound"/> for the specified identifier, or <c>null</c> if the identifier is <c>null</c> or empty.</returns>
+    /// <returns>A <see cref="Sound"/> for the specified identifier, or <see langword="null"/> if the identifier is <see langword="null"/> or empty.</returns>
     public static Sound? FromIdentifier(string? identifier)
     {
         return SoundManager.Instance.GetSoundOrDefaultByIdentifier(identifier);

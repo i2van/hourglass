@@ -112,7 +112,7 @@ public sealed class TimerOptionsInfo
     public string? ThemeIdentifier { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier of the sound to play when the timer expires, or <c>null</c> if no sound is to
+    /// Gets or sets the identifier of the sound to play when the timer expires, or <see langword="null"/> if no sound is to
     /// be played.
     /// </summary>
     public string? SoundIdentifier { get; set; }

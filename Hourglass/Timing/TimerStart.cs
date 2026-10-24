@@ -106,7 +106,7 @@ public sealed class TimerStart
     /// Returns a <see cref="TimerStart"/> for a string.
     /// </summary>
     /// <param name="str">A string.</param>
-    /// <returns>The <see cref="TimerStart"/> for the string, or <c>null</c> if the string is not a supported
+    /// <returns>The <see cref="TimerStart"/> for the string, or <see langword="null"/> if the string is not a supported
     /// representation of a <see cref="TimerStart"/>.</returns>
     public static TimerStart? FromString(string str)
     {
@@ -131,7 +131,7 @@ public sealed class TimerStart
     /// <param name="startTime">The time the timer is started.</param>
     /// <param name="endTime">The end time for a timer started with this <see cref="TimerStart"/> at the specified
     /// time if the end time could be computed, or <see cref="DateTime.MinValue"/> otherwise.</param>
-    /// <returns><c>true</c> if the end time could be computed, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the end time could be computed, or <see langword="false"/> otherwise.</returns>
     public bool TryGetEndTime(DateTime startTime, out DateTime endTime)
     {
         return _timerStartToken.TryGetEndTime(startTime, out endTime);

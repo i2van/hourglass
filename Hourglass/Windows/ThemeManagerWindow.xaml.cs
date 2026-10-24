@@ -322,8 +322,8 @@ public sealed partial class ThemeManagerWindow
     /// <summary>
     /// Prompts the user to save unsaved changes to the selected theme, if there are any.
     /// </summary>
-    /// <returns><c>true</c> if the theme has been saved or the user has elected to discard unsaved changes, or
-    /// <c>false</c> if the user has elected to cancel the operation.</returns>
+    /// <returns><see langword="true"/> if the theme has been saved or the user has elected to discard unsaved changes, or
+    /// <see langword="false"/> if the user has elected to cancel the operation.</returns>
     private bool PromptToSaveIfRequired()
     {
         if (State == ThemeManagerWindowState.UserThemeEdited)

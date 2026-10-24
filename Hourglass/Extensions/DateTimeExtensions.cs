@@ -215,8 +215,8 @@ public static class DateTimeExtensions
     /// <param name="month">A month.</param>
     /// <param name="day">A day.</param>
     /// <param name="dateTime">The <see cref="DateTime"/>.</param>
-    /// <returns><c>true</c> if a new <see cref="DateTime"/> is successfully created from the year, month, and day,
-    /// or <c>false</c> otherwise.</returns>
+    ///     <returns><see langword="true"/> if a new <see cref="DateTime"/> is successfully created from the year, month, and day,
+        /// or <see langword="false"/> otherwise.</returns>
     public static bool TryToDateTime(int year, int month, int day, out DateTime dateTime)
     {
         try

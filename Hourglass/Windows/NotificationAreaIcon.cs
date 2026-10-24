@@ -809,7 +809,7 @@ public class NotificationAreaIcon : IDisposable
     /// Checks whether modifier keys are down.
     /// </summary>
     /// <param name="modifierKeys">Modifier keys.</param>
-    /// <returns><c>true</c> if keys are down, <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if keys are down, <see langword="false"/> otherwise.</returns>
     private static bool IsKeyDown(ModifierKeys modifierKeys) =>
         (Keyboard.Modifiers ^ modifierKeys) == 0;
 
@@ -835,7 +835,7 @@ public class NotificationAreaIcon : IDisposable
     /// Shows the timer context menu.
     /// </summary>
     /// <param name="show">Show context menu.</param>
-    /// <returns><c>true</c> if the timer context menu is shown, <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the timer context menu is shown, <see langword="false"/> otherwise.</returns>
     private static bool ShowTimerContextMenu(bool show = true)
     {
         TimerWindow? window = GetExistingTimerWindow();

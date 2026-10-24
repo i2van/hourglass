@@ -383,7 +383,7 @@ public class TaskDialogPage
     /// <remarks>
     /// You can intercept cancellation of the dialog without displaying a "Cancel"
     /// button by adding a <see cref="TaskDialogStandardButton"/> with its
-    /// <see cref="TaskDialogStandardButton.Visible"/> set to <c>false</c> and specifying
+    /// <see cref="TaskDialogStandardButton.Visible"/> set to <see langword="false"/> and specifying
     /// a <see cref="TaskDialogResult.Cancel"/> result.
     /// </remarks>
     public bool AllowCancel
@@ -412,7 +412,7 @@ public class TaskDialogPage
     /// when it is shown modeless.
     /// </summary>
     /// <remarks>
-    /// When setting this property to <c>true</c>, <see cref="AllowCancel"/> is
+    /// When setting this property to <see langword="true"/>, <see cref="AllowCancel"/> is
     /// automatically implied.
     /// </remarks>
     public bool CanBeMinimized

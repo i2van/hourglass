@@ -119,7 +119,7 @@ internal static class NativeMethods
     /// Sets the specified timer to the inactive state.
     /// </summary>
     /// <param name="hTimer">A handle to the timer object.</param>
-    /// <returns><c>true</c> if the call succeeds, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern bool CancelWaitableTimer(IntPtr hTimer);
 
@@ -127,7 +127,7 @@ internal static class NativeMethods
     /// Closes an open object handle.
     /// </summary>
     /// <param name="hObject">A valid handle to an open object.</param>
-    /// <returns><c>true</c> if the call succeeds, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
     [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
     [SuppressUnmanagedCodeSecurity]
@@ -139,7 +139,7 @@ internal static class NativeMethods
     /// </summary>
     /// <param name="lpTimerAttributes">A pointer to a structure that specifies a security descriptor for the new
     /// timer object and determines whether child processes can inherit the returned handle.</param>
-    /// <param name="bManualReset">If this parameter is <c>true</c>, the timer is a manual-reset notification timer.
+    /// <param name="bManualReset">If this parameter is <see langword="true"/>, the timer is a manual-reset notification timer.
     /// Otherwise, the timer is a synchronization timer.</param>
     /// <param name="lpTimerName">The name of the timer object.</param>
     /// <returns>A handle to the timer object if the call succeeds, or <see cref="IntPtr.Zero"/> otherwise.</returns>
@@ -177,9 +177,9 @@ internal static class NativeMethods
     /// <param name="pfnCompletionRoutine">A pointer to an optional completion routine.</param>
     /// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.
     /// </param>
-    /// <param name="fResume">If this parameter is <c>true</c>, restores a system in suspended power conservation
+    /// <param name="fResume">If this parameter is <see langword="true"/>, restores a system in suspended power conservation
     /// mode when the timer state is set to signaled. Otherwise, the system is not restored.</param>
-    /// <returns><c>true</c> if the call succeeds, or <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern bool SetWaitableTimer(IntPtr hTimer, [In] ref long pDueTime, int lPeriod, IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine, bool fResume);
 }

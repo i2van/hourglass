@@ -36,11 +36,11 @@ public sealed class WindowSizeInfo
     public bool IsFullScreen { get; set; }
 
     /// <summary>
-    /// Returns a <see cref="WindowSizeInfo"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the
-    /// specified <see cref="WindowSize"/> is <c>null</c>.
+    /// Returns a <see cref="WindowSizeInfo"/> for the specified <see cref="WindowSize"/>, or <see langword="null"/> if the
+    /// specified <see cref="WindowSize"/> is <see langword="null"/>.
     /// </summary>
     /// <param name="windowSize">A <see cref="WindowSize"/>.</param>
-    /// <returns>A <see cref="WindowSizeInfo"/> for the specified <see cref="WindowSize"/>, or <c>null</c> if the specified <see cref="WindowSize"/> is <c>null</c>.</returns>
+    /// <returns>A <see cref="WindowSizeInfo"/> for the specified <see cref="WindowSize"/>, or <see langword="null"/> if the specified <see cref="WindowSize"/> is <see langword="null"/>.</returns>
     public static WindowSizeInfo? FromWindowSize(WindowSize? windowSize)
     {
         return windowSize?.ToWindowSizeInfo();

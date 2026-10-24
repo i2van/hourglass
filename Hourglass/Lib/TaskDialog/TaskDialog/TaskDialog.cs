@@ -234,7 +234,7 @@ public partial class TaskDialog
     /// </summary>
     /// <remarks>
     /// You can cancel the close by setting
-    /// <see cref="CancelEventArgs.Cancel"/> to <c>true</c>. Otherwise, the
+    /// <see cref="CancelEventArgs.Cancel"/> to <see langword="true"/>. Otherwise, the
     /// dialog window will close, and the <see cref="Closed"/> event will be
     /// raised afterwards.
     /// 
@@ -382,7 +382,7 @@ public partial class TaskDialog
     /// itself as foreground window when showing it.
     /// </summary>
     /// <remarks>
-    /// When setting this property to <c>true</c> and then showing the dialog, it
+    /// When setting this property to <see langword="true"/> and then showing the dialog, it
     /// causes the dialog to net set itself as foreground window. This means that
     /// if currently none of the application's windows has focus, the task dialog
     /// doesn't try to "steal" focus (which otherwise can result in the task dialog
@@ -419,8 +419,8 @@ public partial class TaskDialog
     /// property.
     /// </summary>
     /// <remarks>
-    /// This property can only be <c>true</c> if <see cref="DialogIsShown"/> is
-    /// also <c>true</c>. However, normally this property should be equivalent
+    /// This property can only be <see langword="true"/> if <see cref="DialogIsShown"/> is
+    /// also <see langword="true"/>. However, normally this property should be equivalent
     /// to <see cref="DialogIsShown"/>, because when showing the dialog, the
     /// callback should have been called setting the handle.
     /// </remarks>
@@ -469,7 +469,7 @@ public partial class TaskDialog
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="owner">The owner window, or <c>null</c> to show a modeless dialog.</param>
+    /// <param name="owner">The owner window, or <see langword="null"/> to show a modeless dialog.</param>
     /// <param name="text"></param>
     /// <param name="instruction"></param>
     /// <param name="title"></param>
@@ -570,7 +570,7 @@ public partial class TaskDialog
     /// Showing the dialog will bind the <see cref="Page"/> and its
     /// controls until this method returns.
     /// </remarks>
-    /// <param name="owner">The owner window, or <c>null</c> to show a modeless dialog.</param>
+    /// <param name="owner">The owner window, or <see langword="null"/> to show a modeless dialog.</param>
     public TaskDialogButton Show(System.Windows.Forms.IWin32Window owner)
     {
         return Show(owner.Handle);

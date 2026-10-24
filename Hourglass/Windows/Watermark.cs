@@ -260,10 +260,10 @@ public static class Watermark
 
     /// <summary>
     /// Returns a value indicating whether a <see cref="Control"/> has an actual value (where the text property is
-    /// not <c>null</c> or empty).
+    /// not <see langword="null"/> or empty).
     /// </summary>
     /// <param name="control">A <see cref="Control"/>.</param>
-    /// <returns>A value indicating whether the <see cref="Control"/> has an actual value (where the text property is not <c>null</c> or empty).</returns>
+    /// <returns>A value indicating whether the <see cref="Control"/> has an actual value (where the text property is not <see langword="null"/> or empty).</returns>
     private static bool HasActualValue(Control control)
     {
         if (control is TextBox textBox)
@@ -280,10 +280,10 @@ public static class Watermark
     }
 
     /// <summary>
-    /// Returns a <see cref="WatermarkAdorner"/> for a <see cref="Control"/>, or <c>null</c> if none exists.
+    /// Returns a <see cref="WatermarkAdorner"/> for a <see cref="Control"/>, or <see langword="null"/> if none exists.
     /// </summary>
     /// <param name="control">A <see cref="Control"/>.</param>
-    /// <returns>A <see cref="WatermarkAdorner"/> for the <see cref="Control"/>, or <c>null</c> if none exists.</returns>
+    /// <returns>A <see cref="WatermarkAdorner"/> for the <see cref="Control"/>, or <see langword="null"/> if none exists.</returns>
     private static WatermarkAdorner? GetWatermarkAdorner(Control control)
     {
         return AdornerLayer.GetAdornerLayer(control)?

@@ -267,7 +267,7 @@ public sealed class TimeSpanToken : TimerStartToken
         /// </summary>
         /// <param name="str">A string representation of a <see cref="TimeSpanToken"/>.</param>
         /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
-        /// <returns>A <see cref="TimeSpanToken"/> with the matched unit set to 1, or <c>null</c> if no match.</returns>
+        /// <returns>A <see cref="TimeSpanToken"/> with the matched unit set to 1, or <see langword="null"/> if no match.</returns>
         private static TimerStartToken? ParseBareUnit(string str, IFormatProvider provider)
         {
             string pattern = Resources.ResourceManager.GetString(nameof(Resources.TimeSpanTokenBareUnitPattern), provider);

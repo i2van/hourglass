@@ -69,7 +69,7 @@ public sealed class TaskDialogStandardButton : TaskDialogButton
     /// the Task Dialog.
     /// </summary>
     /// <remarks>
-    /// Setting this to <c>false</c> allows you to still receive the
+    /// Setting this to <see langword="false"/> allows you to still receive the
     /// <see cref="TaskDialogButton.Click"/> event (e.g. for the
     /// <see cref="TaskDialogResult.Cancel"/> button when
     /// <see cref="TaskDialogPage.AllowCancel"/> is set), or to call the

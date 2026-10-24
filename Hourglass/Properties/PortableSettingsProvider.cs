@@ -159,7 +159,7 @@ public sealed class PortableSettingsProvider : SettingsProvider
     /// <summary>
     /// Tries to load the settings XML document.
     /// </summary>
-    /// <returns>The settings XML document, or <c>null</c> if the settings XML document could not be loaded.</returns>
+    /// <returns>The settings XML document, or <see langword="null"/> if the settings XML document could not be loaded.</returns>
     private static XmlDocument? TryLoadSettingsDocument()
     {
         try
@@ -180,7 +180,7 @@ public sealed class PortableSettingsProvider : SettingsProvider
     /// </summary>
     /// <param name="document">The XML document.</param>
     /// <param name="propertyName">The name of the property whose value to get.</param>
-    /// <returns>The value of the specified property, or <c>null</c> if a value for the specified property was not found in the XML document.</returns>
+    /// <returns>The value of the specified property, or <see langword="null"/> if a value for the specified property was not found in the XML document.</returns>
     private static string? TryGetSerializedValue(XmlDocument? document, string propertyName)
     {
         if (document is null)

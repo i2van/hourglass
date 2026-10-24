@@ -184,12 +184,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     private readonly ContextMenu _menu = new();
 
     /// <summary>
-    /// The timer to resume when the window loads, or <c>null</c> if no timer is to be resumed.
+    /// The timer to resume when the window loads, or <see langword="null"/> if no timer is to be resumed.
     /// </summary>
     private Timer? _timerToResumeOnLoad;
 
     /// <summary>
-    /// The <see cref="TimerStart"/> to start when the window loads, or <c>null</c> if no <see cref="TimerStart"/>
+    /// The <see cref="TimerStart"/> to start when the window loads, or <see langword="null"/> if no <see cref="TimerStart"/>
     /// is to be started.
     /// </summary>
     private TimerStart? _timerStartToStartOnLoad;
@@ -273,7 +273,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <summary>
     /// Initializes a new instance of the <see cref="TimerWindow"/> class.
     /// </summary>
-    /// <param name="timerStart">The <see cref="TimerStart"/> to start when the window loads, or <c>null</c> if no
+    /// <param name="timerStart">The <see cref="TimerStart"/> to start when the window loads, or <see langword="null"/> if no
     /// <see cref="TimerStart"/> is to be started.</param>
     public TimerWindow(TimerStart? timerStart)
         : this()
@@ -631,7 +631,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// Minimizes the window to the notification area of the taskbar.
     /// </summary>
     /// <remarks>
-    /// This method does nothing if <see cref="Settings.ShowInNotificationArea"/> is <c>false</c>.
+    /// This method does nothing if <see cref="Settings.ShowInNotificationArea"/> is <see langword="false"/>.
     /// </remarks>
     public void MinimizeToNotificationArea()
     {
@@ -961,8 +961,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     /// <summary>
     /// Begins the animation used to notify the user that the timer has expired.
     /// </summary>
-    /// <param name="glowOnly"><c>true</c> to show the glow animation only, or <c>false</c> to show the flash
-    /// animation followed by the glow animation. Default is <c>false</c>.</param>
+    /// <param name="glowOnly"><see langword="true"/> to show the glow animation only, or <see langword="false"/> to show the flash
+    /// animation followed by the glow animation. Default is <see langword="false"/>.</param>
     private void BeginExpirationAnimation(bool glowOnly = false)
     {
         // Begin animation
@@ -1588,8 +1588,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     }
 
     /// <summary>
-    /// Hides the window from the taskbar if <see cref="Settings.HideFromTaskbar"/> is <c>true</c> and
-    /// <see cref="Settings.ShowInNotificationArea"/> is <c>true</c>; shows it in the taskbar otherwise.
+    /// Hides the window from the taskbar if <see cref="Settings.HideFromTaskbar"/> is <see langword="true"/> and
+    /// <see cref="Settings.ShowInNotificationArea"/> is <see langword="true"/>; shows it in the taskbar otherwise.
     /// </summary>
     private void UpdateShowInTaskbar() =>
         ShowInTaskbar = !(Settings.Default.ShowInNotificationArea && Settings.Default.HideFromTaskbar);

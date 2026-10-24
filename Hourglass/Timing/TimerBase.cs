@@ -134,27 +134,27 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
 
     /// <summary>
     /// Gets the <see cref="DateTime"/> that this timer was started if the <see cref="State"/> is <see
-    /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+    /// cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <see langword="null"/> otherwise.
     /// </summary>
     public DateTime? StartTime { get; protected set; }
 
     /// <summary>
     /// Gets the <see cref="DateTime"/> that this timer will expire or has expired if the <see cref="State"/> is
-    /// <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+    /// <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or <see langword="null"/> otherwise.
     /// </summary>
     public DateTime? EndTime { get; protected set; }
 
     /// <summary>
     /// Gets a <see cref="TimeSpan"/> representing the time elapsed since this timer started if the <see
     /// cref="State"/> is <see cref="TimerState.Running"/>, <see cref="TimerState.Paused"/>, or <see
-    /// cref="TimerState.Expired"/>, or <c>null</c> otherwise.
+    /// cref="TimerState.Expired"/>, or <see langword="null"/> otherwise.
     /// </summary>
     public TimeSpan? TimeElapsed { get; private set; }
 
     /// <summary>
     /// Gets a <see cref="TimeSpan"/> representing the time left until this timer expires if the <see
     /// cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, <see
-    /// cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see cref="TimerState.Expired"/>, or <c>null</c>
+    /// cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see cref="TimerState.Expired"/>, or <see langword="null"/>
     /// otherwise.
     /// </summary>
     public TimeSpan? TimeLeft { get; private set; }
@@ -162,14 +162,14 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     /// <summary>
     /// Gets a <see cref="TimeSpan"/> representing the time since this timer has expired if the <see cref="State"/>
     /// is <see cref="TimerState.Expired"/>, <see cref="TimeSpan.Zero"/> if the <see cref="State"/> is <see
-    /// cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <c>null</c> otherwise.
+    /// cref="TimerState.Running"/> or <see cref="TimerState.Paused"/>, or <see langword="null"/> otherwise.
     /// </summary>
     public TimeSpan? TimeExpired { get; private set; }
 
     /// <summary>
     /// Gets a <see cref="TimeSpan"/> representing the total time that this timer will run for or has run for if
     /// the <see cref="State"/> is <see cref="TimerState.Running"/> or <see cref="TimerState.Expired"/>, or
-    /// <c>null</c> otherwise.
+    /// <see langword="null"/> otherwise.
     /// </summary>
     public TimeSpan? TotalTime { get; protected set; }
 

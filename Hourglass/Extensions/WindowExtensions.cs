@@ -120,7 +120,7 @@ public static class WindowExtensions
 
     /// <summary>
     /// Offsets a <see cref="WindowSize"/> slightly from its current position if <see
-    /// cref="Properties.Settings.CascadeWindows"/> is <c>true</c>; otherwise, returns the <see cref="WindowSize"/>
+    /// cref="Properties.Settings.CascadeWindows"/> is <see langword="true"/>; otherwise, returns the <see cref="WindowSize"/>
     /// unchanged.
     /// </summary>
     /// <param name="windowSize">A <see cref="WindowSize"/>.</param>
@@ -154,7 +154,7 @@ public static class WindowExtensions
         /// Restores the size, position, and state of a window from another window of the same type.
         /// </summary>
         /// <remarks>
-        /// If <see cref="Properties.Settings.CascadeWindows"/> is <c>true</c>, this method restores the size,
+        /// If <see cref="Properties.Settings.CascadeWindows"/> is <see langword="true"/>, this method restores the size,
         /// position, and state from the latest created visible window of the same type instead, if any, and offsets
         /// the window position slightly so that the windows do not overlap.
         /// </remarks>
@@ -175,7 +175,7 @@ public static class WindowExtensions
         /// </summary>
         /// <remarks>
         /// This method offsets the window position slightly so that the two windows do not overlap if <see
-        /// cref="Properties.Settings.CascadeWindows"/> is <c>true</c>.
+        /// cref="Properties.Settings.CascadeWindows"/> is <see langword="true"/>.
         /// </remarks>
         /// <param name="options">Options for performing the restore. (Optional.)</param>
         public void RestoreFromSibling(RestoreOptions options = RestoreOptions.None)

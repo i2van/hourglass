@@ -150,14 +150,14 @@ public sealed class TimerManager : Manager
     /// <summary>
     /// Checks whether at least one timer can be paused.
     /// </summary>
-    /// <returns><c>true</c> if at least one timer can be paused.</returns>
+    /// <returns><see langword="true"/> if at least one timer can be paused.</returns>
     public static bool CanPauseAll() =>
         GetPausableTimers(TimerState.Running).Any();
 
     /// <summary>
     /// Checks whether at least one timer can be resumed.
     /// </summary>
-    /// <returns><c>true</c> if at least one timer can be resumed.</returns>
+    /// <returns><see langword="true"/> if at least one timer can be resumed.</returns>
     public static bool CanResumeAll() =>
         GetPausableTimers(TimerState.Paused).Any();
 

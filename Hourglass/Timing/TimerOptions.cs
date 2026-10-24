@@ -517,7 +517,7 @@ public sealed class TimerOptions : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Gets or sets the sound to play when the timer expires, or <c>null</c> if no sound is to be played.
+    /// Gets or sets the sound to play when the timer expires, or <see langword="null"/> if no sound is to be played.
     /// </summary>
     public Sound? Sound
     {
@@ -663,22 +663,22 @@ public sealed class TimerOptions : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <c>null</c> if the
-    /// specified <see cref="TimerOptions"/> is <c>null</c>.
+    /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <see langword="null"/> if the
+    /// specified <see cref="TimerOptions"/> is <see langword="null"/>.
     /// </summary>
     /// <param name="options">A <see cref="TimerOptions"/>.</param>
-    /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <c>null</c> if the specified <see cref="TimerOptions"/> is <c>null</c>.</returns>
+    /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptions"/>, or <see langword="null"/> if the specified <see cref="TimerOptions"/> is <see langword="null"/>.</returns>
     public static TimerOptions? FromTimerOptions(TimerOptions? options)
     {
         return options is not null ? new TimerOptions(options) : null;
     }
 
     /// <summary>
-    /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <c>null</c> if
-    /// the specified <see cref="TimerOptionsInfo"/> is <c>null</c>.
+    /// Returns a <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <see langword="null"/> if
+    /// the specified <see cref="TimerOptionsInfo"/> is <see langword="null"/>.
     /// </summary>
     /// <param name="info">A <see cref="TimerOptionsInfo"/>.</param>
-    /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <c>null</c> if the specified <see cref="TimerOptionsInfo"/> is <c>null</c>.</returns>
+    /// <returns>A <see cref="TimerOptions"/> for the specified <see cref="TimerOptionsInfo"/>, or <see langword="null"/> if the specified <see cref="TimerOptionsInfo"/> is <see langword="null"/>.</returns>
     public static TimerOptions? FromTimerOptionsInfo(TimerOptionsInfo? info)
     {
         return info is not null ? new TimerOptions(info) : null;

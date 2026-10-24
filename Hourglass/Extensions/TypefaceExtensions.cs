@@ -26,7 +26,7 @@ internal static class TypefaceExtensions
         /// Returns a handle holding the DirectWrite font face of the <see cref="Typeface"/>. The font file stays
         /// open as long as the handle is referenced; the font face is released when the handle is garbage collected.
         /// </summary>
-        /// <returns>A handle holding the font face, or <c>null</c> if the font face could not be created.</returns>
+        /// <returns>A handle holding the font face, or <see langword="null"/> if the font face could not be created.</returns>
         public object? HoldFontFace()
         {
             if (!typeface.TryGetGlyphTypeface(out GlyphTypeface glyphTypeface) || !glyphTypeface.FontUri.IsFile)
