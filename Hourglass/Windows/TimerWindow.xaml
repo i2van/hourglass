@@ -304,7 +304,8 @@
                                         PreviewGotKeyboardFocus="TitleTextBoxPreviewGotKeyboardFocus"
                                         Style="{StaticResource TitleTextBoxStyle}"
                                         TextAlignment="Center"
-                                        TextChanged="TitleTextBoxTextChanged"/>
+                                        TextChanged="TitleTextBoxTextChanged"
+                                        LostKeyboardFocus="TitleTextBoxLostKeyboardFocus"/>
                 </AdornerDecorator>
                 <local:SizeToFitTextBox x:Name="TimerTextBox"
                                         UndoLimit="60"

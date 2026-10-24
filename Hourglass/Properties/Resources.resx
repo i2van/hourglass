@@ -1190,6 +1190,14 @@ $</value>
     <value>Show _trigger time</value>
     <comment>The text for the show trigger time menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuShowIterationMenuItem" xml:space="preserve">
+    <value>Show _iteration {0}</value>
+    <comment>The text for the show iteration menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuResetIterationMenuItem" xml:space="preserve">
+    <value>Reset iteratio_n</value>
+    <comment>The text for the reset iteration menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
   <data name="ContextMenuResetExpiredTimerMenuItem" xml:space="preserve">
     <value>Reset e_xpired timer when clicked</value>
     <comment>The text for the reset expired timer when clicked menu item, where the character following the optional underscore (_) is the access key</comment>
@@ -1536,6 +1544,14 @@ $</value>
   <data name="WithTitleText" xml:space="preserve">
     <value>WithTitle</value>
     <comment>WithTitle text</comment>
+  </data>
+  <data name="TitleWithIterationFormat" xml:space="preserve">
+    <value>{0} × {1}</value>
+    <comment>Formats a title followed by the iteration number, where {0} is the title and {1} is the iteration</comment>
+  </data>
+  <data name="IterationOnlyFormat" xml:space="preserve">
+    <value>× {0}</value>
+    <comment>Formats the iteration number when there is no title, where {0} is the iteration</comment>
   </data>
   <data name="MinutesSelectionPattern" xml:space="preserve">
     <value>([0-9]+)\s+minutes?\s*</value>

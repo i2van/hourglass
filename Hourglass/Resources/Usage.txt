@@ -154,6 +154,16 @@ Options:
         Default value   last
         Alias           -st, /st
 
+  --show-iteration on|off|last
+        Shows the timer iteration next to the timer title, for example
+        "Timer 1 × 2" in the timer window title, tooltip and context
+        menus. The iteration starts at 1 and increases each time the
+        timer is restarted or looped.
+
+        Required        no
+        Default value   last
+        Alias           -si, /si
+
   --reset-expired-timer on|off|last
         Resets the expired timer when the timer window is clicked, including
         its timer and title text fields, so the timer is no longer marked as
@@ -442,6 +452,7 @@ Options:
             --digital-clock-time          -c  off
             --show-time-elapsed           -u  off
             --show-trigger-time           -st off
+            --show-iteration              -si off
             --reset-expired-timer         -rt off
             --multi-timers                -mt off
             --loop-timer                  -l  off

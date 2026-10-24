@@ -126,6 +126,11 @@ public sealed class TimerInfo
     public TimerStartInfo? TimerStart { get; set; }
 
     /// <summary>
+    /// Gets or sets the iteration of this timer.
+    /// </summary>
+    public uint Iteration { get; set; } = 1;
+
+    /// <summary>
     /// Gets or sets the configuration data for this timer.
     /// </summary>
     public TimerOptionsInfo? Options { get; set; }

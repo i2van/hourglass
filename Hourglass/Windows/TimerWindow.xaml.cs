@@ -666,7 +666,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 ? Properties.Resources.TimerWindowBlankTitlePlaceholder
                 : timerText!;
 
-            string? title = TitleTextBox?.Text;
+            string? title = Timer.Options.Title;
 
             string format = string.IsNullOrWhiteSpace(title)
                 ? Properties.Resources.TimerWindowNewTimerFormatString
@@ -717,7 +717,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
         bool expiredTimerWasReset = ResetExpiredTimer();
 
-        TitleTextBox.Text = Timer.Options.Title ?? string.Empty;
+        SetTitleBoxText(ReferenceEquals(selection?.TextBox, TitleTextBox));
 
         selection ??= new AllSelection(TimerTextBox);
         if (timerTextBoxShowsStateOrTitle || expiredTimerWasReset || ReferenceEquals(selection.TextBox, TimerTextBox))
@@ -1219,6 +1219,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 TimerTextBox.BorderThickness = new(1);
                 TitleTextBox.IsReadOnly = false;
                 TimerTextBox.IsReadOnly = false;
+                if (!TitleTextBox.IsFocused)
+                {
+                    SetTitleBoxText(isEditing: false);
+                }
+
                 Watermark.SetHint(TitleTextBox, Properties.Resources.TimerWindowTitleTextHint);
                 Watermark.SetHint(TimerTextBox, Properties.Resources.TimerWindowTimerTextHint);
 
@@ -1235,13 +1240,11 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                         ?? string.Empty;
                     TitleTextBox.TextChanged += TitleTextBoxTextChanged;
 
-                    TimerTextBox.Text = Timer.Options.Title ?? string.Empty;
+                    TimerTextBox.Text = Timer.GetTitleWithIteration(Timer.Options.Title) ?? string.Empty;
                 }
                 else
                 {
-                    TitleTextBox.TextChanged -= TitleTextBoxTextChanged;
-                    TitleTextBox.Text = Timer.Options.Title ?? string.Empty;
-                    TitleTextBox.TextChanged += TitleTextBoxTextChanged;
+                    SetTitleBoxText(TitleTextBox.IsFocused);
 
                     TimerTextBox.Text =
                         (Timer is { State: TimerState.Paused, TimerStart.Type: TimerStartType.DateTime }
@@ -1404,25 +1407,25 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         switch (Options.WindowTitleMode)
         {
             case WindowTitleMode.ApplicationName:
-                Title = Properties.Resources.TimerWindowTitle;
+                Title = Timer.GetTitleWithIteration(Properties.Resources.TimerWindowTitle);
                 break;
 
             case WindowTitleMode.TimeLeft:
-                Title = Timer.State != TimerState.Stopped
+                Title = Timer.GetTitleWithIteration(Timer.State != TimerState.Stopped
                     ? Timer.TimeLeftAsString
-                    : Properties.Resources.TimerWindowTitle;
+                    : Properties.Resources.TimerWindowTitle);
                 break;
 
             case WindowTitleMode.TimeElapsed:
-                Title = Timer.State != TimerState.Stopped
+                Title = Timer.GetTitleWithIteration(Timer.State != TimerState.Stopped
                     ? Timer.TimeElapsedAsString
-                    : Properties.Resources.TimerWindowTitle;
+                    : Properties.Resources.TimerWindowTitle);
                 break;
 
             case WindowTitleMode.TimerTitle:
-                Title = !string.IsNullOrWhiteSpace(Options.Title)
+                Title = Timer.GetTitleWithIteration(!string.IsNullOrWhiteSpace(Options.Title)
                     ? Options.Title
-                    : Properties.Resources.TimerWindowTitle;
+                    : Properties.Resources.TimerWindowTitle);
                 break;
 
             case WindowTitleMode.TimeLeftPlusTimerTitle:
@@ -1616,16 +1619,17 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
     {
         if (Timer.State != TimerState.Stopped)
         {
+            string? title = Timer.GetTitleWithIteration(Options.Title);
             return string.IsNullOrWhiteSpace(Options.Title)
-                ? timeAsString
+                ? Timer.GetTitleWithIteration(timeAsString)
                 : titleFirst
-                    ? string.Join(Properties.Resources.TimerWindowTitleSeparator, Options.Title, timeAsString)
-                    : string.Join(Properties.Resources.TimerWindowTitleSeparator, timeAsString, Options.Title);
+                    ? string.Join(Properties.Resources.TimerWindowTitleSeparator, title, timeAsString)
+                    : string.Join(Properties.Resources.TimerWindowTitleSeparator, timeAsString, title);
         }
 
-        return string.IsNullOrWhiteSpace(Options.Title)
+        return Timer.GetTitleWithIteration(string.IsNullOrWhiteSpace(Options.Title)
             ? Properties.Resources.TimerWindowTitle
-            : Options.Title;
+            : Options.Title);
     }
 
     private string? GetTimeLeftPlusTimerTitle(bool titleFirst = false) =>
@@ -1970,6 +1974,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         }
         else
         {
+            SetTitleBoxText(isEditing: true);
             TitleTextBox.SelectAll();
         }
     }
@@ -1985,6 +1990,38 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             string.IsNullOrWhiteSpace(TitleTextBox.Text)
                 ? string.Empty
                 : TitleTextBox.Text;
+    }
+
+    /// <summary>
+    /// Invoked when the <see cref="TitleTextBox"/> loses keyboard focus, so the iteration is shown again.
+    /// </summary>
+    /// <param name="sender">The <see cref="TitleTextBox"/>.</param>
+    /// <param name="e">The event data.</param>
+    private void TitleTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) =>
+        UpdateBoundControls();
+
+    /// <summary>
+    /// Sets the <see cref="TitleTextBox"/> text without invoking <see cref="TitleTextBoxTextChanged"/>.
+    /// </summary>
+    /// <param name="isEditing">
+    /// <see langword="true"/> to show the title without the iteration while it is edited; otherwise <see langword="false"/> to show the iteration.
+    /// </param>
+    private void SetTitleBoxText(bool isEditing)
+    {
+        string text =
+            (isEditing
+                ? Timer.Options.Title
+                : Timer.GetTitleWithIteration(Timer.Options.Title))
+            ?? string.Empty;
+
+        if (TitleTextBox.Text == text)
+        {
+            return;
+        }
+
+        TitleTextBox.TextChanged -= TitleTextBoxTextChanged;
+        TitleTextBox.Text = text;
+        TitleTextBox.TextChanged += TitleTextBoxTextChanged;
     }
 
     /// <summary>

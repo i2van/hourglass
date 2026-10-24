@@ -227,6 +227,13 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private MenuItem _showTriggerTimeMenuItem = null!;
 
     /// <summary>
+    /// The "Show iteration" <see cref="MenuItem"/>.
+    /// </summary>
+    private MenuItem _showIterationMenuItem = null!;
+
+    private MenuItem _resetIterationMenuItem = null!;
+
+    /// <summary>
     /// The "Reset expired timer when clicked" <see cref="MenuItem"/>.
     /// </summary>
     private MenuItem _resetExpiredTimerMenuItem = null!;
@@ -485,6 +492,11 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         // Show trigger time
         _showTriggerTimeMenuItem.IsChecked = _timerWindow.Options.ShowTriggerTime;
 
+        // Show iteration
+        _showIterationMenuItem.Header = string.Format(Properties.Resources.ContextMenuShowIterationMenuItem, string.Format(Properties.Resources.IterationOnlyFormat, _timerWindow.Timer.Iteration));
+        _showIterationMenuItem.IsChecked = _timerWindow.Options.ShowIteration;
+        _resetIterationMenuItem.IsEnabled = _timerWindow.Options.ShowIteration;
+
         // Reset expired timer when clicked
         _resetExpiredTimerMenuItem.IsChecked = _timerWindow.Options.ResetExpiredTimer;
 
@@ -620,6 +632,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         // Show time elapsed
         _timerWindow.Options.ShowTriggerTime = _showTriggerTimeMenuItem.IsChecked;
+
+        // Show iteration
+        _timerWindow.Options.ShowIteration = _showIterationMenuItem.IsChecked;
 
         // Reset expired timer when clicked
         _timerWindow.Options.ResetExpiredTimer = _resetExpiredTimerMenuItem.IsChecked;
@@ -995,6 +1010,22 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         };
         _showTriggerTimeMenuItem.Click += CheckableMenuItemClick;
         advancedOptionsMenuItem.Items.Add(_showTriggerTimeMenuItem);
+
+        // Show iteration
+        _showIterationMenuItem = new CheckableMenuItem
+        {
+            Header = Properties.Resources.ContextMenuShowIterationMenuItem
+        };
+        _showIterationMenuItem.Click += CheckableMenuItemClick;
+        advancedOptionsMenuItem.Items.Add(_showIterationMenuItem);
+
+        // Reset iteration
+        _resetIterationMenuItem = new MenuItem
+        {
+            Header = Properties.Resources.ContextMenuResetIterationMenuItem
+        };
+        _resetIterationMenuItem.Click += ResetIterationMenuItemClick;
+        advancedOptionsMenuItem.Items.Add(_resetIterationMenuItem);
 
         advancedOptionsMenuItem.Items.Add(new Separator());
 
@@ -1890,6 +1921,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         _timerWindow.CenterOnScreen();
     }
+
+    /// <summary>
+    /// Invoked when the "Reset iteration" <see cref="MenuItem"/> is clicked.
+    /// </summary>
+    /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+    /// <param name="e">The event data.</param>
+    private void ResetIterationMenuItemClick(object sender, RoutedEventArgs e) =>
+        _timerWindow.Timer.ResetIteration();
 
     /// <summary>
     /// Invoked when the "Maximize" <see cref="MenuItem"/> is clicked.

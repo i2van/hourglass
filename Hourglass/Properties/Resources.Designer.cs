@@ -728,6 +728,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show _iteration {0}.
+        /// </summary>
+        public static string ContextMenuShowIterationMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuShowIterationMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset iteratio_n.
+        /// </summary>
+        public static string ContextMenuResetIterationMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuResetIterationMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shut _down when expired.
         /// </summary>
         public static string ContextMenuShutDownWhenExpiredMenuItem {
@@ -3056,6 +3074,24 @@ namespace Hourglass.Properties {
         public static string WithTitleText {
             get {
                 return ResourceManager.GetString("WithTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} × {1}.
+        /// </summary>
+        public static string TitleWithIterationFormat {
+            get {
+                return ResourceManager.GetString("TitleWithIterationFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to × {0}.
+        /// </summary>
+        public static string IterationOnlyFormat {
+            get {
+                return ResourceManager.GetString("IterationOnlyFormat", resourceCulture);
             }
         }
     }

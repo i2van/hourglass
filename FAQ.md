@@ -368,6 +368,8 @@ By default, the timer window title displays the application name **Hourglass**. 
 
 The **Hide** option from the **Window title** submenu hides the timer window title bar without changing the timer window title itself. The command-line option is [`--hide-window-title`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--hide-window-title), `-ht`, `/ht`
 
+To show the iteration of the timer next to the timer title, enable **Advanced options** / **Show iteration** in the timer window context menu. The iteration starts at 1 and increases each time the timer is restarted or looped. The command-line option is [`--show-iteration`](https://github.com/search?type=code&q=repo%3Ai2van%2Fhourglass+path%3AHourglass%2FResources%2FUsage.txt+--show-iteration), `-si`, `/si`
+
 ## How do I make the timer window translucent?
 
 `Right Click` on any empty space in the timer window and then select **10%** to **90%** from the **Opacity** submenu. Select **Opaque** to make the timer window opaque again.

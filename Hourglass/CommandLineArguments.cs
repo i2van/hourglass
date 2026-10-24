@@ -128,6 +128,11 @@ public sealed class CommandLineArguments
     public bool ShowTriggerTime { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether to show the iteration of the timer in the window title.
+    /// </summary>
+    public bool ShowIteration { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether to reset the expired timer when the timer window switches to the input
     /// mode, for example when the user clicks the expired timer window.
     /// </summary>
@@ -422,6 +427,7 @@ public sealed class CommandLineArguments
             DigitalClockTime = DigitalClockTime,
             ShowTimeElapsed = ShowTimeElapsed,
             ShowTriggerTime = ShowTriggerTime,
+            ShowIteration = ShowIteration,
             ResetExpiredTimer = ResetExpiredTimer,
             LoopTimer = LoopTimer,
             PauseBeforeLoopTimer = PauseBeforeLoopTimer,
@@ -482,6 +488,7 @@ public sealed class CommandLineArguments
             DigitalClockTime = options.DigitalClockTime,
             ShowTimeElapsed = options.ShowTimeElapsed,
             ShowTriggerTime = options.ShowTriggerTime,
+            ShowIteration = options.ShowIteration,
             ResetExpiredTimer = options.ResetExpiredTimer,
             ShowInNotificationArea = Settings.Default.ShowInNotificationArea,
             HideFromTaskbar = Settings.Default.HideFromTaskbar,
@@ -535,6 +542,7 @@ public sealed class CommandLineArguments
             DigitalClockTime = defaultOptions.DigitalClockTime,
             ShowTimeElapsed = defaultOptions.ShowTimeElapsed,
             ShowTriggerTime = defaultOptions.ShowTriggerTime,
+            ShowIteration = defaultOptions.ShowIteration,
             ResetExpiredTimer = defaultOptions.ResetExpiredTimer,
             ShowInNotificationArea = false,
             HideFromTaskbar = false,
@@ -755,6 +763,20 @@ public sealed class CommandLineArguments
 
                     argumentsBasedOnMostRecentOptions.ShowTriggerTime = showTriggerTime;
                     argumentsBasedOnFactoryDefaults.ShowTriggerTime = showTriggerTime;
+                    break;
+
+                case "--show-iteration":
+                case "-si":
+                case "/si":
+                    ThrowIfDuplicateSwitch(specifiedSwitches, "--show-iteration");
+
+                    bool showIteration = GetBoolValue(
+                        arg,
+                        remainingArgs,
+                        argumentsBasedOnMostRecentOptions.ShowIteration);
+
+                    argumentsBasedOnMostRecentOptions.ShowIteration = showIteration;
+                    argumentsBasedOnFactoryDefaults.ShowIteration = showIteration;
                     break;
 
                 case "--reset-expired-timer":

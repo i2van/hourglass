@@ -48,6 +48,7 @@ public sealed class Timer : TimerBase
         : base(timerInfo)
     {
         TimerStart = TimerStart.FromTimerStartInfo(timerInfo.TimerStart);
+        Iteration = timerInfo.Iteration;
         Options = TimerOptions.FromTimerOptionsInfo(timerInfo.Options) ?? new();
 
         UpdateHourglassTimer();
@@ -63,6 +64,11 @@ public sealed class Timer : TimerBase
     /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
     /// </summary>
     public TimerStart? TimerStart { get; private set; }
+
+    /// <summary>
+    /// Gets the iteration of the timer, which starts at 1 and increases each time the timer is restarted or loops.
+    /// </summary>
+    public uint Iteration { get; private set; } = 1;
 
     /// <summary>
     /// Gets the percentage of time left until the timer expires.
@@ -113,13 +119,25 @@ public sealed class Timer : TimerBase
     /// <param name="startPaused">A value indicating whether to start the timer in a paused state.</param>
     /// <returns>A value indicating whether the timer was started successfully.</returns>
     /// <exception cref="ObjectDisposedException">If the timer has been disposed.</exception>
-    public bool Start(TimerStart newTimerStart, bool startPaused = false)
+    public bool Start(TimerStart newTimerStart, bool startPaused = false) =>
+        StartWithIteration(newTimerStart, 1, startPaused);
+
+    /// <summary>
+    /// Starts the timer with the specified iteration. The iteration is set before the timer start is published so the UI never shows an intermediate value.
+    /// </summary>
+    /// <param name="newTimerStart">The timer start.</param>
+    /// <param name="iteration">The iteration to start with.</param>
+    /// <param name="startPaused">Whether to start the timer paused.</param>
+    /// <returns>A value indicating whether the timer was started successfully.</returns>
+    private bool StartWithIteration(TimerStart newTimerStart, uint iteration, bool startPaused)
     {
         ThrowIfDisposed();
 
         DateTime start = DateTime.Now;
         if (newTimerStart.TryGetEndTime(start, out var end))
         {
+            SetIteration(iteration);
+
             TimerStart = newTimerStart;
             OnPropertyChanged(nameof(TimerStart));
 
@@ -179,19 +197,34 @@ public sealed class Timer : TimerBase
         TimerStart? actualTimerStart = TimerStart;
         if (actualTimerStart is not null)
         {
+            uint nextIteration = Iteration + 1;
             Stop();
-            Start(actualTimerStart);
+            StartWithIteration(actualTimerStart, nextIteration, false);
         }
     }
+
+    /// <summary>
+    /// Appends the iteration to the specified title when the iteration is shown. Without a title, only the iteration is returned.
+    /// </summary>
+    /// <param name="title">A title.</param>
+    /// <returns>The title with the iteration appended, or the title unchanged when the iteration is not shown.</returns>
+    public string? GetTitleWithIteration(string? title) =>
+        Options.ShowIteration
+            ? string.IsNullOrWhiteSpace(title)
+                ? string.Format(CultureInfo.CurrentCulture, Resources.IterationOnlyFormat, Iteration)
+                : string.Format(CultureInfo.CurrentCulture, Resources.TitleWithIterationFormat, title, Iteration)
+            : title;
 
     /// <inheritdoc />
     public override string ToString()
     {
+        string? titleText = GetTitleWithIteration(Options.Title);
+
         string resourceName = string.Format(
             CultureInfo.InvariantCulture,
             "Timer{0}{1}{2}FormatString",
             State,
-            string.IsNullOrWhiteSpace(Options.Title) ? string.Empty : Resources.WithTitleText,
+            string.IsNullOrWhiteSpace(titleText) ? string.Empty : Resources.WithTitleText,
             Options.LoopTimer ? Resources.LoopedText : string.Empty);
 
         return string.Format(
@@ -199,7 +232,7 @@ public sealed class Timer : TimerBase
             Resources.ResourceManager.GetString(resourceName) ?? GetType().ToString(),
             GetTimeLeft(),
             GetStartOrTriggerTime(),
-            Options.Title);
+            titleText);
 
         string GetTimeLeft() =>
             Options.ShowTimeElapsed
@@ -217,6 +250,7 @@ public sealed class Timer : TimerBase
     {
         TimerInfo timerInfo = base.ToTimerInfo();
         timerInfo.TimerStart = TimerStartInfo.FromTimerStart(TimerStart);
+        timerInfo.Iteration = Iteration;
         timerInfo.Options = TimerOptionsInfo.FromTimerOptions(Options);
         return timerInfo;
     }
@@ -303,12 +337,33 @@ public sealed class Timer : TimerBase
         // Loop if we found the current loop iteration
         if (end > now)
         {
+            SetIteration(Iteration + 1);
             Start(start, end);
             if (Options.PauseBeforeLoopTimer)
             {
                 Pause();
             }
         }
+    }
+
+    /// <summary>
+    /// Resets the iteration of the timer to the first iteration.
+    /// </summary>
+    public void ResetIteration() => SetIteration(1);
+
+    /// <summary>
+    /// Sets the iteration of the timer and raises the property changed event if the value changes.
+    /// </summary>
+    /// <param name="iteration">The new iteration.</param>
+    private void SetIteration(uint iteration)
+    {
+        if (Iteration == iteration)
+        {
+            return;
+        }
+
+        Iteration = iteration;
+        OnPropertyChanged(nameof(Iteration));
     }
 
     /// <summary>
