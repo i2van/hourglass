@@ -674,6 +674,42 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV files (*.csv)|*.csv|All files (*.*)|*.*.
+        /// </summary>
+        public static string ContextMenuSaveReportDialogFilter {
+            get {
+                return ResourceManager.GetString("ContextMenuSaveReportDialogFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Timers Report.
+        /// </summary>
+        public static string ContextMenuSaveReportDialogTitle {
+            get {
+                return ResourceManager.GetString("ContextMenuSaveReportDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save timers report.
+        /// </summary>
+        public static string ContextMenuSaveReportErrorTitle {
+            get {
+                return ResourceManager.GetString("ContextMenuSaveReportErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save timers re_port....
+        /// </summary>
+        public static string ContextMenuSaveReportMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuSaveReportMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sa_ve timer on closing.
         /// </summary>
         public static string ContextMenuSaveTimerOnClosingMenuItem {

@@ -6,7 +6,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,6 +17,7 @@ using System.Windows.Threading;
 using Hourglass.Extensions;
 using Hourglass.Managers;
 using Hourglass.Properties;
+using Hourglass.Serialization;
 using Hourglass.Timing;
 
 namespace Hourglass.Windows;
@@ -26,6 +29,11 @@ namespace Hourglass.Windows;
 /// </summary>
 public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 {
+    /// <summary>
+    /// The dialog of the timers report that is being saved, or null if there is no timers report being saved.
+    /// </summary>
+    private static NonBlockingSaveFileDialog? _saveReportDialog;
+
     /// <summary>
     /// The <see cref="TimerWindow"/> that uses this context menu.
     /// </summary>
@@ -1112,6 +1120,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
         advancedOptionsMenuItem.Items.Add(new Separator());
 
+        // Save timers report
+        MenuItem saveReportMenuItem = new()
+        {
+            Header = Properties.Resources.ContextMenuSaveReportMenuItem
+        };
+        saveReportMenuItem.Click += SaveReportMenuItemClick;
+        advancedOptionsMenuItem.Items.Add(saveReportMenuItem);
+
         // Open settings
         MenuItem openSettingsFileLocationMenuItem = new()
         {
@@ -1960,6 +1976,56 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
     private void CloseMenuItemClick(object sender, RoutedEventArgs e)
     {
         _timerWindow.Close();
+    }
+
+    /// <summary>
+    /// Invoked when the "Save timers report" <see cref="MenuItem"/> is clicked.
+    /// </summary>
+    /// <param name="sender">The <see cref="MenuItem"/> where the event handler is attached.</param>
+    /// <param name="e">The event data.</param>
+    private async void SaveReportMenuItemClick(object sender, RoutedEventArgs e)
+    {
+        // The report includes all timers, so only one report is saved at a time from any timer window.
+        if (_saveReportDialog is not null)
+        {
+            _saveReportDialog.Activate();
+            return;
+        }
+
+        NonBlockingSaveFileDialog saveFileDialog = new()
+        {
+            Title = Properties.Resources.ContextMenuSaveReportDialogTitle,
+            Filter = Properties.Resources.ContextMenuSaveReportDialogFilter,
+            DefaultExt = TimerReport.FileExtension,
+            FileName = TimerReport.GetDefaultFileName(DateTime.Now),
+            InitialDirectory = Path.GetDirectoryName(SettingsManager.GetSettingsFilePath())
+        };
+
+        _saveReportDialog = saveFileDialog;
+
+        try
+        {
+            string? path = await saveFileDialog.ShowAsync(_timerWindow);
+
+            if (path is null)
+            {
+                return;
+            }
+
+            // Snapshot the timers on the UI thread, then write the report in the background to keep the UI responsive.
+            TimerReport.Entry[] entries = [..TimerManager.Instance.Timers.Select(TimerReport.Entry.FromTimer)];
+
+            await Task.Run(() => TimerReport.Save(path, entries));
+        }
+        catch (Exception ex) when (ex.CanBeHandled())
+        {
+            ErrorDialog dialog = new();
+            dialog.ShowDialog(Properties.Resources.ContextMenuSaveReportErrorTitle, ex.Message, ex.ToString());
+        }
+        finally
+        {
+            _saveReportDialog = null;
+        }
     }
 
     private static void OpenSettingsFileLocationMenuItemClick(object sender, RoutedEventArgs e) =>

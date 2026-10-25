@@ -1462,6 +1462,22 @@ $</value>
     <value>About</value>
     <comment>The text for the about menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuSaveReportMenuItem" xml:space="preserve">
+    <value>Save timers re_port...</value>
+    <comment>The text for the save timers report menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="ContextMenuSaveReportDialogTitle" xml:space="preserve">
+    <value>Save Timers Report</value>
+    <comment>The title of the dialog shown to save the timers report</comment>
+  </data>
+  <data name="ContextMenuSaveReportDialogFilter" xml:space="preserve">
+    <value>CSV files (*.csv)|*.csv|All files (*.*)|*.*</value>
+    <comment>The file type filter of the dialog shown to save the timers report, where each file type description is followed by the vertical bar (|) and the file name pattern</comment>
+  </data>
+  <data name="ContextMenuSaveReportErrorTitle" xml:space="preserve">
+    <value>Could not save timers report</value>
+    <comment>The title of the error dialog shown when the timers report could not be saved</comment>
+  </data>
   <data name="ContextMenuOpenSettingsFileLocationMenuItem" xml:space="preserve">
     <value>Open settings file _location</value>
     <comment>The text for the open settings file location menu item, where the character following the optional underscore (_) is the access key</comment>
