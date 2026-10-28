@@ -294,6 +294,55 @@ public abstract class TimerBase : IDisposable, INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Adds a time span to the time left until the timer expires, or subtracts it if negative, while the timer is
+    /// running or paused.
+    /// </summary>
+    /// <param name="delta">The time span to add to the time left.</param>
+    /// <returns><see langword="true"/> if the time left was adjusted, or <see langword="false"/> otherwise.</returns>
+    protected bool TryAdjustTime(TimeSpan delta)
+    {
+        switch (State)
+        {
+            case TimerState.Running when EndTime is not null:
+                DateTime newEndTime = EndTime.Value + delta;
+                if (newEndTime <= DateTime.Now)
+                {
+                    return false;
+                }
+
+                EndTime = newEndTime;
+                TotalTime += delta;
+
+                PropertyChanged.Notify(this,
+                    nameof(EndTime),
+                    nameof(TotalTime));
+
+                Update();
+
+                return true;
+
+            case TimerState.Paused when TimeLeft is not null:
+                TimeSpan newTimeLeft = TimeLeft.Value + delta;
+                if (newTimeLeft <= TimeSpan.Zero)
+                {
+                    return false;
+                }
+
+                TimeLeft = newTimeLeft;
+                TotalTime += delta;
+
+                PropertyChanged.Notify(this,
+                    nameof(TimeLeft),
+                    nameof(TotalTime));
+
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
     /// Stops the timer.
     /// </summary>
     /// <remarks>

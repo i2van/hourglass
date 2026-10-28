@@ -16,6 +16,7 @@ using System.Windows;
 
 using Hourglass.Extensions;
 using Hourglass.Managers;
+using Hourglass.Parsing;
 using Hourglass.Properties;
 using Hourglass.Timing;
 using Hourglass.Windows;
@@ -1593,7 +1594,7 @@ public sealed class CommandLineArguments
     /// is not a valid representation of a <see cref="TimerStart"/>.
     /// </summary>
     /// <param name="remainingArgs">The unparsed arguments.</param>
-    /// <param name="multiTimers">Treat each timer argument as a separate timer.</param>
+    /// <param name="multiTimers">Treat each timer argument as a separate timer. If the last argument is one or more offsets of the form <c>+&lt;offset&gt;</c> or <c>-&lt;offset&gt;</c> (optionally several, quoted as one argument) and there is more than one argument, they are applied to every timer.</param>
     /// <returns>The <see cref="TimerStart"/> value corresponding to the concatenation of all <paramref name="remainingArgs"/> or individual timer values if <paramref name="multiTimers"/> if <see langword="true"/>.</returns>
     /// <exception cref="ParseException">If the concatenation of all <paramref name="remainingArgs"/> is not a valid representation of a <see cref="TimerStart"/>.</exception>
     private static IEnumerable<TimerStart> GetTimerStartValue(IEnumerable<string> remainingArgs, bool multiTimers)
@@ -1604,8 +1605,18 @@ public sealed class CommandLineArguments
             remainingArgs = [ value ];
         }
 
-        foreach (string arg in remainingArgs)
+        List<string> args = remainingArgs.ToList();
+        string? trailingOffset = null;
+
+        if (multiTimers && args.Count > 1 && TimerStartToken.TryParseLeadingOffsets(args[args.Count - 1], out _))
         {
+            trailingOffset = args[args.Count - 1];
+            args.RemoveAt(args.Count - 1);
+        }
+
+        foreach (string timer in args)
+        {
+            string arg = trailingOffset is null ? timer : $"{timer} {trailingOffset}";
             TimerStart? timerStart = Timing.TimerStart.FromString(arg);
 
             if (timerStart is null)

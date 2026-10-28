@@ -297,6 +297,14 @@
     <value> </value>
     <comment>The separator between the units of a time span (e.g., " " is "5 minutes 30 seconds", " : " is "5 minutes : 30 seconds")</comment>
   </data>
+  <data name="OffsetTimerStartTokenPositiveFormatString" xml:space="preserve">
+    <value>{0} + {1}</value>
+    <comment>A format string for a timer start with a time span added to it, where {0} is the timer start and {1} is the time span (e.g., "{0} + {1}" is "5 minutes + 3 minutes")</comment>
+  </data>
+  <data name="OffsetTimerStartTokenNegativeFormatString" xml:space="preserve">
+    <value>{0} - {1}</value>
+    <comment>A format string for a timer start with a time span subtracted from it, where {0} is the timer start and {1} is the time span (e.g., "{0} - {1}" is "until 10:00 - 5 minutes")</comment>
+  </data>
   <data name="TimeSpanTokenLongFormPattern" xml:space="preserve">
     <value>^
 (

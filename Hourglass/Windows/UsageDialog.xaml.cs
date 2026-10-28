@@ -34,7 +34,7 @@ public sealed partial class UsageDialog
     /// <summary>
     /// Gets or sets an optional error message to be displayed.
     /// </summary>
-    public string? ErrorMessage { get; init; }
+    public string? ErrorMessage { get; set; }
 
     /// <summary>
     /// Initializes the <see cref="Window.MaxWidth"/> and <see cref="Window.MaxHeight"/> properties.
@@ -49,6 +49,8 @@ public sealed partial class UsageDialog
     {
         if (_instance is not null)
         {
+            _instance.ErrorMessage = errorMessage;
+            _instance.UpdateMessage();
             _instance.Activate();
             return;
         }
@@ -104,6 +106,18 @@ public sealed partial class UsageDialog
     /// <param name="e">The event data.</param>
     private void WindowLoaded(object sender, RoutedEventArgs e)
     {
+        UpdateMessage();
+
+        _ = new UsageDialogSearchBehavior(this, UsageTextBox, SearchBar, SearchTextBox, MatchCountTextBlock);
+
+        Activate();
+    }
+
+    /// <summary>
+    /// Displays the <see cref="ErrorMessage"/>, or the default message if there is none.
+    /// </summary>
+    private void UpdateMessage()
+    {
         if (!string.IsNullOrWhiteSpace(ErrorMessage))
         {
             MessageTextBlock.Background = new SolidColorBrush(Color.FromRgb(199, 80, 80));
@@ -114,10 +128,6 @@ public sealed partial class UsageDialog
             MessageTextBlock.Background = Brushes.Gray;
             MessageTextBlock.Text = Properties.Resources.UsageDialogDefaultMessageText;
         }
-
-        _ = new UsageDialogSearchBehavior(this, UsageTextBox, SearchBar, SearchTextBox, MatchCountTextBlock);
-
-        Activate();
     }
 
     /// <summary>

@@ -5,6 +5,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How do I start, stop, pause or resume a timer?](#how-do-i-start-stop-pause-or-resume-a-timer)
 - [What do symbols ⏺⏸⏹⏏🔁 mean?](#what-do-symbols--mean)
 - [What formats are supported when entering a duration or date and time?](#what-formats-are-supported-when-entering-a-duration-or-date-and-time)
+- [How do I add or subtract time from a timer?](#how-do-i-add-or-subtract-time-from-a-timer)
 - [How do I start a second timer with the Hourglass?](#how-do-i-start-a-second-timer-with-the-hourglass)
 - [How do I keep the timer window on top of other windows?](#how-do-i-keep-the-timer-window-on-top-of-other-windows)
 - [How do I run a timer in full screen mode?](#how-do-i-run-a-timer-in-full-screen-mode)
@@ -233,6 +234,35 @@ You can omit the `at` or `on` separating the date, weekday or tomorrow and the t
 - `tomorrow 2 pm` - count down until 2 pm tomorrow
 - `2 pm tomorrow` - count down until 2 pm tomorrow
 
+## How do I add or subtract time from a timer?
+
+**Offset in the timer input** - To add or subtract a time from a timer input, enter the input followed by `+` or `-` and the time span. The input can be any duration, time of day, date or weekday, optionally prefixed with `until`, `u`, `un`, `till` or `@` and the offset can be in any of the [duration formats](#what-formats-are-supported-when-entering-a-duration-or-date-and-time):
+
+- `5m+3m` - count down for 8 minutes
+- `5 minutes 15 seconds + 3 min` - count down for 8 minutes 15 seconds
+- `5:15+3` - count down for 8 minutes 15 seconds
+- `until 10:00 - 5m` - count down until 9:55
+- `2pm + 1:30:0` - count down until 3:30 pm
+- `5+3m +1m` - count down for 9 minutes (offsets can be chained and are applied from left to right)
+
+> [!TIP]
+> Adding a unit to the offset is recommended. A bare number followed by a sign, such as `10-10`, which is a date October 10, so write `10m-3m` or put a space before the sign when the input is a bare number, e.g., `10 -3`
+
+> [!NOTE]
+> Offsets can be chained, e.g., `5m+3m+1m` and applied from left to right. The result of each step must be later than the start time, otherwise the input is rejected.
+>
+> An offset given as its own command-line argument must start with a sign followed by a number, e.g., `-1m`, since a sign followed by a letter is read as a switch. Several offsets given as one argument must be quoted, e.g., `"+3m -1m"`.
+>
+> With `--multi-timers on` on the command line, an offset given as the last argument (e.g., `hourglass --multi-timers on 5m 10m +3m`) is added to **every** timer and a timer that already has an offset gets it added to that offset (e.g., `hourglass --multi-timers on 5m+1m +3m` starts a 9 minute timer). Several offsets can be given as one quoted argument, e.g., `hourglass --multi-timers on 5m 10m "+3m -1m"`. On the command line, use the same syntax, quoting the argument if it contains spaces, e.g., `hourglass "until 10:00 - 5m"`.
+
+**Adjusting a running or paused timer** - In the timer window type an offset on its own in the text box and press `Enter` to add or subtract time from the timer that is running or paused:
+
+- `+3m` - adds 3 minutes to the time left; a paused timer is resumed
+- `-3m` - subtracts 3 minutes from the time left
+- `+3m-1m` - adds a net 2 minutes; offsets can be chained and applied from left to right
+
+If there is no running or paused timer `+3m` starts a new 3 minute timer while `-3m` is rejected. An adjustment that would make the time left zero or less is rejected and a chain is rejected as a whole.
+
 ## How do I start a second timer with the Hourglass?
 
 `Right Click` on any empty space in the timer window and select **New timer**.
@@ -453,7 +483,7 @@ You can also specify additional [command-line](https://github.com/i2van/hourglas
 
 ## What command-line arguments does the Hourglass accept?
 
-You can launch the **Hourglass** and immediately start a timer by running `Hourglass.exe "<duration or date and time>"`. For example, to launch the **Hourglass** and start a 5-minute timer, run `Hourglass.exe "5 minutes"`.
+You can launch the **Hourglass** and immediately start a timer by running `Hourglass.exe "<duration or date and time>"`, e.g., to launch the **Hourglass** and start a 5-minute timer, run `Hourglass.exe "5 minutes"`.
 
 You can also set any option that you can set using the user interface by specifying additional command-line arguments. To view a full list of command-line arguments, run `Hourglass.exe --help` or click [here](https://github.com/i2van/hourglass/blob/main/Hourglass/Resources/Usage.txt).
 
@@ -481,7 +511,7 @@ The command-line usage dialog supports incremental search with match highlightin
 | `Enter` <br/> `F3`                 | Navigate to next match     |
 | `Shift`+`Enter` <br/> `Shift`+`F3` | Navigate to previous match |
 
-The match count is displayed next to the search box as `current/total`. Closing the search bar (via `Escape`, clicking in the text, or moving focus away) removes the highlight and returns the caret to the last matched position.
+The match count is displayed next to the search box as `current/total`. Closing the search bar (via `Escape`, clicking in the text or moving focus away) removes the highlight and returns the caret to the last matched position.
 
 ## How to launch the Hourglass on Windows startup?
 

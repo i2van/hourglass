@@ -106,7 +106,29 @@ public sealed class TimerStart
     /// <summary>
     /// Gets the <see cref="TimerStart"/> type.
     /// </summary>
-    public TimerStartType Type => _timerStartToken is DateTimeToken ? TimerStartType.DateTime : TimerStartType.TimeSpan;
+    public TimerStartType Type => ContainsDateTimeToken(_timerStartToken) ? TimerStartType.DateTime : TimerStartType.TimeSpan;
+
+    /// <summary>
+    /// Gets a value indicating whether the <see cref="TimerStart"/> has a time span offset added to or subtracted from it
+    /// (e.g., <c>"5 minutes + 3 minutes"</c>).
+    /// </summary>
+    public bool HasOffset => _timerStartToken is OffsetTimerStartToken;
+
+    /// <summary>
+    /// Returns a value indicating whether a <see cref="TimerStartToken"/> is a <see cref="DateTimeToken"/>, or an
+    /// <see cref="OffsetTimerStartToken"/> whose input (at any depth) is one.
+    /// </summary>
+    /// <param name="token">A <see cref="TimerStartToken"/>.</param>
+    /// <returns><see langword="true"/> if the token is based on a date-time; otherwise, <see langword="false"/>.</returns>
+    private static bool ContainsDateTimeToken(TimerStartToken? token)
+    {
+        return token switch
+        {
+            DateTimeToken => true,
+            OffsetTimerStartToken offsetToken => ContainsDateTimeToken(offsetToken.Input),
+            _ => false
+        };
+    }
 
     /// <summary>
     /// Returns a <see cref="TimerStart"/> for a string.
@@ -156,6 +178,12 @@ public sealed class TimerStart
         if (_timerStartToken is TimeSpanToken timeSpanToken)
         {
             return timeSpanToken.TryGetStartTime(now, out start);
+        }
+
+        if (_timerStartToken is OffsetTimerStartToken offsetTimerStartToken
+            && offsetTimerStartToken.TryGetStartTime(now, out start))
+        {
+            return true;
         }
 
         return TryGetLatestOccurrence(now, out start);

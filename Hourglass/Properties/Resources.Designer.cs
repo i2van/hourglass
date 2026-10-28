@@ -1413,6 +1413,24 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}.
+        /// </summary>
+        public static string OffsetTimerStartTokenNegativeFormatString {
+            get {
+                return ResourceManager.GetString("OffsetTimerStartTokenNegativeFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} + {1}.
+        /// </summary>
+        public static string OffsetTimerStartTokenPositiveFormatString {
+            get {
+                return ResourceManager.GetString("OffsetTimerStartTokenPositiveFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://github.com/i2van/hourglass/issues/new.
         /// </summary>
         public static string NewIssueUrl {
