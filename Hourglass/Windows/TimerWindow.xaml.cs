@@ -22,6 +22,7 @@ using KPreisser.UI;
 
 using Hourglass.Extensions;
 using Hourglass.Managers;
+using Hourglass.Parsing;
 using Hourglass.Properties;
 using Hourglass.Timing;
 
@@ -762,7 +763,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
                 TimerTextBox.Text =
                     GetOriginalUserInput() ??
                     (Timer.TimerStart?.Type == TimerStartType.DateTime
-                        ? Timer.TimerStart.OriginalInput
+                        ? Timer.TimerStartInput
                         : null) ??
                     TimerTextBox.Text;
             }
@@ -774,13 +775,13 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             }
 
             string GetTimerStartTime() =>
-                Timer.TimerStart?.OriginalInput ??
+                Timer.TimerStartInput ??
                 Timer.TimerStart?.ToString() ??
                 LastTimerStart.OriginalInput;
 
             string? GetOriginalUserInput() =>
                 Settings.Default.EditTimerStartTime
-                    ? Timer.TimerStart?.OriginalInput
+                    ? Timer.TimerStartInput
                     : null;
         }
     }
@@ -1259,7 +1260,7 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
 
                     TimerTextBox.Text =
                         (Timer is { State: TimerState.Paused, TimerStart.Type: TimerStartType.DateTime }
-                            ? Timer.TimerStart.OriginalInput
+                            ? Timer.TimerStartInput
                             : null)
                         ?? (Timer.Options.ShowTimeElapsed
                             ? Timer.TimeElapsedAsString
@@ -1669,6 +1670,21 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         UndoExecuteWhenExpired = false;
 
         using IDisposable _ = _updateShellIntegration;
+
+        if (Timer.State is TimerState.Running or TimerState.Paused &&
+            TimerStartToken.TryParseLeadingOffsets(TimerTextBox.Text, out IReadOnlyList<Offset> offsets))
+        {
+            if (!Timer.Adjust(offsets, TimerTextBox.Text))
+            {
+                BeginValidationErrorAnimation();
+                return;
+            }
+
+            SwitchToStatusMode();
+            UpdateNotificationAreaIcon();
+
+            return;
+        }
 
         TimerStart? timerStart = TimerStart.FromString(TimerTextBox.Text);
         if (timerStart is null)

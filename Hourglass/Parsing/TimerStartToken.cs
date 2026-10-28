@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -22,12 +23,18 @@ namespace Hourglass.Parsing;
 /// </summary>
 [XmlInclude(typeof(DateTimeToken))]
 [XmlInclude(typeof(TimeSpanToken))]
+[XmlInclude(typeof(OffsetTimerStartToken))]
 public abstract class TimerStartToken
 {
     /// <summary>
     /// Gets a value indicating whether the token is valid.
     /// </summary>
     protected abstract bool IsValid { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the token is valid, for use by other <see cref="TimerStartToken"/> instances.
+    /// </summary>
+    internal bool IsValidToken => IsValid;
 
     /// <summary>
     /// The original timer input.
@@ -63,16 +70,147 @@ public abstract class TimerStartToken
 
         string originalStr = str = str!.Trim();
 
+        if (str.StartsWith("+", StringComparison.Ordinal) && TimeSpanToken.Parser.Instance.TryParse(str.Substring(1).Trim(), provider, out TimerStartToken? leadingOffsetToken))
+        {
+            return leadingOffsetToken;
+        }
+
+        TimerStartToken? timerStartToken = FromStringWithoutOffset(str, provider) ?? FromOffsetString(str, provider);
+        if (timerStartToken is not null)
+        {
+            timerStartToken.OriginalInput = originalStr;
+        }
+
+        return timerStartToken;
+    }
+
+    /// <summary>
+    /// Returns a <see cref="TimerStartToken"/> for the specified string, ignoring any trailing offset, or <see
+    /// langword="null"/> if the string is not a supported representation of a <see cref="TimerStartToken"/>.
+    /// </summary>
+    /// <param name="str">A trimmed, non-empty string.</param>
+    /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+    /// <returns>A <see cref="TimerStartToken"/> for the specified string, or <see langword="null"/> if the string is not a
+    /// supported representation of a <see cref="TimerStartToken"/>.</returns>
+    private static TimerStartToken? FromStringWithoutOffset(string str, IFormatProvider provider)
+    {
         string preferDateTimePattern = Resources.ResourceManager.GetString(nameof(Resources.TimerStartTokenUseDateTimeParserPattern), provider);
         if (Regex.IsMatch(str, preferDateTimePattern, Parser.RegexOptions))
         {
-            str = Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions);
-            TimerStartToken? timerStartToken = FromDateTime(str);
-            timerStartToken?.OriginalInput = originalStr;
-            return timerStartToken;
+            return FromDateTime(Regex.Replace(str, preferDateTimePattern, string.Empty, Parser.RegexOptions));
         }
 
         return FromTimeSpanOrDateTimeString(str);
+    }
+
+    /// <summary>
+    /// Returns an <see cref="OffsetTimerStartToken"/> for a string of the form <c>&lt;input&gt;[+-]&lt;offset&gt;</c>,
+    /// where the offset is a <see cref="TimeSpanToken"/> and the input is any other <see cref="TimerStartToken"/>,
+    /// including another offset (e.g., <c>5m+3m+1m</c>, applied left to right), or <see langword="null"/> if the string
+    /// is not of that form. The rightmost sign is used as the separator first.
+    /// </summary>
+    /// <param name="str">A trimmed, non-empty string.</param>
+    /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+    /// <returns>An <see cref="OffsetTimerStartToken"/> for the specified string, or <see langword="null"/> if the string
+    /// is not of that form.</returns>
+    private static TimerStartToken? FromOffsetString(string str, IFormatProvider provider)
+    {
+        return FromOffsetString(str, provider, new Dictionary<string, TimerStartToken?>(StringComparer.Ordinal));
+    }
+
+    /// <summary>
+    /// Returns an <see cref="OffsetTimerStartToken"/> for a string, as <c>FromOffsetString</c> with a single argument
+    /// does, memoizing results by string so that inputs with many signs are parsed in polynomial time.
+    /// </summary>
+    /// <param name="str">A trimmed, non-empty string.</param>
+    /// <param name="provider">An <see cref="IFormatProvider"/>.</param>
+    /// <param name="memo">The results computed so far, keyed by string.</param>
+    /// <returns>An <see cref="OffsetTimerStartToken"/> for the specified string, or <see langword="null"/> if the string
+    /// is not of that form.</returns>
+    private static TimerStartToken? FromOffsetString(string str, IFormatProvider provider, Dictionary<string, TimerStartToken?> memo)
+    {
+        if (memo.TryGetValue(str, out TimerStartToken? cached))
+        {
+            return cached;
+        }
+
+        TimerStartToken? result = null;
+
+        for (int i = str.Length - 1; i > 0 && result is null; i--)
+        {
+            if (str[i] is not ('+' or '-'))
+            {
+                continue;
+            }
+
+            string inputStr = str.Substring(0, i).Trim();
+            string offsetStr = str.Substring(i + 1).Trim();
+
+            if (inputStr.Length == 0 || !TimeSpanToken.Parser.Instance.TryParse(offsetStr, provider, out TimerStartToken? offsetToken))
+            {
+                continue;
+            }
+
+            TimerStartToken? inputToken = FromStringWithoutOffset(inputStr, provider) ?? FromOffsetString(inputStr, provider, memo);
+            if (inputToken is null)
+            {
+                continue;
+            }
+
+            result = new OffsetTimerStartToken
+            {
+                Input = inputToken,
+                Negative = str[i] == '-',
+                Offset = (TimeSpanToken)offsetToken!
+            };
+        }
+
+        memo[str] = result;
+        return result;
+    }
+
+    /// <summary>
+    /// Parses a string of the form <c>[+-]&lt;offset&gt;[+-]&lt;offset&gt;...</c>, where each offset is a
+    /// <see cref="TimeSpanToken"/>.
+    /// </summary>
+    /// <param name="str">A string.</param>
+    /// <param name="offsets">The offsets parsed from the string in order, where a <c>-</c> sign yields a <see
+    /// cref="NegativeOffset"/> and a <c>+</c> sign yields an <see cref="Offset"/>; or an empty list if the string is not
+    /// of that form.</param>
+    /// <returns><see langword="true"/> if the string is of the form <c>[+-]&lt;offset&gt;...</c>, or <see
+    /// langword="false"/> otherwise.</returns>
+    public static bool TryParseLeadingOffsets(string str, out IReadOnlyList<Offset> offsets)
+    {
+        offsets = Array.Empty<Offset>();
+
+        string trimmed = str?.Trim() ?? string.Empty;
+        if (trimmed.Length < 2 || trimmed[0] is not ('+' or '-'))
+        {
+            return false;
+        }
+
+        List<Offset> parsed = new();
+        int signIndex = 0;
+
+        for (int i = 1; i <= trimmed.Length; i++)
+        {
+            if (i < trimmed.Length && trimmed[i] is not ('+' or '-'))
+            {
+                continue;
+            }
+
+            string span = trimmed.Substring(signIndex + 1, i - signIndex - 1).Trim();
+            if (!TimeSpanToken.Parser.Instance.TryParse(span, out TimerStartToken? token) || token is not TimeSpanToken timeSpanToken)
+            {
+                return false;
+            }
+
+            parsed.Add(trimmed[signIndex] == '-' ? new NegativeOffset(timeSpanToken) : new Offset(timeSpanToken));
+            signIndex = i;
+        }
+
+        offsets = parsed;
+        return true;
     }
 
     /// <summary>

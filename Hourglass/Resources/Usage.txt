@@ -22,9 +22,32 @@ A simple countdown timer for Windows.
         "midnight"              count down until midnight
         "Friday"                count down until midnight Friday
 
-        * The order of the day, month, and year depends on your system settings.
+        * The order of the day, month and year depends on your system settings.
 
         Variations of some of these formats are also supported.
+
+        An offset adds or subtracts a time from the timer input, using the
+        form "<input>+<offset>" or "<input>-<offset>", e.g.:
+        "5 minutes+3 minutes"   count down for 8 minutes
+        "until 10:00 - 5m"      count down until 9:55
+        "5+3m +1m"              count down for 9 minutes
+
+        Offsets can be chained and applied from left to right. Each step must
+        end later than it starts.
+
+        An offset given as its own command-line argument must start with a sign
+        followed by a number, e.g., "-1m", since a sign followed by a letter
+        is read as a switch. Several offsets given as one argument must be
+        surrounded by double quotes, e.g., "+3m -1m".
+
+        Adding a unit to the offset is recommended. A bare number followed by a
+        sign, such as "10-10", which is a date October 10, so write
+        "10m-3m" or put a space before the sign when the input is a bare
+        number, e.g., "10 -3m" (count down for 7 minutes).
+
+        In the timer window an offset on its own ("+3m" or "-3m") adds or
+        subtracts time from the running or paused timer. Offsets can be chained,
+        e.g., "+3m-1m" adds a net 2 minutes.
 
 Commands:
 
@@ -179,6 +202,18 @@ Options:
 
         An each timer containing spaces must be surrounded by double quotes.
 
+        Each timer can include its own offset, e.g., "5m+1m". An offset
+        given as the last argument, in the form "+<offset>" or "-<offset>", is
+        applied to every timer, e.g.:
+        --multi-timers on 5m 10m +3m    starts a 8 minute timer and a 13 minute
+                                        timer
+        Several offsets can be given as one quoted argument, e.g.:
+        --multi-timers on 5m 10m "+3m -1m"    starts a 7 minute timer and a 12
+                                              minute timer
+        A timer that already has an offset gets the trailing offset added to it,
+        e.g.:
+        --multi-timers on 5m+1m +3m     starts a 9 minute timer
+
         This option is never remembered. It must be specified as a command-line
         argument each time the timer is started.
 
@@ -215,11 +250,11 @@ Options:
         progress bar shows the time elapsed since that moment and the time
         remaining until the end of the timer.
 
-        Accepts the same date-time formats as the timer input, for example:
+        Accepts the same date-time formats as the timer input, e.g.:
             --start-time "2024-01-01 09:00"
         A date-time starts the timer at its most recent occurrence.
 
-        Accepts a time span, for example:
+        Accepts a time span, e.g.:
             --start-time 2h
         A time span starts the timer that much time before the current time.
 
@@ -274,7 +309,7 @@ Options:
   --theme last|<theme>
         Sets the theme of the timer window.
 
-        You can specify the name of one of the built-in themes, or the name of
+        You can specify the name of one of the built-in themes or the name of
         one of the themes that you have defined yourself.
 
         The built-in themes are:
@@ -300,7 +335,7 @@ Options:
         Default value   last
         Alias           -s, /s
 
-        <sound> is the name of one of the built-in sounds, or the name of a
+        <sound> is the name of one of the built-in sounds or the name of a
         sound file without extension. The sound name is case-insensitive and
         must be surrounded by double quotes if it contains spaces, e.g.,
         --sound "Loud beep".
@@ -433,8 +468,8 @@ Options:
         Alias           -b, /b
 
   --lock-interface on|off
-        Prevents the user from starting, pausing, stopping, or restarting the
-        timer, changing the timer options, or closing the timer window until the
+        Prevents the user from starting, pausing, stopping or restarting the
+        timer, changing the timer options or closing the timer window until the
         timer expires.
 
         This option is never remembered. It must be specified as a command-line

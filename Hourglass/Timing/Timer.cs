@@ -5,10 +5,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
 using Hourglass.Extensions;
+using Hourglass.Parsing;
 using Hourglass.Properties;
 using Hourglass.Serialization;
 
@@ -25,6 +27,17 @@ public sealed class Timer : TimerBase
     /// The explicit start time the timer was started at, or <see langword="null"/> if the timer was started at the current time.
     /// </summary>
     private DateTime? _explicitStart;
+
+    /// <summary>
+    /// The total amount the end time has been adjusted by since the timer was started, so a fixed end time can be
+    /// corrected on resume.
+    /// </summary>
+    private TimeSpan _adjustment;
+
+    /// <summary>
+    /// The timer input including every adjustment made to it, or <see langword="null"/> if the timer has not been adjusted.
+    /// </summary>
+    private string? _adjustedInput;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Timer"/> class.
@@ -54,6 +67,8 @@ public sealed class Timer : TimerBase
     {
         TimerStart = TimerStart.FromTimerStartInfo(timerInfo.TimerStart);
         Iteration = timerInfo.Iteration;
+        _adjustment = timerInfo.Adjustment ?? TimeSpan.Zero;
+        _adjustedInput = timerInfo.AdjustedInput;
         Options = TimerOptions.FromTimerOptionsInfo(timerInfo.Options) ?? new();
 
         UpdateHourglassTimer();
@@ -69,6 +84,12 @@ public sealed class Timer : TimerBase
     /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
     /// </summary>
     public TimerStart? TimerStart { get; private set; }
+
+    /// <summary>
+    /// Gets the timer input to edit, including every adjustment made to it, or <see langword="null"/> if the <see
+    /// cref="TimerBase.State"/> is <see cref="TimerState.Stopped"/>.
+    /// </summary>
+    public string? TimerStartInput => _adjustedInput ?? TimerStart?.OriginalInput;
 
     /// <summary>
     /// Gets the iteration of the timer, which starts at 1 and increases each time the timer is restarted or loops.
@@ -153,6 +174,8 @@ public sealed class Timer : TimerBase
         {
             SetIteration(iteration);
 
+            _adjustment = TimeSpan.Zero;
+            _adjustedInput = null;
             TimerStart = newTimerStart;
             OnPropertyChanged(nameof(TimerStart));
 
@@ -179,12 +202,13 @@ public sealed class Timer : TimerBase
         if (State != TimerState.Paused ||
             TimerStart?.Type != TimerStartType.DateTime ||
             !TimerStart.TryGetEndTime(referenceTime, out var fixedEnd) ||
-            fixedEnd <= DateTime.Now)
+            fixedEnd + _adjustment <= DateTime.Now)
         {
             base.Resume();
             return;
         }
 
+        fixedEnd += _adjustment;
         base.Resume();
 
         // Correct EndTime back to the fixed target derived from OriginalInput and adjust StartTime / TotalTime accordingly.
@@ -218,6 +242,60 @@ public sealed class Timer : TimerBase
             Stop();
             StartWithIteration(actualTimerStart, nextIteration, false, null);
         }
+    }
+
+    /// <summary>
+    /// Applies a sequence of time span offsets, in order, to the time left of a running or paused timer. The sequence is
+    /// applied as a whole: if the result cannot be applied, the timer is left unchanged. A paused timer is resumed once
+    /// adjusted.
+    /// </summary>
+    /// <param name="offsets">The time span offsets, where a <see cref="NegativeOffset"/> is subtracted rather than added.
+    /// </param>
+    /// <param name="input">The text of the offsets, which is appended to the <see cref="TimerStartInput"/>.</param>
+    /// <returns>A value indicating whether the timer was adjusted successfully.</returns>
+    /// <exception cref="ObjectDisposedException">If the timer has been disposed.</exception>
+    public bool Adjust(IReadOnlyList<Offset> offsets, string input)
+    {
+        ThrowIfDisposed();
+
+        if (offsets.Count == 0 || TimerStart is null || State is not (TimerState.Running or TimerState.Paused))
+        {
+            return false;
+        }
+
+        bool paused = State == TimerState.Paused;
+        DateTime reference = paused ? DateTime.Now + (TimeLeft ?? TimeSpan.Zero) : (EndTime ?? DateTime.Now);
+
+        DateTime adjustedReference = reference;
+        foreach (Offset offset in offsets)
+        {
+            bool computed = offset switch
+            {
+                NegativeOffset negativeOffset => negativeOffset.Value.TryGetStartTime(adjustedReference, out adjustedReference),
+                _ => offset.Value.TryGetEndTime(adjustedReference, out adjustedReference),
+            };
+            if (!computed)
+            {
+                return false;
+            }
+        }
+
+        TimeSpan delta = adjustedReference - reference;
+        if (!TryAdjustTime(delta))
+        {
+            return false;
+        }
+
+        _adjustment += delta;
+        _adjustedInput = $"{TimerStartInput} {input.Trim()}";
+        if (paused)
+        {
+            Resume();
+        }
+
+        UpdateHourglassTimer();
+
+        return true;
     }
 
     /// <summary>
@@ -259,7 +337,7 @@ public sealed class Timer : TimerBase
         object? GetStartOrTriggerTime() =>
             Options.ShowTriggerTime
                 ? FormatEndTime(true)
-                : TimerStart;
+                : (object?)_adjustedInput ?? TimerStart;
     }
 
     /// <inheritdoc />
@@ -268,6 +346,8 @@ public sealed class Timer : TimerBase
         TimerInfo timerInfo = base.ToTimerInfo();
         timerInfo.TimerStart = TimerStartInfo.FromTimerStart(TimerStart);
         timerInfo.Iteration = Iteration;
+        timerInfo.Adjustment = _adjustment == TimeSpan.Zero ? null : _adjustment;
+        timerInfo.AdjustedInput = _adjustedInput;
         timerInfo.Options = TimerOptionsInfo.FromTimerOptions(Options);
         return timerInfo;
     }
@@ -355,6 +435,8 @@ public sealed class Timer : TimerBase
         if (end > now)
         {
             SetIteration(Iteration + 1);
+            _adjustment = TimeSpan.Zero;
+            _adjustedInput = null;
             Start(start, end);
             if (Options.PauseBeforeLoopTimer)
             {

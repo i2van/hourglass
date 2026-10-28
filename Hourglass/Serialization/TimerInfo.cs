@@ -126,6 +126,32 @@ public sealed class TimerInfo
     public TimerStartInfo? TimerStart { get; set; }
 
     /// <summary>
+    /// Gets or sets the total amount the end time of this timer has been adjusted by, or <see langword="null"/> if it
+    /// has not been adjusted.
+    /// </summary>
+    [XmlIgnore]
+    public TimeSpan? Adjustment { get; set; }
+
+    /// <summary>
+    /// Gets or sets the timer input including every adjustment made to it, or <see langword="null"/> if it has not been
+    /// adjusted.
+    /// </summary>
+    public string? AdjustedInput { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="TimeSpan.Ticks"/> property of <see cref="Adjustment"/>.
+    /// </summary>
+    /// <remarks>
+    /// This property is exposed because <see cref="TimeSpan"/> does not serialize to XML.
+    /// </remarks>
+    [XmlElement("Adjustment")]
+    public long? AdjustmentTicks
+    {
+        get => Adjustment?.Ticks;
+        set => Adjustment = value is not null ? new TimeSpan(value.Value) : null;
+    }
+
+    /// <summary>
     /// Gets or sets the iteration of this timer.
     /// </summary>
     public uint Iteration { get; set; } = 1;
