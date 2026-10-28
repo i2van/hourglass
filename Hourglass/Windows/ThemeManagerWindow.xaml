@@ -15,6 +15,13 @@
         RenderOptions.ClearTypeHint="Enabled"
         Closing="WindowClosing"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="ThemeManagerButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Height" Value="23"/>
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+    </Window.Resources>
     <StackPanel>
         <Border Background="#F9F9F9" BorderBrush="#DDDDDD" BorderThickness="0 0 0 1" Padding="8">
             <Grid>
@@ -25,9 +32,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0" x:Name="ThemesComboBox" Margin="4" MaxDropDownHeight="{x:Static system:Double.PositiveInfinity}" SelectionChanged="ThemesComboBoxSelectionChanged"/>
-                <Button Grid.Column="1" x:Name="NewButton" Content="_New" Margin="4" MinWidth="75" Click="NewButtonClick"/>
-                <TextBox Grid.Column="2" x:Name="NameTextBox" Margin="4" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="NameTextBoxTextChanged"/>
-                <Button Grid.Column="3" x:Name="DeleteButton" Content="_Delete" Margin="4" MinWidth="75" Click="DeleteButtonClick"/>
+                <Button Grid.Column="1" x:Name="NewButton" Content="_New" Style="{StaticResource ThemeManagerButtonStyle}" Click="NewButtonClick"/>
+                <TextBox Grid.Column="2" x:Name="NameTextBox" Margin="4" VerticalContentAlignment="Center" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="NameTextBoxTextChanged"/>
+                <Button Grid.Column="3" x:Name="DeleteButton" Content="_Delete" Style="{StaticResource ThemeManagerButtonStyle}" Click="DeleteButtonClick"/>
             </Grid>
         </Border>
         <Border Padding="12">
@@ -57,9 +64,9 @@
         </Border>
         <Border Background="#F9F9F9" BorderBrush="#DDDDDD" BorderThickness="0 1 0 0" Padding="8">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="SaveButton" Content="_Save" IsDefault="True" Margin="4" MinWidth="75" Click="SaveButtonClick"/>
-                <Button x:Name="CancelButton" Content="Cancel" IsCancel="True" Margin="4" MinWidth="75" Click="CancelButtonClick"/>
-                <Button x:Name="CloseButton" Content="_Close" IsDefault="True" IsCancel="True" Margin="4" MinWidth="75" Click="CloseButtonClick"/>
+                <Button x:Name="SaveButton" Content="_Save" IsDefault="True" Style="{StaticResource ThemeManagerButtonStyle}" Click="SaveButtonClick"/>
+                <Button x:Name="CancelButton" Content="Cancel" IsCancel="True" Style="{StaticResource ThemeManagerButtonStyle}" Click="CancelButtonClick"/>
+                <Button x:Name="CloseButton" Content="_Close" IsDefault="True" IsCancel="True" Style="{StaticResource ThemeManagerButtonStyle}" Click="CloseButtonClick"/>
             </StackPanel>
         </Border>
     </StackPanel>
