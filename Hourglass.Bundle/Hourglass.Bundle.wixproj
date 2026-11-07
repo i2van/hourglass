@@ -1,4 +1,4 @@
-﻿<Project Sdk="WixToolset.Sdk/7.0.0">
+﻿<Project Sdk="WixToolset.Sdk/7.0.1">
   <PropertyGroup>
     <AcceptEula>wix7</AcceptEula>
     <OutputName>HourglassInstaller</OutputName>
@@ -15,9 +15,9 @@
     <SignToolPath Condition=" ('$(SignToolPath)'=='') and Exists('$(Win8SDK)\bin\x86\signtool.exe') ">$(Win8SDK)\bin\x86\signtool.exe</SignToolPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="WixToolset.Bal.wixext" Version="7.0.0" />
-    <PackageReference Include="WixToolset.NetFx.wixext" Version="7.0.0" />
-    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
+    <PackageReference Include="WixToolset.Bal.wixext" Version="7.0.1" />
+    <PackageReference Include="WixToolset.NetFx.wixext" Version="7.0.1" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hourglass.Setup\Hourglass.Setup.wixproj" />
