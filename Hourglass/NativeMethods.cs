@@ -18,6 +18,11 @@ namespace Hourglass;
 internal enum DwmWindowAttribute : uint
 {
     /// <summary>
+    /// The extended frame bounds of a window, which are the visible bounds without the invisible resize borders.
+    /// </summary>
+    ExtendedFrameBounds = 9,
+
+    /// <summary>
     /// Enabled immersive dark mode for a Window. Has no effect before Windows 10 Build 17763. After Windows 10
     /// Build 18985, use <see cref="UseImmersiveDarkMode"/>.
     /// </summary>
@@ -80,6 +85,43 @@ internal enum ExecutionState : uint
 #pragma warning disable S2346
     EsNull = 0x00000000
 #pragma warning restore S2346
+}
+
+/// <summary>
+/// The window sizing and positioning flags used by <see cref="NativeMethods.SetWindowPos"/>.
+/// </summary>
+[Flags]
+internal enum SetWindowPosFlags : uint
+{
+    /// <summary>
+    /// Retains the current size.
+    /// </summary>
+    NoSize = 0x0001,
+
+    /// <summary>
+    /// Retains the current position.
+    /// </summary>
+    NoMove = 0x0002,
+
+    /// <summary>
+    /// Retains the current Z order.
+    /// </summary>
+    NoZOrder = 0x0004,
+
+    /// <summary>
+    /// Does not activate the window.
+    /// </summary>
+    NoActivate = 0x0010,
+
+    /// <summary>
+    /// Does not change the owner window's position in the Z order.
+    /// </summary>
+    NoOwnerZOrder = 0x0200,
+
+    /// <summary>
+    /// Posts the request instead of waiting if the window belongs to another thread.
+    /// </summary>
+    AsyncWindowPos = 0x4000
 }
 
 /// <summary>
@@ -174,6 +216,11 @@ internal struct MONITORINFO
 internal static class NativeMethods
 {
     /// <summary>
+    /// The message sent to a window when its size or position is about to change.
+    /// </summary>
+    public const int WmGetMinMaxInfo = 0x0024;
+
+    /// <summary>
     /// Gets a value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
     /// </summary>
     /// <param name="hwnd">The handle to the window for which the attribute value is to be retrieved.</param>
@@ -187,6 +234,10 @@ internal static class NativeMethods
     /// <returns>0 if the successful, or nonzero otherwise.</returns>
     [DllImport("dwmapi.dll", ExactSpelling = true)]
     public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out bool pvAttribute, int cbAttribute);
+
+    /// <inheritdoc cref="DwmGetWindowAttribute(IntPtr, DwmWindowAttribute, out bool, int)"/>
+    [DllImport("dwmapi.dll", ExactSpelling = true)]
+    public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out RECT pvAttribute, int cbAttribute);
 
     /// <summary>
     /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
@@ -393,4 +444,20 @@ internal static class NativeMethods
     /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
     [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
     public static extern bool SetWaitableTimer(IntPtr hTimer, [In] ref long pDueTime, int lPeriod, IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine, bool fResume);
+
+    /// <summary>
+    /// Changes the size, position, and Z order of a window.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="hWndInsertAfter">A handle to the window to precede the positioned window in the Z order, or one
+    /// of the special Z order values.</param>
+    /// <param name="x">The new position of the left side of the window, in screen coordinates.</param>
+    /// <param name="y">The new position of the top of the window, in screen coordinates.</param>
+    /// <param name="cx">The new width of the window, in pixels.</param>
+    /// <param name="cy">The new height of the window, in pixels.</param>
+    /// <param name="uFlags">The window sizing and positioning flags.</param>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 }

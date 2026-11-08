@@ -712,6 +712,12 @@ public class NotificationAreaIcon : IDisposable
             return;
         }
 
+        // An open task dialog must be answered first.
+        if (WindowExtensions.TryBringTaskDialogToFront())
+        {
+            return;
+        }
+
         TimerWindow? firstTimerWindow = ArrangedWindows
             .FirstOrDefault(static window => window.Options is { LockInterface: false, PromptOnExit: true } && IsTimerRunningFor(window));
 
@@ -741,6 +747,13 @@ public class NotificationAreaIcon : IDisposable
             }
 
             shouldSaveTimer = saveTimerOnClosingTaskDialogCheckBox.Checked;
+        }
+
+        // The theme manager is closed first, so that the exit is canceled if the user cancels saving the theme.
+        if (Application.Current.Windows.OfType<ThemeManagerWindow>().FirstOrDefault() is { } themeManagerWindow &&
+            !themeManagerWindow.TryClose())
+        {
+            return;
         }
 
         foreach (Window window in Application.Current.Windows)

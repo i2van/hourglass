@@ -299,7 +299,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the background color of the window.
     /// </summary>
-    public Brush BackgroundBrush => _backgroundBrush ??= new SolidColorBrush(BackgroundColor);
+    public Brush BackgroundBrush => _backgroundBrush ??= CreateFrozenBrush(BackgroundColor);
 
     /// <summary>
     /// Gets or sets the color of the progress bar.
@@ -325,7 +325,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of the progress bar.
     /// </summary>
-    public Brush ProgressBarBrush => _progressBarBrush ??= new SolidColorBrush(ProgressBarColor);
+    public Brush ProgressBarBrush => _progressBarBrush ??= CreateFrozenBrush(ProgressBarColor);
 
     /// <summary>
     /// Gets or sets the background color of the progress bar.
@@ -351,7 +351,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the background color of the progress bar.
     /// </summary>
-    public Brush ProgressBackgroundBrush => _progressBackgroundBrush ??= new SolidColorBrush(ProgressBackgroundColor);
+    public Brush ProgressBackgroundBrush => _progressBackgroundBrush ??= CreateFrozenBrush(ProgressBackgroundColor);
 
     /// <summary>
     /// Gets or sets the color that is flashed on expiration.
@@ -377,7 +377,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color that is flashed on expiration.
     /// </summary>
-    public Brush ExpirationFlashBrush => _expirationFlashBrush ??= new SolidColorBrush(ExpirationFlashColor);
+    public Brush ExpirationFlashBrush => _expirationFlashBrush ??= CreateFrozenBrush(ExpirationFlashColor);
 
     /// <summary>
     /// Gets or sets the color of the primary text.
@@ -403,7 +403,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of the primary text.
     /// </summary>
-    public Brush PrimaryTextBrush => _primaryTextBrush ??= new SolidColorBrush(PrimaryTextColor);
+    public Brush PrimaryTextBrush => _primaryTextBrush ??= CreateFrozenBrush(PrimaryTextColor);
 
     /// <summary>
     /// Gets or sets the color of the watermark in the primary text box.
@@ -429,7 +429,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of the watermark in the primary text box.
     /// </summary>
-    public Brush PrimaryHintBrush => _primaryHintBrush ??= new SolidColorBrush(PrimaryHintColor);
+    public Brush PrimaryHintBrush => _primaryHintBrush ??= CreateFrozenBrush(PrimaryHintColor);
 
     /// <summary>
     /// Gets or sets the color of any secondary text.
@@ -455,7 +455,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of any secondary text.
     /// </summary>
-    public Brush SecondaryTextBrush => _secondaryTextBrush ??= new SolidColorBrush(SecondaryTextColor);
+    public Brush SecondaryTextBrush => _secondaryTextBrush ??= CreateFrozenBrush(SecondaryTextColor);
 
     /// <summary>
     /// Gets or sets the color of the watermark in any secondary text box.
@@ -481,7 +481,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of the watermark in any secondary text box.
     /// </summary>
-    public Brush SecondaryHintBrush => _secondaryHintBrush ??= new SolidColorBrush(SecondaryHintColor);
+    public Brush SecondaryHintBrush => _secondaryHintBrush ??= CreateFrozenBrush(SecondaryHintColor);
 
     /// <summary>
     /// Gets or sets the color of the button text.
@@ -507,7 +507,7 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of the button text.
     /// </summary>
-    public Brush ButtonBrush => _buttonBrush ??= new SolidColorBrush(ButtonColor);
+    public Brush ButtonBrush => _buttonBrush ??= CreateFrozenBrush(ButtonColor);
 
     /// <summary>
     /// Gets or sets the color of the button text when the user hovers over the button.
@@ -552,7 +552,19 @@ public sealed class Theme : INotifyPropertyChanged
     /// <summary>
     /// Gets the brush used to paint the color of the button text when the user hovers over the button.
     /// </summary>
-    public Brush ButtonHoverBrush => _buttonHoverBrush ??= new SolidColorBrush(ButtonHoverColor);
+    public Brush ButtonHoverBrush => _buttonHoverBrush ??= CreateFrozenBrush(ButtonHoverColor);
+
+    /// <summary>
+    /// Creates a frozen brush. Unlike an unfrozen one, it does not keep the elements that use it alive.
+    /// </summary>
+    /// <param name="color">The brush color.</param>
+    /// <returns>A frozen <see cref="SolidColorBrush"/>.</returns>
+    private static Brush CreateFrozenBrush(Color color)
+    {
+        SolidColorBrush brush = new(color);
+        brush.Freeze();
+        return brush;
+    }
 
     /// <summary>
     /// Gets the light variant of this theme.

@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 using Hourglass.Extensions;
 using Hourglass.Managers;
@@ -46,6 +47,38 @@ public enum ThemeManagerWindowState
 public sealed partial class ThemeManagerWindow
 {
     /// <summary>
+    /// A value indicating whether the window is positioned next to the timer window when it is shown.
+    /// </summary>
+    private bool _positioned;
+
+    /// <summary>
+    /// A value indicating whether the window is closed.
+    /// </summary>
+    private bool _closed;
+
+    /// <summary>
+    /// A value indicating whether <see cref="UpdateTimerWindow"/> is scheduled.
+    /// </summary>
+    private bool _updateTimerWindowScheduled;
+
+    /// <summary>
+    /// A value indicating whether the prompt to save unsaved changes is shown.
+    /// </summary>
+    private bool _prompting;
+
+    /// <summary>
+    /// A value indicating whether <see cref="UpdateTimerWindow"/> should be scheduled after the prompt to save unsaved
+    /// changes is closed.
+    /// </summary>
+    private bool _updateTimerWindowAfterPrompt;
+
+    /// <summary>
+    /// A value indicating whether the window is closed because there are no visible timer windows, so the user cannot
+    /// cancel the prompt to save unsaved changes.
+    /// </summary>
+    private bool _closingWithoutCancel;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ThemeManagerWindow"/> class.
     /// </summary>
     /// <param name="timerWindow">The <see cref="TimerWindow"/> to edit the theme for.</param>
@@ -80,10 +113,35 @@ public sealed partial class ThemeManagerWindow
 
         private set
         {
+            if (field is not null)
+            {
+                field.Closed -= TimerWindowClosed;
+            }
+
             field = value;
-            BindTimerWindow();
+            field.Closed += TimerWindowClosed;
+
+            if (_keepEditedTheme)
+            {
+                _bindTimerWindowPending = true;
+            }
+            else
+            {
+                BindTimerWindow();
+            }
         }
     }
+
+    /// <summary>
+    /// A value indicating whether the edited theme is kept when the <see cref="TimerWindow"/> is replaced.
+    /// </summary>
+    private bool _keepEditedTheme;
+
+    /// <summary>
+    /// A value indicating whether the <see cref="TimerWindow"/> theme should be shown once the unsaved changes are
+    /// saved or reverted.
+    /// </summary>
+    private bool _bindTimerWindowPending;
 
     /// <summary>
     /// Gets the currently selected theme.
@@ -152,6 +210,122 @@ public sealed partial class ThemeManagerWindow
         }
     }
 
+    /// <summary>
+    /// Closes the window after prompting to save unsaved changes.
+    /// </summary>
+    /// <returns><see langword="true"/> if the window is closed, or <see langword="false"/> if the user has elected to
+    /// cancel closing.</returns>
+    public bool TryClose()
+    {
+        try
+        {
+            Close();
+        }
+        catch (InvalidOperationException)
+        {
+            // This happens if the window is closing when this method is called.
+        }
+
+        return _closed;
+    }
+
+    /// <summary>
+    /// Invoked when a <see cref="TimerWindow"/> is activated. Switches to the theme of the activated timer window.
+    /// </summary>
+    /// <param name="timerWindow">The activated <see cref="TimerWindow"/>.</param>
+    public void OnTimerWindowActivated(TimerWindow timerWindow)
+    {
+        if (!ReferenceEquals(timerWindow, TimerWindow) && !_prompting)
+        {
+            // The prompt to save unsaved changes is not shown while the timer window is being activated. Background
+            // priority is used since the timer window pumps the dispatcher at Loaded priority while being activated.
+            // The switch is skipped if another timer window is activated in the meantime.
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (timerWindow.ID == TimerWindow.LastActivatedID)
+                {
+                    SwitchTimerWindow(timerWindow);
+                }
+            }));
+        }
+    }
+
+    /// <summary>
+    /// Sets the <see cref="TimerWindow"/> after prompting to save unsaved changes. If the user cancels, the current
+    /// timer window is kept if it is visible, otherwise the unsaved changes are kept and the theme of the timer window
+    /// is shown once they are saved or reverted.
+    /// </summary>
+    /// <param name="timerWindow">The <see cref="TimerWindow"/> to set.</param>
+    /// <param name="allowCancel">A value indicating whether the user can cancel the prompt.</param>
+    private void SwitchTimerWindow(TimerWindow timerWindow, bool allowCancel = true)
+    {
+        if (_closed || _prompting || ReferenceEquals(timerWindow, TimerWindow))
+        {
+            return;
+        }
+
+        bool switchTimerWindow = PromptToSaveIfRequired(allowCancel);
+
+        if (_closed)
+        {
+            return;
+        }
+
+        // The timer window might be closed while prompting.
+        if (!IsShown(timerWindow))
+        {
+            ScheduleUpdateTimerWindow();
+            return;
+        }
+
+        if (switchTimerWindow)
+        {
+            TimerWindow = timerWindow;
+        }
+        else if (!IsShown(TimerWindow))
+        {
+            FollowTimerWindow(timerWindow);
+        }
+    }
+
+    /// <summary>
+    /// Returns a value indicating whether the timer window is visible and not minimized.
+    /// </summary>
+    /// <param name="timerWindow">A <see cref="TimerWindow"/>.</param>
+    /// <returns><see langword="true"/> if the timer window is visible and not minimized, or <see langword="false"/>
+    /// otherwise.</returns>
+    private static bool IsShown(TimerWindow timerWindow) =>
+        timerWindow.IsVisible && timerWindow.WindowState != WindowState.Minimized;
+
+    /// <summary>
+    /// Sets the <see cref="TimerWindow"/> without prompting. Unsaved changes are kept, and the theme of the timer
+    /// window is shown once they are saved or reverted.
+    /// </summary>
+    /// <param name="timerWindow">The <see cref="TimerWindow"/> to set.</param>
+    private void FollowTimerWindow(TimerWindow timerWindow)
+    {
+        _keepEditedTheme = State == ThemeManagerWindowState.UserThemeEdited;
+        try
+        {
+            TimerWindow = timerWindow;
+        }
+        finally
+        {
+            _keepEditedTheme = false;
+        }
+    }
+
+    /// <summary>
+    /// Shows the <see cref="TimerWindow"/> theme if it was not shown because of unsaved changes.
+    /// </summary>
+    private void BindTimerWindowIfPending()
+    {
+        if (_bindTimerWindowPending)
+        {
+            BindTimerWindow();
+        }
+    }
+
     /// <inheritdoc />
     protected override void OnSourceInitialized(EventArgs e)
     {
@@ -159,6 +333,130 @@ public sealed partial class ThemeManagerWindow
         DialogZOrderManager.Instance.Register(this);
 
         base.OnSourceInitialized(e);
+    }
+
+    /// <inheritdoc />
+    protected override void OnClosed(EventArgs e)
+    {
+        _closed = true;
+        TimerWindow.Closed -= TimerWindowClosed;
+
+        base.OnClosed(e);
+    }
+
+    /// <summary>
+    /// Invoked when the visibility or the state of a <see cref="TimerWindow"/> changes.
+    /// </summary>
+    public void OnTimerWindowVisibilityChanged() =>
+        ScheduleUpdateTimerWindow();
+
+    /// <summary>
+    /// Invoked when the <see cref="TimerWindow"/> is closed.
+    /// </summary>
+    /// <param name="sender">The closed <see cref="TimerWindow"/>.</param>
+    /// <param name="e">The event data.</param>
+    private void TimerWindowClosed(object sender, EventArgs e) =>
+        ScheduleUpdateTimerWindow();
+
+    /// <summary>
+    /// Schedules <see cref="UpdateTimerWindow"/> after the timer windows are updated.
+    /// </summary>
+    private void ScheduleUpdateTimerWindow()
+    {
+        if (_prompting)
+        {
+            // Timer windows are closed, hidden or minimized while prompting.
+            _updateTimerWindowAfterPrompt = true;
+            return;
+        }
+
+        if (_updateTimerWindowScheduled || _closed)
+        {
+            return;
+        }
+
+        _updateTimerWindowScheduled = true;
+        Dispatcher.BeginInvoke(UpdateTimerWindow);
+    }
+
+    /// <summary>
+    /// Switches to another visible timer window if the <see cref="TimerWindow"/> is closed, hidden or minimized, or
+    /// closes this window if there are no visible timer windows. The closed timer window is not kept alive.
+    /// </summary>
+    private void UpdateTimerWindow()
+    {
+        _updateTimerWindowScheduled = false;
+
+        if (_prompting)
+        {
+            _updateTimerWindowAfterPrompt = true;
+            return;
+        }
+
+        if (_closed)
+        {
+            return;
+        }
+
+        TimerWindow[] timerWindows = Application.Current?.Windows.OfType<TimerWindow>().Arrange().ToArray() ?? [];
+        TimerWindow[] visibleTimerWindows = Array.FindAll(timerWindows, IsShown);
+
+        // The user cannot cancel the prompt, since the timer window is already closed, hidden or minimized.
+        if (visibleTimerWindows.Length == 0)
+        {
+            _closingWithoutCancel = true;
+            try
+            {
+                Close();
+            }
+            finally
+            {
+                _closingWithoutCancel = false;
+            }
+
+            // Closing is canceled if another task dialog is shown.
+            if (!_closed && Array.IndexOf(timerWindows, TimerWindow) < 0 &&
+                Application.Current?.Windows.OfType<TimerWindow>().Arrange().FirstOrDefault() is { } timerWindow)
+            {
+                FollowTimerWindow(timerWindow);
+            }
+
+            return;
+        }
+
+        if (Array.IndexOf(visibleTimerWindows, TimerWindow) < 0)
+        {
+            SwitchTimerWindow(
+                Array.Find(visibleTimerWindows, static window => window.ID == TimerWindow.LastActivatedID) ??
+                visibleTimerWindows[0],
+                allowCancel: false);
+        }
+    }
+
+    /// <summary>
+    /// Invoked when the window size is changed.
+    /// </summary>
+    /// <param name="sender">The window.</param>
+    /// <param name="e">The event data.</param>
+    private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        // The window is sized to the content in several layout passes while it is shown, so it is positioned after
+        // each of them, before it is rendered.
+        if (!_positioned)
+        {
+            this.PositionNextTo(TimerWindow);
+        }
+    }
+
+    /// <summary>
+    /// Invoked when the window content is rendered for the first time.
+    /// </summary>
+    /// <param name="sender">The window.</param>
+    /// <param name="e">The event data.</param>
+    private void WindowContentRendered(object sender, EventArgs e)
+    {
+        this.PositionNextTo(TimerWindow);
+        _positioned = true;
     }
 
     /// <summary>
@@ -177,6 +475,8 @@ public sealed partial class ThemeManagerWindow
     /// </summary>
     private void BindTimerWindow()
     {
+        _bindTimerWindowPending = false;
+
         if (TimerWindow.Theme?.Type == ThemeType.UserProvided)
         {
             EditedTheme = CloneThemeForEditing(TimerWindow.Theme);
@@ -323,16 +623,34 @@ public sealed partial class ThemeManagerWindow
     /// <summary>
     /// Prompts the user to save unsaved changes to the selected theme, if there are any.
     /// </summary>
+    /// <param name="allowCancel">A value indicating whether the user can cancel the prompt.</param>
     /// <returns><see langword="true"/> if the theme has been saved or the user has elected to discard unsaved changes, or
     /// <see langword="false"/> if the user has elected to cancel the operation.</returns>
-    private bool PromptToSaveIfRequired()
+    private bool PromptToSaveIfRequired(bool allowCancel = true)
     {
         if (State == ThemeManagerWindowState.UserThemeEdited)
         {
-            MessageBoxResult result = this.ShowTaskDialog(
-                Properties.Resources.ThemeManagerWindowSaveTaskDialogInstruction,
-                Properties.Resources.ThemeManagerWindowSaveTaskDialogCommand,
-                Properties.Resources.ThemeManagerWindowDontSaveTaskDialogCommand);
+            MessageBoxResult result;
+
+            _prompting = true;
+            try
+            {
+                result = this.ShowTaskDialog(
+                    Properties.Resources.ThemeManagerWindowSaveTaskDialogInstruction,
+                    Properties.Resources.ThemeManagerWindowSaveTaskDialogCommand,
+                    Properties.Resources.ThemeManagerWindowDontSaveTaskDialogCommand,
+                    allowCancel: allowCancel);
+            }
+            finally
+            {
+                _prompting = false;
+
+                if (_updateTimerWindowAfterPrompt)
+                {
+                    _updateTimerWindowAfterPrompt = false;
+                    ScheduleUpdateTimerWindow();
+                }
+            }
 
             switch (result)
             {
@@ -494,6 +812,7 @@ public sealed partial class ThemeManagerWindow
     private void SaveButtonClick(object sender, RoutedEventArgs e)
     {
         SaveChanges();
+        BindTimerWindowIfPending();
     }
 
     /// <summary>
@@ -504,6 +823,7 @@ public sealed partial class ThemeManagerWindow
     private void CancelButtonClick(object sender, RoutedEventArgs e)
     {
         RevertChanges();
+        BindTimerWindowIfPending();
     }
 
     /// <summary>
@@ -523,6 +843,6 @@ public sealed partial class ThemeManagerWindow
     /// <param name="e">The event data.</param>
     private void WindowClosing(object sender, CancelEventArgs e)
     {
-        e.Cancel = !PromptToSaveIfRequired();
+        e.Cancel = !PromptToSaveIfRequired(!_closingWithoutCancel);
     }
 }

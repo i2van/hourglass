@@ -31,12 +31,6 @@ public sealed class DialogZOrderManager : Manager
     private static readonly IntPtr HwndTopmost = new(-1);
     private static readonly IntPtr HwndNoTopmost = new(-2);
 
-    private const uint SwpNoSize = 0x0001;
-    private const uint SwpNoMove = 0x0002;
-    private const uint SwpNoActivate = 0x0010;
-    private const uint SwpNoOwnerZOrder = 0x0200;
-    private const uint SwpAsyncWindowPos = 0x4000;
-
     /// <summary>
     /// The handles of the dialogs, which may be shown on different threads.
     /// </summary>
@@ -176,21 +170,22 @@ public sealed class DialogZOrderManager : Manager
             ? IntPtr.Zero
             : foreground;
 
-        const uint flags = SwpNoMove | SwpNoSize | SwpNoActivate | SwpNoOwnerZOrder | SwpAsyncWindowPos;
+        const SetWindowPosFlags flags = SetWindowPosFlags.NoMove | SetWindowPosFlags.NoSize | SetWindowPosFlags.NoActivate |
+                                        SetWindowPosFlags.NoOwnerZOrder | SetWindowPosFlags.AsyncWindowPos;
 
         // The windows are enumerated from the top of the z-order, so they are moved from the bottom to keep their order.
         foreach (IntPtr window in Enumerable.Reverse(foregroundWindows))
         {
-            SetWindowPos(window, HwndTopmost, 0, 0, 0, 0, flags);
+            NativeMethods.SetWindowPos(window, HwndTopmost, 0, 0, 0, 0, flags);
         }
 
         foreach (IntPtr window in Enumerable.Reverse(backgroundWindows))
         {
-            SetWindowPos(window, HwndNoTopmost, 0, 0, 0, 0, flags);
+            NativeMethods.SetWindowPos(window, HwndNoTopmost, 0, 0, 0, 0, flags);
 
             if (insertAfter != IntPtr.Zero)
             {
-                SetWindowPos(window, insertAfter, 0, 0, 0, 0, flags);
+                NativeMethods.SetWindowPos(window, insertAfter, 0, 0, 0, 0, flags);
             }
         }
 
@@ -234,8 +229,4 @@ public sealed class DialogZOrderManager : Manager
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-    [DllImport("user32.dll", ExactSpelling = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 }

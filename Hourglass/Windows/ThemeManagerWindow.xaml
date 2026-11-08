@@ -14,7 +14,8 @@
         TextOptions.TextFormattingMode="Display"
         RenderOptions.ClearTypeHint="Enabled"
         Closing="WindowClosing"
-        WindowStartupLocation="CenterScreen">
+        ContentRendered="WindowContentRendered"
+        SizeChanged="WindowSizeChanged">
     <Window.Resources>
         <Style x:Key="ThemeManagerButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Width" Value="90"/>

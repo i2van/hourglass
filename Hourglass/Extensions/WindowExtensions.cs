@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -498,6 +499,49 @@ public static class WindowExtensions
         return true;
     }
 
+    /// <summary>
+    /// Returns the bounds of a window and its visible bounds, which do not include the invisible resize borders.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window.</param>
+    /// <param name="bounds">The bounds of the window, in screen coordinates.</param>
+    /// <param name="visibleBounds">The visible bounds of the window, in screen coordinates.</param>
+    /// <returns><see langword="true"/> if the bounds are returned, or <see langword="false"/> otherwise.</returns>
+    private static bool TryGetBounds(IntPtr hwnd, out RECT bounds, out RECT visibleBounds)
+    {
+        if (!NativeMethods.GetWindowRect(hwnd, out bounds))
+        {
+            visibleBounds = default;
+            return false;
+        }
+
+        if (NativeMethods.DwmGetWindowAttribute(hwnd, DwmWindowAttribute.ExtendedFrameBounds, out visibleBounds, Marshal.SizeOf(typeof(RECT))) != 0)
+        {
+            visibleBounds = bounds;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Returns the work area of the monitor nearest to a window.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window.</param>
+    /// <param name="workArea">The work area, in screen coordinates.</param>
+    /// <returns><see langword="true"/> if the work area is returned, or <see langword="false"/> otherwise.</returns>
+    private static bool TryGetWorkArea(IntPtr hwnd, out RECT workArea)
+    {
+        MONITORINFO monitorInfo = new()
+        {
+            cbSize = Marshal.SizeOf(typeof(MONITORINFO))
+        };
+
+        IntPtr hMonitor = NativeMethods.MonitorFromWindow(hwnd, 0x00000002 /* MONITOR_DEFAULTTONEAREST */);
+        bool result = hMonitor != IntPtr.Zero && NativeMethods.GetMonitorInfo(hMonitor, ref monitorInfo);
+
+        workArea = monitorInfo.rcWork;
+        return result;
+    }
+
     /// <param name="window">A window.</param>
     extension(Window window)
     {
@@ -511,6 +555,64 @@ public static class WindowExtensions
             Rect centeredRect = windowRect.CenterOnScreen();
 
             window.RestoreBounds(centeredRect);
+        }
+
+        /// <summary>
+        /// Positions a window next to the <paramref name="target"/> window, on the first side where the window fits in
+        /// the work area of the <paramref name="target"/> window monitor. The right, left, bottom, and top sides are
+        /// tried in this order. If the window does not fit next to the <paramref name="target"/> window, or the
+        /// <paramref name="target"/> window is not shown, the window is centered in the work area.
+        /// </summary>
+        /// <param name="target">The window to position the window next to.</param>
+        /// <returns><see langword="true"/> if the window is positioned, or <see langword="false"/> otherwise.</returns>
+        public bool PositionNextTo(Window target)
+        {
+            IntPtr handle = new WindowInteropHelper(window).Handle;
+            IntPtr targetHandle = new WindowInteropHelper(target).Handle;
+
+            bool hasTarget = targetHandle != IntPtr.Zero && target.IsVisible && target.WindowState != WindowState.Minimized;
+            RECT targetBounds = default;
+
+            if (handle == IntPtr.Zero ||
+                !TryGetBounds(handle, out RECT bounds, out RECT visibleBounds) ||
+                (hasTarget && !TryGetBounds(targetHandle, out _, out targetBounds)) ||
+                !TryGetWorkArea(hasTarget ? targetHandle : handle, out RECT workArea))
+            {
+                return false;
+            }
+
+            // The window is rescaled when it is moved to the monitor with a different DPI.
+            double dpiScale = VisualTreeHelper.GetDpi(hasTarget ? target : window).DpiScaleX;
+            double scale = dpiScale / VisualTreeHelper.GetDpi(window).DpiScaleX;
+
+            int width = (int)Math.Round((visibleBounds.right - visibleBounds.left) * scale);
+            int height = (int)Math.Round((visibleBounds.bottom - visibleBounds.top) * scale);
+            int insetLeft = (int)Math.Round((visibleBounds.left - bounds.left) * scale);
+            int insetTop = (int)Math.Round((visibleBounds.top - bounds.top) * scale);
+            int gap = (int)Math.Round(8 * dpiScale);
+
+            int alignedTop = Clamp(targetBounds.top, workArea.top, workArea.bottom - height);
+            int alignedLeft = Clamp(targetBounds.left, workArea.left, workArea.right - width);
+
+            (int X, int Y)[] positions = hasTarget ? [
+                (targetBounds.right + gap, alignedTop),
+                (targetBounds.left - gap - width, alignedTop),
+                (alignedLeft, targetBounds.bottom + gap),
+                (alignedLeft, targetBounds.top - gap - height)
+            ] : [];
+
+            (int X, int Y) position = positions
+                .Where(p => p.X >= workArea.left && p.Y >= workArea.top && p.X + width <= workArea.right && p.Y + height <= workArea.bottom)
+                .DefaultIfEmpty((
+                    Math.Max(workArea.left, workArea.left + (workArea.right - workArea.left - width) / 2),
+                    Math.Max(workArea.top, workArea.top + (workArea.bottom - workArea.top - height) / 2)))
+                .First();
+
+            return NativeMethods.SetWindowPos(handle, IntPtr.Zero, position.X - insetLeft, position.Y - insetTop, 0, 0,
+                SetWindowPosFlags.NoSize | SetWindowPosFlags.NoZOrder | SetWindowPosFlags.NoActivate);
+
+            static int Clamp(int value, int min, int max) =>
+                Math.Max(min, Math.Min(value, max));
         }
 
         /// <summary>
@@ -777,12 +879,45 @@ public static class WindowExtensions
     private static readonly Action EmptyAction = delegate { };
 
     private static TaskDialog? _taskDialogInstance;
+    private static Window? _taskDialogOwner;
 
-    public static MessageBoxResult ShowTaskDialog(this Window? window, string instruction, string yesText, string? noText = null, TaskDialogCheckBox? taskDialogCheckBox = null)
+    /// <summary>
+    /// Brings the open task dialog, if any, together with its owner window to the foreground.
+    /// </summary>
+    /// <returns><see langword="true"/> if a task dialog is open, or <see langword="false"/> otherwise.</returns>
+    public static bool TryBringTaskDialogToFront()
     {
-        if (_taskDialogInstance is not null)
+        if (_taskDialogInstance is null)
         {
-            NativeMethods.SetForegroundWindow(_taskDialogInstance.Handle);
+            return false;
+        }
+
+        try
+        {
+            switch (_taskDialogOwner)
+            {
+                case TimerWindow timerWindow:
+                    timerWindow.BringToFrontAndActivate(activate: false);
+                    break;
+                case { WindowState: WindowState.Minimized } owner:
+                    owner.WindowState = WindowState.Normal;
+                    break;
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // This happens if the owner window is closing.
+        }
+
+        NativeMethods.SetForegroundWindow(_taskDialogInstance.Handle);
+
+        return true;
+    }
+
+    public static MessageBoxResult ShowTaskDialog(this Window? window, string instruction, string yesText, string? noText = null, TaskDialogCheckBox? taskDialogCheckBox = null, bool allowCancel = true)
+    {
+        if (TryBringTaskDialogToFront())
+        {
             return MessageBoxResult.Cancel;
         }
 
@@ -793,13 +928,17 @@ public static class WindowExtensions
             Instruction = instruction,
             Icon = TaskDialogStandardIcon.Warning,
             CustomButtonStyle = TaskDialogCustomButtonStyle.CommandLinks,
-            AllowCancel = true,
+            AllowCancel = allowCancel,
             CheckBox = taskDialogCheckBox
         };
 
         TaskDialogCustomButton yesButton = dialogPage.CustomButtons.Add(yesText);
         TaskDialogCustomButton? noButton = string.IsNullOrWhiteSpace(noText) ? null : dialogPage.CustomButtons.Add(noText);
-        dialogPage.CustomButtons.Add(Properties.Resources.BackTaskDialogCommand);
+
+        if (allowCancel)
+        {
+            dialogPage.CustomButtons.Add(Properties.Resources.BackTaskDialogCommand);
+        }
 
         bool hasOwner = window is not null;
 
@@ -820,6 +959,7 @@ public static class WindowExtensions
                 : MessageBoxResult.Cancel;
 
         _taskDialogInstance = null;
+        _taskDialogOwner = null;
 
         return messageBoxResult;
 
@@ -827,6 +967,7 @@ public static class WindowExtensions
         {
             dialog.Shown -= OnShown;
             _taskDialogInstance = dialog;
+            _taskDialogOwner = window;
         }
     }
 
@@ -834,6 +975,7 @@ public static class WindowExtensions
     {
         _taskDialogInstance?.Close();
         _taskDialogInstance = null;
+        _taskDialogOwner = null;
     }
 
     extension(Visual visual)
