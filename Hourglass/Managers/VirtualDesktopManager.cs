@@ -62,6 +62,7 @@ public sealed class VirtualDesktopManager : Manager
             yield return new VirtualDesktopWin11_23H2(immersiveShellProvider);
             yield return new VirtualDesktopWin11_22H2(immersiveShellProvider);
             yield return new VirtualDesktopWin11_21H2(immersiveShellProvider);
+            yield return new VirtualDesktopServer2022(immersiveShellProvider);
             yield return new VirtualDesktopWin10(immersiveShellProvider);
         }
     }
