@@ -40,6 +40,14 @@ public partial class TaskDialog
 
                     return result;
 
+                case TaskDialogNativeMethods.WM_SYSCOMMAND
+                    when ((long)wParam & TaskDialogNativeMethods.SC_MASK) == TaskDialogNativeMethods.SC_CONTEXTHELP:
+                    // Raise the Help event instead of entering the context help mode
+                    // when the help button in the title bar is clicked.
+                    _taskDialog._boundPage?.OnHelp(EventArgs.Empty);
+
+                    return IntPtr.Zero;
+
                 case ContinueButtonClickHandlingMessage:
                     // We received the message which we posted earlier when
                     // handling a TDN_BUTTON_CLICKED notification, so we should

@@ -737,7 +737,8 @@ public class NotificationAreaIcon : IDisposable
             MessageBoxResult result = firstTimerWindow.ShowTaskDialog(
                 Resources.ExitMenuTaskDialogInstruction,
                 Resources.StopAndExitMenuTaskDialogCommand,
-                taskDialogCheckBox: saveTimerOnClosingTaskDialogCheckBox);
+                taskDialogCheckBox: saveTimerOnClosingTaskDialogCheckBox,
+                helpUri: Urls.PromptOnCloseHelp);
 
             firstTimerWindow.WindowState = windowState;
 

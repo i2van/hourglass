@@ -53,6 +53,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How to allow the Hourglass timer windows to be placed off-screen?](#how-to-allow-the-hourglass-timer-windows-to-be-placed-off-screen)
 - [How to configure delay timeouts for automatic close, minimize or shut down when expired?](#how-to-configure-delay-timeouts-for-automatic-close-minimize-or-shut-down-when-expired)
 - [How to ignore settings write errors?](#how-to-ignore-settings-write-errors)
+- [How to find the Hourglass error logs?](#how-to-find-the-hourglass-error-logs)
 - [What should I do if the Hourglass does not start?](#what-should-i-do-if-the-hourglass-does-not-start)
 - [What should I do if there is no notification sound?](#what-should-i-do-if-there-is-no-notification-sound)
 
@@ -711,12 +712,17 @@ If the **Hourglass** [settings](#how-to-find-the-hourglass-settings) file is rea
 > [!IMPORTANT]
 > When `IgnoreSettingsWriteErrors` is `True`, any changes made to settings (themes, options, etc.) will not be persisted between sessions.
 
+## How to find the Hourglass error logs?
+
+The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%LOCALAPPDATA%\Temp` folder). File mask is the `Hourglass-Crash*.txt`. Only the 5 most recent error files are kept.
+
+To open the error logs, press `Win`+`R`, enter `%TEMP%` and click **OK**, then look for the `Hourglass-Crash*.txt` files.
+
+Please attach the error file to a [new issue](https://github.com/i2van/hourglass/issues/new) when reporting the error.
+
 ## What should I do if the Hourglass does not start?
 
-> [!IMPORTANT]
-> The **Hourglass** writes error files in case of the crash to the `%TEMP%` folder (usually it is the `%LOCALAPPDATA%\Temp` folder). File mask is the `Hourglass-Crash*.txt`.
-
-If the **Hourglass** does not start or fails silently
+If the **Hourglass** does not start or fails silently, check the [error logs](#how-to-find-the-hourglass-error-logs).
 
 ## What should I do if there is no notification sound?
 

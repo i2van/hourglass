@@ -87,6 +87,7 @@ public sealed partial class UsageDialog
     /// <inheritdoc />
     protected override void OnSourceInitialized(EventArgs e)
     {
+        this.ShowHelpButton(Urls.Usage);
         this.RemoveDisabledSystemMenuItems();
         DialogZOrderManager.Instance.Register(this);
 

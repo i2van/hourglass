@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -679,33 +680,88 @@ public static class WindowExtensions
             VirtualDesktopManager.Instance.MoveToCurrentVirtualDesktop(window);
 
         /// <summary>
-        /// Removes the items that are always disabled, as well as the separators, from the window system menu.
+        /// Shows the help button in the window title bar. The help button, as well as the <c>F1</c> key, opens the
+        /// specified help page.
         /// </summary>
         /// <remarks>
-        /// The system grays out the "Restore", "Size", "Minimize" and "Maximize" items of the system menu of a window
-        /// which cannot be resized, minimized or maximized, so these items are removed depending on the <see
-        /// cref="Window.ResizeMode"/> together with the separator preceding the "Close" item. The window must have a
-        /// handle, so this method is to be invoked when the <see cref="Window.SourceInitialized"/> event is raised or
-        /// later.
+        /// Windows does not show the help button together with the minimize and maximize buttons, so these buttons
+        /// are removed. The window must have a handle, so this method is to be invoked when the <see
+        /// cref="Window.SourceInitialized"/> event is raised or later, before the <see
+        /// cref="RemoveDisabledSystemMenuItems"/> method.
         /// </remarks>
-        public void RemoveDisabledSystemMenuItems()
+        /// <param name="helpUri">The help page <see cref="Uri"/>.</param>
+        public void ShowHelpButton(Uri helpUri)
         {
-            uint[] disabledCommands = window.ResizeMode switch
-            {
-                ResizeMode.NoResize => [ScRestore, ScSize, ScMinimize, ScMaximize],
-                ResizeMode.CanMinimize => [ScSize, ScMaximize],
-                _ => []
-            };
+            IntPtr handle = new WindowInteropHelper(window).Handle;
 
-            if (disabledCommands.Length == 0)
+            if (HwndSource.FromHwnd(handle) is not { } hwndSource)
             {
                 return;
             }
 
+            // WPF rewrites the window styles, e.g. when the window resize mode or topmost state changes.
+            hwndSource.AddHook(HelpButtonWindowProc);
+
+            ShowHelpButton(handle);
+
+            IntPtr HelpButtonWindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+            {
+                switch (msg)
+                {
+                    case NativeMethods.WmStyleChanging:
+                        STYLESTRUCT styleStruct = Marshal.PtrToStructure<STYLESTRUCT>(lParam);
+
+                        if (wParam == (IntPtr)NativeMethods.GwlStyle)
+                        {
+                            styleStruct.styleNew &= ~MinimizeMaximizeBoxes;
+                        }
+                        else if (wParam == (IntPtr)NativeMethods.GwlExStyle)
+                        {
+                            styleStruct.styleNew |= NativeMethods.WsExContextHelp;
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        Marshal.StructureToPtr(styleStruct, lParam, false);
+                        break;
+
+                    case NativeMethods.WmSysCommand when IsContextHelpCommand(wParam):
+                    case NativeMethods.WmHelp:
+                        NavigateToHelp(helpUri);
+                        handled = true;
+                        break;
+                }
+
+                return IntPtr.Zero;
+            }
+        }
+
+        /// <summary>
+        /// Removes the items that are always disabled from the window system menu, as well as the separators if no
+        /// more than two other items are left.
+        /// </summary>
+        /// <remarks>
+        /// The system grays out the "Restore", "Size", "Minimize" and "Maximize" items of the system menu of a window
+        /// which cannot be resized, minimized or maximized, so these items are removed depending on the window styles.
+        /// The separator preceding the "Close" item is removed too if only the "Move" and "Close" items are left. The
+        /// window must have a handle, so this method is to be invoked when the <see cref="Window.SourceInitialized"/>
+        /// event is raised or later.
+        /// </remarks>
+        public void RemoveDisabledSystemMenuItems()
+        {
             IntPtr handle = new WindowInteropHelper(window).Handle;
             IntPtr systemMenu = handle != IntPtr.Zero ? GetSystemMenu(handle, false) : IntPtr.Zero;
 
             if (systemMenu == IntPtr.Zero)
+            {
+                return;
+            }
+
+            uint[] disabledCommands = [..GetDisabledCommands(NativeMethods.GetWindowLong(handle, NativeMethods.GwlStyle))];
+
+            if (disabledCommands.Length == 0)
             {
                 return;
             }
@@ -716,6 +772,32 @@ public static class WindowExtensions
             }
 
             RemoveMenuSeparators(systemMenu);
+
+            static IEnumerable<uint> GetDisabledCommands(int style)
+            {
+                bool noMinimizeBox = (style & NativeMethods.WsMinimizeBox) == 0;
+                bool noMaximizeBox = (style & NativeMethods.WsMaximizeBox) == 0;
+
+                if (noMinimizeBox && noMaximizeBox)
+                {
+                    yield return ScRestore;
+                }
+
+                if ((style & NativeMethods.WsThickFrame) == 0)
+                {
+                    yield return ScSize;
+                }
+
+                if (noMinimizeBox)
+                {
+                    yield return ScMinimize;
+                }
+
+                if (noMaximizeBox)
+                {
+                    yield return ScMaximize;
+                }
+            }
         }
     }
 
@@ -914,7 +996,7 @@ public static class WindowExtensions
         return true;
     }
 
-    public static MessageBoxResult ShowTaskDialog(this Window? window, string instruction, string yesText, string? noText = null, TaskDialogCheckBox? taskDialogCheckBox = null, bool allowCancel = true)
+    public static MessageBoxResult ShowTaskDialog(this Window? window, string instruction, string yesText, string? noText = null, TaskDialogCheckBox? taskDialogCheckBox = null, bool allowCancel = true, Uri? helpUri = null)
     {
         if (TryBringTaskDialogToFront())
         {
@@ -948,6 +1030,13 @@ public static class WindowExtensions
         };
 
         dialog.Shown += OnShown;
+
+        if (helpUri is not null)
+        {
+            // The Help event is raised when F1 is pressed or the help button is clicked.
+            dialogPage.Help += (_, _) => NavigateToHelp(helpUri);
+            dialog.Opened += (_, _) => ShowHelpButton(dialog.Handle);
+        }
 
         IntPtr handle = hasOwner ? new WindowInteropHelper(window!).Handle : IntPtr.Zero;
         TaskDialogButton result = dialog.Show(handle);
@@ -995,20 +1084,91 @@ public static class WindowExtensions
         StringComparer.Ordinal.Equals(o.GetType().FullName, "System.Windows.Controls.TextBoxView");
 
     /// <summary>
-    /// Removes the separators from the specified menu.
+    /// Shows the help button in the title bar of the specified window, removing the minimize and maximize buttons
+    /// as Windows does not show the help button together with them.
+    /// </summary>
+    /// <param name="handle">A handle to the window.</param>
+    private static void ShowHelpButton(IntPtr handle)
+    {
+        if (handle == IntPtr.Zero)
+        {
+            return;
+        }
+
+        int style = NativeMethods.GetWindowLong(handle, NativeMethods.GwlStyle);
+
+        if ((style & MinimizeMaximizeBoxes) != 0)
+        {
+            NativeMethods.SetWindowLong(handle, NativeMethods.GwlStyle, style & ~MinimizeMaximizeBoxes);
+        }
+
+        int exStyle = NativeMethods.GetWindowLong(handle, NativeMethods.GwlExStyle);
+        NativeMethods.SetWindowLong(handle, NativeMethods.GwlExStyle, exStyle | NativeMethods.WsExContextHelp);
+
+        NativeMethods.SetWindowPos(handle, IntPtr.Zero, 0, 0, 0, 0,
+            SetWindowPosFlags.NoSize | SetWindowPosFlags.NoMove | SetWindowPosFlags.NoZOrder |
+            SetWindowPosFlags.NoActivate | SetWindowPosFlags.FrameChanged);
+    }
+
+    /// <summary>
+    /// Returns a value indicating whether the <see cref="NativeMethods.WmSysCommand"/> message parameter is the
+    /// command sent when the help button in the title bar is clicked.
+    /// </summary>
+    /// <param name="wParam">The <see cref="NativeMethods.WmSysCommand"/> message wParam value.</param>
+    /// <returns><see langword="true"/> if the help button in the title bar is clicked, or <see langword="false"/>
+    /// otherwise.</returns>
+    private static bool IsContextHelpCommand(IntPtr wParam) =>
+        (wParam.ToInt64() & NativeMethods.ScCommandMask) == NativeMethods.ScContextHelp;
+
+    /// <summary>
+    /// Opens the help page in the default web browser.
+    /// </summary>
+    /// <param name="helpUri">The help page <see cref="Uri"/>.</param>
+    private static void NavigateToHelp(Uri helpUri)
+    {
+        try
+        {
+            helpUri.Navigate();
+        }
+        catch (Exception ex) when (ex.CanBeHandled())
+        {
+            // Opening the help page is not critical.
+        }
+    }
+
+    /// <summary>
+    /// The <see cref="NativeMethods.WsMinimizeBox"/> and <see cref="NativeMethods.WsMaximizeBox"/> styles.
+    /// </summary>
+    private const int MinimizeMaximizeBoxes = NativeMethods.WsMinimizeBox | NativeMethods.WsMaximizeBox;
+
+    /// <summary>
+    /// Removes the separators from the specified menu if it has no more than two other items.
     /// </summary>
     /// <param name="menu">A handle to the menu.</param>
     private static void RemoveMenuSeparators(IntPtr menu)
     {
-        // Deleting an item shifts the positions of the items following it, so the menu is traversed backwards.
-        for (int position = GetMenuItemCount(menu) - 1; position >= 0; position--)
-        {
-            uint state = GetMenuState(menu, (uint)position, MfByPosition);
+        const int maxItemCountWithoutSeparators = 2;
 
-            if (state != uint.MaxValue && (state & MfSeparator) != 0)
+        int itemCount = GetMenuItemCount(menu);
+
+        int[] separatorPositions =
+        [
+            ..Enumerable.Range(0, Math.Max(itemCount, 0)).Where(position =>
             {
-                DeleteMenu(menu, (uint)position, MfByPosition);
-            }
+                uint state = GetMenuState(menu, (uint)position, MfByPosition);
+                return state != uint.MaxValue && (state & MfSeparator) != 0;
+            })
+        ];
+
+        if (separatorPositions.Length == 0 || itemCount - separatorPositions.Length > maxItemCountWithoutSeparators)
+        {
+            return;
+        }
+
+        // Deleting an item shifts the positions of the items following it, so the separators are deleted backwards.
+        foreach (int position in separatorPositions.AsEnumerable().Reverse())
+        {
+            DeleteMenu(menu, (uint)position, MfByPosition);
         }
     }
 

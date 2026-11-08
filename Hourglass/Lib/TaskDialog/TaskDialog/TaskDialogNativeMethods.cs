@@ -22,6 +22,12 @@ internal static class TaskDialogNativeMethods
 
     public const int WM_WINDOWPOSCHANGED = 0x0047;
 
+    public const int WM_SYSCOMMAND = 0x0112;
+
+    public const int SC_CONTEXTHELP = 0xF180;
+
+    public const int SC_MASK = 0xFFF0;
+
     public const int WA_INACTIVE = 0;
 
 

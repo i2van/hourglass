@@ -91,6 +91,7 @@ public sealed partial class AboutDialog
     /// <inheritdoc />
     protected override void OnSourceInitialized(EventArgs e)
     {
+        this.ShowHelpButton(Urls.Readme);
         this.RemoveDisabledSystemMenuItems();
         DialogZOrderManager.Instance.Register(this);
 

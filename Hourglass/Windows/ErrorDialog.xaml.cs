@@ -57,6 +57,7 @@ public sealed partial class ErrorDialog
     /// <inheritdoc />
     protected override void OnSourceInitialized(EventArgs e)
     {
+        this.ShowHelpButton(Urls.ErrorLogsHelp);
         this.RemoveDisabledSystemMenuItems();
 
         base.OnSourceInitialized(e);

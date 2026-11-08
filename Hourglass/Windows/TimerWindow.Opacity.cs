@@ -20,11 +20,6 @@ namespace Hourglass.Windows;
 public sealed partial class TimerWindow
 {
     /// <summary>
-    /// The <c>GWL_EXSTYLE</c> index of the extended window styles.
-    /// </summary>
-    private const int GwlExStyle = -20;
-
-    /// <summary>
     /// The <c>WS_EX_LAYERED</c> extended style of a layered window.
     /// </summary>
     private const int WsExLayered = 0x00080000;
@@ -34,11 +29,6 @@ public sealed partial class TimerWindow
     /// layered window.
     /// </summary>
     private const int LwaAlpha = 0x00000002;
-
-    /// <summary>
-    /// The <c>WM_STYLECHANGING</c> message sent to a window when its styles are about to change.
-    /// </summary>
-    private const int WmStyleChanging = 0x007C;
 
     /// <summary>
     /// The <c>RDW_INVALIDATE</c>, <c>RDW_ERASE</c>, <c>RDW_ALLCHILDREN</c> and <c>RDW_FRAME</c> flags that make
@@ -85,14 +75,14 @@ public sealed partial class TimerWindow
         _isTranslucent = Options.Opacity < TimerOptions.MaxOpacity;
 
         IntPtr hwnd = hwndSource.Handle;
-        int exStyle = NativeMethods.GetWindowLong(hwnd, GwlExStyle);
+        int exStyle = NativeMethods.GetWindowLong(hwnd, NativeMethods.GwlExStyle);
         bool isLayered = (exStyle & WsExLayered) != 0;
 
         if (_isTranslucent)
         {
             if (!isLayered)
             {
-                SetWindowLong(hwnd, GwlExStyle, exStyle | WsExLayered);
+                NativeMethods.SetWindowLong(hwnd, NativeMethods.GwlExStyle, exStyle | WsExLayered);
             }
 
             byte alpha = (byte)Math.Round(Options.Opacity * byte.MaxValue / (double)TimerOptions.MaxOpacity);
@@ -106,7 +96,7 @@ public sealed partial class TimerWindow
             return;
         }
 
-        SetWindowLong(hwnd, GwlExStyle, exStyle & ~WsExLayered);
+        NativeMethods.SetWindowLong(hwnd, NativeMethods.GwlExStyle, exStyle & ~WsExLayered);
         RedrawWindow(hwnd, IntPtr.Zero, IntPtr.Zero, RdwRepaintWindow);
     }
 
@@ -122,7 +112,7 @@ public sealed partial class TimerWindow
     /// <returns>The appropriate return value depending on the particular message.</returns>
     private IntPtr OpacityWindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (msg != WmStyleChanging || wParam != (IntPtr)GwlExStyle || !_isTranslucent)
+        if (msg != NativeMethods.WmStyleChanging || wParam != (IntPtr)NativeMethods.GwlExStyle || !_isTranslucent)
         {
             return IntPtr.Zero;
         }
@@ -136,16 +126,6 @@ public sealed partial class TimerWindow
 
         return IntPtr.Zero;
     }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct STYLESTRUCT
-    {
-        public int styleOld;
-        public int styleNew;
-    }
-
-    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     [DllImport("user32.dll", ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]

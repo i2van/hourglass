@@ -2364,7 +2364,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
             Properties.Resources.TimerWindowCloseTaskDialogInstruction,
             Properties.Resources.CloseWindowCloseTaskDialogCommand,
             Properties.Resources.MinimizeWindowCloseTaskDialogCommand,
-            saveTimerOnClosingTaskDialogCheckBox);
+            saveTimerOnClosingTaskDialogCheckBox,
+            helpUri: Urls.PromptOnCloseHelp);
 
         switch (result)
         {

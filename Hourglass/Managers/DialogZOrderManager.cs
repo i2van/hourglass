@@ -23,7 +23,6 @@ public sealed class DialogZOrderManager : Manager
     private const uint EventSystemForeground = 0x0003;
     private const uint WinEventOutOfContext = 0x0000;
 
-    private const int GwlExStyle = -20;
     private const int WsExTopmost = 0x00000008;
 
     private const uint GaRootOwner = 3;
@@ -190,7 +189,7 @@ public sealed class DialogZOrderManager : Manager
         }
 
         static bool IsTopmost(IntPtr hwnd) =>
-            (NativeMethods.GetWindowLong(hwnd, GwlExStyle) & WsExTopmost) != 0;
+            (NativeMethods.GetWindowLong(hwnd, NativeMethods.GwlExStyle) & WsExTopmost) != 0;
 
         static bool IsDesktop(IntPtr hwnd)
         {

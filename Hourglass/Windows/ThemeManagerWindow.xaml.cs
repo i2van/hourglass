@@ -329,6 +329,7 @@ public sealed partial class ThemeManagerWindow
     /// <inheritdoc />
     protected override void OnSourceInitialized(EventArgs e)
     {
+        this.ShowHelpButton(Urls.ThemesHelp);
         this.RemoveDisabledSystemMenuItems();
         DialogZOrderManager.Instance.Register(this);
 
@@ -639,7 +640,8 @@ public sealed partial class ThemeManagerWindow
                     Properties.Resources.ThemeManagerWindowSaveTaskDialogInstruction,
                     Properties.Resources.ThemeManagerWindowSaveTaskDialogCommand,
                     Properties.Resources.ThemeManagerWindowDontSaveTaskDialogCommand,
-                    allowCancel: allowCancel);
+                    allowCancel: allowCancel,
+                    helpUri: Urls.ThemesHelp);
             }
             finally
             {
@@ -780,7 +782,8 @@ public sealed partial class ThemeManagerWindow
         {
             MessageBoxResult result = this.ShowTaskDialog(
                 Properties.Resources.ThemeManagerWindowDeleteTaskDialogInstruction,
-                Properties.Resources.ThemeManagerWindowDeleteTaskDialogCommand);
+                Properties.Resources.ThemeManagerWindowDeleteTaskDialogCommand,
+                helpUri: Urls.ThemesHelp);
 
             if (result == MessageBoxResult.Yes)
             {

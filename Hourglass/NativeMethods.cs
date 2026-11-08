@@ -114,6 +114,11 @@ internal enum SetWindowPosFlags : uint
     NoActivate = 0x0010,
 
     /// <summary>
+    /// Applies the new frame styles set using the <c>SetWindowLong</c> function.
+    /// </summary>
+    FrameChanged = 0x0020,
+
+    /// <summary>
     /// Does not change the owner window's position in the Z order.
     /// </summary>
     NoOwnerZOrder = 0x0200,
@@ -199,6 +204,16 @@ internal struct MINMAXINFO
 }
 
 /// <summary>
+/// Contains the styles for a window, sent with the <see cref="NativeMethods.WmStyleChanging"/> message.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct STYLESTRUCT
+{
+    public int styleOld;
+    public int styleNew;
+}
+
+/// <summary>
 /// Contains information about a display monitor.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
@@ -216,9 +231,66 @@ internal struct MONITORINFO
 internal static class NativeMethods
 {
     /// <summary>
+    /// The <c>GWL_STYLE</c> index of the window styles.
+    /// </summary>
+    public const int GwlStyle = -16;
+
+    /// <summary>
+    /// The <c>GWL_EXSTYLE</c> index of the extended window styles.
+    /// </summary>
+    public const int GwlExStyle = -20;
+
+    /// <summary>
+    /// The <c>WS_MAXIMIZEBOX</c> style of a window that has a maximize button.
+    /// </summary>
+    public const int WsMaximizeBox = 0x00010000;
+
+    /// <summary>
+    /// The <c>WS_MINIMIZEBOX</c> style of a window that has a minimize button.
+    /// </summary>
+    public const int WsMinimizeBox = 0x00020000;
+
+    /// <summary>
+    /// The <c>WS_THICKFRAME</c> style of a window that has a sizing border.
+    /// </summary>
+    public const int WsThickFrame = 0x00040000;
+
+    /// <summary>
+    /// The <c>WS_EX_CONTEXTHELP</c> extended style of a window that has a help button in the title bar. The help
+    /// button is not shown if the window has the <see cref="WsMaximizeBox"/> or <see cref="WsMinimizeBox"/> style.
+    /// </summary>
+    public const int WsExContextHelp = 0x00000400;
+
+    /// <summary>
     /// The message sent to a window when its size or position is about to change.
     /// </summary>
     public const int WmGetMinMaxInfo = 0x0024;
+
+    /// <summary>
+    /// The <c>WM_HELP</c> message sent to a window when the user presses F1.
+    /// </summary>
+    public const int WmHelp = 0x0053;
+
+    /// <summary>
+    /// The <c>WM_STYLECHANGING</c> message sent to a window when its styles are about to change.
+    /// </summary>
+    public const int WmStyleChanging = 0x007C;
+
+    /// <summary>
+    /// The <c>WM_SYSCOMMAND</c> message sent to a window when the user chooses a command from the window menu or
+    /// clicks a title bar button.
+    /// </summary>
+    public const int WmSysCommand = 0x0112;
+
+    /// <summary>
+    /// The <c>SC_CONTEXTHELP</c> command sent when the help button in the title bar is clicked.
+    /// </summary>
+    public const int ScContextHelp = 0xF180;
+
+    /// <summary>
+    /// The mask of the <see cref="WmSysCommand"/> command, as the lower four bits are used internally.
+    /// </summary>
+    public const int ScCommandMask = 0xFFF0;
 
     /// <summary>
     /// Gets a value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
@@ -364,6 +436,16 @@ internal static class NativeMethods
     /// <returns>The requested value, or zero if the call fails.</returns>
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+    /// <summary>
+    /// Changes an attribute of the specified window.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="nIndex">The zero-based offset to the value to be set, such as <see cref="GwlExStyle"/>.</param>
+    /// <param name="dwNewLong">The replacement value.</param>
+    /// <returns>The previous value, or zero if the call fails.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     /// <summary>
     /// Retrieves the dimensions of the bounding rectangle of the specified window in screen coordinates.
