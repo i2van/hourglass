@@ -15,54 +15,54 @@ namespace Hourglass;
 /// <summary>
 /// Flags used to specify window attributes for Desktop Window Manager (DWM) non-client rendering.
 /// </summary>
-internal enum DwmWindowAttribute : uint
+internal enum DWMWINDOWATTRIBUTE : uint
 {
     /// <summary>
     /// The extended frame bounds of a window, which are the visible bounds without the invisible resize borders.
     /// </summary>
-    ExtendedFrameBounds = 9,
+    DWMWA_EXTENDED_FRAME_BOUNDS = 9,
 
     /// <summary>
     /// Enabled immersive dark mode for a Window. Has no effect before Windows 10 Build 17763. After Windows 10
-    /// Build 18985, use <see cref="UseImmersiveDarkMode"/>.
+    /// Build 18985, use <see cref="DWMWA_USE_IMMERSIVE_DARK_MODE"/>.
     /// </summary>
-    UseImmersiveDarkModeBefore20H1 = 19,
+    DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19,
 
     /// <summary>
     /// Enabled immersive dark mode for a Window. Has no effect before Windows 10 Build 18985.
     /// </summary>
-    UseImmersiveDarkMode = 20
+    DWMWA_USE_IMMERSIVE_DARK_MODE = 20
 }
 
 /// <summary>
 /// Specifies the type of DirectWrite factory object.
 /// </summary>
-internal enum DWriteFactoryType
+internal enum DWRITE_FACTORY_TYPE
 {
     /// <summary>
     /// A shared factory allows for re-use of cached font data across multiple in-process components. Such factories
     /// also take advantage of cross-process font caching components for better performance.
     /// </summary>
-    Shared,
+    DWRITE_FACTORY_TYPE_SHARED,
 
     /// <summary>
     /// Objects created from the isolated factory do not interact with internal DirectWrite state from other
     /// components.
     /// </summary>
-    Isolated
+    DWRITE_FACTORY_TYPE_ISOLATED
 }
 
 /// <summary>
 /// The thread's execution requirements.
 /// </summary>
 [Flags]
-internal enum ExecutionState : uint
+internal enum EXECUTION_STATE : uint
 {
     /// <summary>
     /// Informs the system that the state being set should remain in effect until the next call that uses
-    /// <see cref="EsContinuous"/> and one of the other state flags is cleared.
+    /// <see cref="ES_CONTINUOUS"/> and one of the other state flags is cleared.
     /// </summary>
-    EsContinuous = 0x80000000,
+    ES_CONTINUOUS = 0x80000000,
 
     /// <summary>
     /// <para>
@@ -72,19 +72,12 @@ internal enum ExecutionState : uint
     /// off.
     /// </para>
     /// </summary>
-    EsDisplayRequired = 0x00000002,
+    ES_DISPLAY_REQUIRED = 0x00000002,
 
     /// <summary>
     /// Forces the system to be in the working state by resetting the system idle timer.
     /// </summary>
-    EsSystemRequired = 0x00000001,
-
-    /// <summary>
-    /// Indicates that a call to <see cref="NativeMethods.SetThreadExecutionState"/> failed.
-    /// </summary>
-#pragma warning disable S2346
-    EsNull = 0x00000000
-#pragma warning restore S2346
+    ES_SYSTEM_REQUIRED = 0x00000001
 }
 
 /// <summary>
@@ -96,37 +89,37 @@ internal enum SetWindowPosFlags : uint
     /// <summary>
     /// Retains the current size.
     /// </summary>
-    NoSize = 0x0001,
+    SWP_NOSIZE = 0x0001,
 
     /// <summary>
     /// Retains the current position.
     /// </summary>
-    NoMove = 0x0002,
+    SWP_NOMOVE = 0x0002,
 
     /// <summary>
     /// Retains the current Z order.
     /// </summary>
-    NoZOrder = 0x0004,
+    SWP_NOZORDER = 0x0004,
 
     /// <summary>
     /// Does not activate the window.
     /// </summary>
-    NoActivate = 0x0010,
+    SWP_NOACTIVATE = 0x0010,
 
     /// <summary>
     /// Applies the new frame styles set using the <c>SetWindowLong</c> function.
     /// </summary>
-    FrameChanged = 0x0020,
+    SWP_FRAMECHANGED = 0x0020,
 
     /// <summary>
     /// Does not change the owner window's position in the Z order.
     /// </summary>
-    NoOwnerZOrder = 0x0200,
+    SWP_NOOWNERZORDER = 0x0200,
 
     /// <summary>
     /// Posts the request instead of waiting if the window belongs to another thread.
     /// </summary>
-    AsyncWindowPos = 0x4000
+    SWP_ASYNCWINDOWPOS = 0x4000
 }
 
 /// <summary>
@@ -134,7 +127,7 @@ internal enum SetWindowPosFlags : uint
 /// creation time.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-internal struct StartupInfo
+internal struct STARTUPINFO
 {
     public int cb;
     public string? lpReserved;
@@ -160,7 +153,7 @@ internal struct StartupInfo
 /// Contains information about a newly created process and its primary thread.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-internal struct ProcessInformation
+internal struct PROCESS_INFORMATION
 {
     public IntPtr hProcess;
     public IntPtr hThread;
@@ -204,7 +197,7 @@ internal struct MINMAXINFO
 }
 
 /// <summary>
-/// Contains the styles for a window, sent with the <see cref="NativeMethods.WmStyleChanging"/> message.
+/// Contains the styles for a window, sent with the <see cref="NativeMethods.WM_STYLECHANGING"/> message.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal struct STYLESTRUCT
@@ -233,64 +226,59 @@ internal static class NativeMethods
     /// <summary>
     /// The <c>GWL_STYLE</c> index of the window styles.
     /// </summary>
-    public const int GwlStyle = -16;
+    public const int GWL_STYLE = -16;
 
     /// <summary>
     /// The <c>GWL_EXSTYLE</c> index of the extended window styles.
     /// </summary>
-    public const int GwlExStyle = -20;
+    public const int GWL_EXSTYLE = -20;
 
     /// <summary>
     /// The <c>WS_MAXIMIZEBOX</c> style of a window that has a maximize button.
     /// </summary>
-    public const int WsMaximizeBox = 0x00010000;
+    public const int WS_MAXIMIZEBOX = 0x00010000;
 
     /// <summary>
     /// The <c>WS_MINIMIZEBOX</c> style of a window that has a minimize button.
     /// </summary>
-    public const int WsMinimizeBox = 0x00020000;
+    public const int WS_MINIMIZEBOX = 0x00020000;
 
     /// <summary>
     /// The <c>WS_THICKFRAME</c> style of a window that has a sizing border.
     /// </summary>
-    public const int WsThickFrame = 0x00040000;
+    public const int WS_THICKFRAME = 0x00040000;
 
     /// <summary>
     /// The <c>WS_EX_CONTEXTHELP</c> extended style of a window that has a help button in the title bar. The help
-    /// button is not shown if the window has the <see cref="WsMaximizeBox"/> or <see cref="WsMinimizeBox"/> style.
+    /// button is not shown if the window has the <see cref="WS_MAXIMIZEBOX"/> or <see cref="WS_MINIMIZEBOX"/> style.
     /// </summary>
-    public const int WsExContextHelp = 0x00000400;
+    public const int WS_EX_CONTEXTHELP = 0x00000400;
 
     /// <summary>
     /// The message sent to a window when its size or position is about to change.
     /// </summary>
-    public const int WmGetMinMaxInfo = 0x0024;
+    public const int WM_GETMINMAXINFO = 0x0024;
 
     /// <summary>
     /// The <c>WM_HELP</c> message sent to a window when the user presses F1.
     /// </summary>
-    public const int WmHelp = 0x0053;
+    public const int WM_HELP = 0x0053;
 
     /// <summary>
     /// The <c>WM_STYLECHANGING</c> message sent to a window when its styles are about to change.
     /// </summary>
-    public const int WmStyleChanging = 0x007C;
+    public const int WM_STYLECHANGING = 0x007C;
 
     /// <summary>
     /// The <c>WM_SYSCOMMAND</c> message sent to a window when the user chooses a command from the window menu or
     /// clicks a title bar button.
     /// </summary>
-    public const int WmSysCommand = 0x0112;
+    public const int WM_SYSCOMMAND = 0x0112;
 
     /// <summary>
     /// The <c>SC_CONTEXTHELP</c> command sent when the help button in the title bar is clicked.
     /// </summary>
-    public const int ScContextHelp = 0xF180;
-
-    /// <summary>
-    /// The mask of the <see cref="WmSysCommand"/> command, as the lower four bits are used internally.
-    /// </summary>
-    public const int ScCommandMask = 0xFFF0;
+    public const int SC_CONTEXTHELP = 0xF180;
 
     /// <summary>
     /// Gets a value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
@@ -305,11 +293,11 @@ internal static class NativeMethods
     /// on the value of the <paramref name="dwAttribute"/> parameter.</param>
     /// <returns>0 if the successful, or nonzero otherwise.</returns>
     [DllImport("dwmapi.dll", ExactSpelling = true)]
-    public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out bool pvAttribute, int cbAttribute);
+    public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out bool pvAttribute, int cbAttribute);
 
-    /// <inheritdoc cref="DwmGetWindowAttribute(IntPtr, DwmWindowAttribute, out bool, int)"/>
+    /// <inheritdoc cref="DwmGetWindowAttribute(IntPtr, DWMWINDOWATTRIBUTE, out bool, int)"/>
     [DllImport("dwmapi.dll", ExactSpelling = true)]
-    public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out RECT pvAttribute, int cbAttribute);
+    public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
 
     /// <summary>
     /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
@@ -323,7 +311,7 @@ internal static class NativeMethods
     /// value of the <paramref name="dwAttribute"/> parameter.</param>
     /// <returns>0 if the successful, or nonzero otherwise.</returns>
     [DllImport("dwmapi.dll", ExactSpelling = true, PreserveSig = true)]
-    public static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, ref bool pvAttribute, int cbAttribute);
+    public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, ref bool pvAttribute, int cbAttribute);
 
     /// <summary>
     /// Sets the specified timer to the inactive state.
@@ -368,7 +356,7 @@ internal static class NativeMethods
     /// <param name="lpEnvironment">A pointer to the environment block, or <see cref="IntPtr.Zero"/> to use the
     /// environment of the calling process.</param>
     /// <param name="lpCurrentDirectory">The full path to the current directory for the process.</param>
-    /// <param name="lpStartupInfo">The <see cref="StartupInfo"/> structure.</param>
+    /// <param name="lpStartupInfo">The <see cref="STARTUPINFO"/> structure.</param>
     /// <param name="lpProcessInformation">Receives identification information about the new process.</param>
     /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -382,8 +370,8 @@ internal static class NativeMethods
         uint dwCreationFlags,
         IntPtr lpEnvironment,
         string? lpCurrentDirectory,
-        [In] ref StartupInfo lpStartupInfo,
-        out ProcessInformation lpProcessInformation);
+        [In] ref STARTUPINFO lpStartupInfo,
+        out PROCESS_INFORMATION lpProcessInformation);
 
     /// <summary>
     /// Creates or opens a timer object.
@@ -405,7 +393,7 @@ internal static class NativeMethods
     /// <param name="iid">A GUID value that identifies the DirectWrite factory interface.</param>
     /// <param name="factory">An address of a pointer to the newly created DirectWrite factory object.</param>
     [DllImport("dwrite.dll", ExactSpelling = true, PreserveSig = false)]
-    public static extern void DWriteCreateFactory(DWriteFactoryType factoryType, ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object factory);
+    public static extern void DWriteCreateFactory(DWRITE_FACTORY_TYPE factoryType, ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object factory);
 
     /// <summary>
     /// Retrieves the coordinates of a window's client area.
@@ -441,7 +429,7 @@ internal static class NativeMethods
     /// Changes an attribute of the specified window.
     /// </summary>
     /// <param name="hWnd">A handle to the window.</param>
-    /// <param name="nIndex">The zero-based offset to the value to be set, such as <see cref="GwlExStyle"/>.</param>
+    /// <param name="nIndex">The zero-based offset to the value to be set, such as <see cref="GWL_EXSTYLE"/>.</param>
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>The previous value, or zero if the call fails.</returns>
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
@@ -506,9 +494,9 @@ internal static class NativeMethods
     /// </summary>
     /// <param name="esFlags">The thread's execution requirements.</param>
     /// <returns>If the function succeeds, the return value is the previous thread execution state. If the function
-    /// fails, the return value is <see cref="ExecutionState.EsNull"/>.</returns>
+    /// fails, the return value is <c>NULL</c>.</returns>
     [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
-    public static extern ExecutionState SetThreadExecutionState(ExecutionState esFlags);
+    public static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
 
     /// <summary>
     /// Activates the specified timer. When the due time arrives, the timer is signaled and the thread that set the

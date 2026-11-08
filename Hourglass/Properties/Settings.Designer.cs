@@ -341,5 +341,41 @@ namespace Hourglass.Properties {
                 this["AllowOffScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TimerEventAppPath {
+            get {
+                return ((string)(this["TimerEventAppPath"]));
+            }
+            set {
+                this["TimerEventAppPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TimerEventAppDisabled {
+            get {
+                return ((bool)(this["TimerEventAppDisabled"]));
+            }
+            set {
+                this["TimerEventAppDisabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TimerEventAppSilent {
+            get {
+                return ((bool)(this["TimerEventAppSilent"]));
+            }
+            set {
+                this["TimerEventAppSilent"] = value;
+            }
+        }
     }
 }

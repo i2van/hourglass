@@ -274,7 +274,7 @@ public static class TimerWindowExtensions
             IntPtr lParam,
             ref bool handled)
         {
-            if (msg == NativeMethods.WmGetMinMaxInfo)
+            if (msg == NativeMethods.WM_GETMINMAXINFO)
             {
                 handled = WmGetMinMaxInfo(hwnd, lParam);
 

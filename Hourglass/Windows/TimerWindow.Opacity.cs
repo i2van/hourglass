@@ -22,19 +22,34 @@ public sealed partial class TimerWindow
     /// <summary>
     /// The <c>WS_EX_LAYERED</c> extended style of a layered window.
     /// </summary>
-    private const int WsExLayered = 0x00080000;
+    private const int WS_EX_LAYERED = 0x00080000;
 
     /// <summary>
     /// The <c>LWA_ALPHA</c> flag that makes <see cref="SetLayeredWindowAttributes"/> set the opacity of the whole
     /// layered window.
     /// </summary>
-    private const int LwaAlpha = 0x00000002;
+    private const int LWA_ALPHA = 0x00000002;
 
     /// <summary>
-    /// The <c>RDW_INVALIDATE</c>, <c>RDW_ERASE</c>, <c>RDW_ALLCHILDREN</c> and <c>RDW_FRAME</c> flags that make
-    /// <see cref="RedrawWindow"/> repaint the whole window, including the title bar.
+    /// The <c>RDW_INVALIDATE</c> flag that makes <see cref="RedrawWindow"/> invalidate the window.
     /// </summary>
-    private const int RdwRepaintWindow = 0x0001 | 0x0004 | 0x0080 | 0x0400;
+    private const int RDW_INVALIDATE = 0x0001;
+
+    /// <summary>
+    /// The <c>RDW_ERASE</c> flag that makes <see cref="RedrawWindow"/> erase the window background.
+    /// </summary>
+    private const int RDW_ERASE = 0x0004;
+
+    /// <summary>
+    /// The <c>RDW_ALLCHILDREN</c> flag that makes <see cref="RedrawWindow"/> repaint the child windows too.
+    /// </summary>
+    private const int RDW_ALLCHILDREN = 0x0080;
+
+    /// <summary>
+    /// The <c>RDW_FRAME</c> flag that makes <see cref="RedrawWindow"/> repaint the non-client area, including the
+    /// title bar.
+    /// </summary>
+    private const int RDW_FRAME = 0x0400;
 
     /// <summary>
     /// The <see cref="HwndSource"/> the <see cref="OpacityWindowProc"/> hook is added to.
@@ -75,19 +90,19 @@ public sealed partial class TimerWindow
         _isTranslucent = Options.Opacity < TimerOptions.MaxOpacity;
 
         IntPtr hwnd = hwndSource.Handle;
-        int exStyle = NativeMethods.GetWindowLong(hwnd, NativeMethods.GwlExStyle);
-        bool isLayered = (exStyle & WsExLayered) != 0;
+        int exStyle = NativeMethods.GetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE);
+        bool isLayered = (exStyle & WS_EX_LAYERED) != 0;
 
         if (_isTranslucent)
         {
             if (!isLayered)
             {
-                NativeMethods.SetWindowLong(hwnd, NativeMethods.GwlExStyle, exStyle | WsExLayered);
+                NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
             }
 
             byte alpha = (byte)Math.Round(Options.Opacity * byte.MaxValue / (double)TimerOptions.MaxOpacity);
 
-            SetLayeredWindowAttributes(hwnd, 0, alpha, LwaAlpha);
+            SetLayeredWindowAttributes(hwnd, 0, alpha, LWA_ALPHA);
             return;
         }
 
@@ -96,8 +111,8 @@ public sealed partial class TimerWindow
             return;
         }
 
-        NativeMethods.SetWindowLong(hwnd, NativeMethods.GwlExStyle, exStyle & ~WsExLayered);
-        RedrawWindow(hwnd, IntPtr.Zero, IntPtr.Zero, RdwRepaintWindow);
+        NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE, exStyle & ~WS_EX_LAYERED);
+        RedrawWindow(hwnd, IntPtr.Zero, IntPtr.Zero, RDW_INVALIDATE | RDW_ERASE | RDW_ALLCHILDREN | RDW_FRAME);
     }
 
     /// <summary>
@@ -112,13 +127,13 @@ public sealed partial class TimerWindow
     /// <returns>The appropriate return value depending on the particular message.</returns>
     private IntPtr OpacityWindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (msg != NativeMethods.WmStyleChanging || wParam != (IntPtr)NativeMethods.GwlExStyle || !_isTranslucent)
+        if (msg != NativeMethods.WM_STYLECHANGING || wParam != (IntPtr)NativeMethods.GWL_EXSTYLE || !_isTranslucent)
         {
             return IntPtr.Zero;
         }
 
         STYLESTRUCT styleStruct = Marshal.PtrToStructure<STYLESTRUCT>(lParam);
-        styleStruct.styleNew |= WsExLayered;
+        styleStruct.styleNew |= WS_EX_LAYERED;
         Marshal.StructureToPtr(styleStruct, lParam, false);
 
         // Prevents WPF from seeing the message, as the public hooks run before the WPF ones.

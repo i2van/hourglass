@@ -17,6 +17,7 @@ The original **Hourglass** FAQ can be found [here](https://chris.dziemborowicz.c
 - [How do I stop the timer from popping up on top of other windows when it expires?](#how-do-i-stop-the-timer-from-popping-up-on-top-of-other-windows-when-it-expires)
 - [How do I automatically close the timer window when the timer expires?](#how-do-i-automatically-close-the-timer-window-when-the-timer-expires)
 - [How do I automatically shut down Windows when the timer expires?](#how-do-i-automatically-shut-down-windows-when-the-timer-expires)
+- [How do I run an app on timer events?](#how-do-i-run-an-app-on-timer-events)
 - [How do I reset the expired timer by clicking on it?](#how-do-i-reset-the-expired-timer-by-clicking-on-it)
 - [How do I start a timer for a duration or until a date and time that I recently entered?](#how-do-i-start-a-timer-for-a-duration-or-until-a-date-and-time-that-i-recently-entered)
 - [How do I clear recently entered durations and dates and times?](#how-do-i-clear-recently-entered-durations-and-dates-and-times)
@@ -341,6 +342,42 @@ To also hide the timer window from the taskbar, `Right Click` on any empty space
 
 > [!NOTE]
 > The Windows will not shut down until the notification sound has finished playing.
+
+## How do I run an app on timer events?
+
+`Right Click` on any empty space in the timer window and select **Run app on timer events...** in the **Advanced options** submenu. Enter the app path or select the app with **Browse...**, and click **OK**. The setting applies to all timers.
+
+The app is run, without waiting for it to exit, when any timer is `Started`, `Paused`, `Resumed`, `Stopped` or `Expired`. The app folder is used as the app working directory.
+
+- A relative path is relative to the **Hourglass** folder, and a path within the **Hourglass** folder is saved as relative. The full path is resolved each time the app is run.
+- Environment variables, e.g. `%USERPROFILE%`, are expanded.
+- If the path is empty or the app does not exist, nothing is run.
+- **Disable app** keeps the path, but does not run the app.
+- **Run silently** runs a console app without a console window, and other apps minimized and not activated.
+
+The timer data is passed to the app as the first command-line argument in the compact JSON format: the `Event` property followed by the **Save timers report...** fields. Yes/No values are booleans, numbers are numbers, missing values are `null`, dates and times are local `yyyy-MM-ddTHH:mm:ss`, and durations are `[d.]hh:mm:ss`. The characters `&|<>^%!` are escaped, e.g. `&` as `\u0026`, so the JSON can be safely passed via batch files. Non-ASCII characters are escaped too, e.g. `É` as `\u00c9`, so the JSON is ASCII only and is not corrupted for apps that read the command line in the ANSI code page:
+
+```json
+{"Event":"Expired","Title":"Tea","Status":"...","State":"Expired","StartTime":"2026-10-25T16:40:51","EndTime":"2026-10-25T16:45:51",...,"Iteration":1,"AlwaysOnTop":false,...}
+```
+
+For example, to log the timer events with PowerShell, put both files to the **Hourglass** folder and select `on-timer-event.cmd`:
+
+- `on-timer-event.cmd`
+  ```bat
+  @powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0on-timer-event.ps1" %*
+  ```
+- `on-timer-event.ps1`
+  ```powershell
+  $timer = $args[0] | ConvertFrom-Json
+  Add-Content "$PSScriptRoot\timer-events.log" "$($timer.Event) $($timer.Title) $($timer.TimeLeft)"
+  ```
+
+> [!IMPORTANT]
+> In batch files, forward the JSON with `%*`, not `%1`, as `%1` splits the argument at commas, semicolons, equal signs and spaces.
+
+> [!NOTE]
+> The settings are stored in the `TimerEventAppPath`, `TimerEventAppDisabled` and `TimerEventAppSilent` values of the `Hourglass.config` or `user.config` [settings](#how-to-find-the-hourglass-settings) file.
 
 ## How do I reset the expired timer by clicking on it?
 

@@ -1171,6 +1171,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         Timer.Expired += TimerExpired;
         Timer.Tick += TimerTick;
 
+        Timer.Started += TimerStartedRunApp;
+        Timer.Paused += TimerPausedRunApp;
+        Timer.Resumed += TimerResumedRunApp;
+        Timer.Stopped += TimerStoppedRunApp;
+        Timer.Expired += TimerExpiredRunApp;
+
         PropertyChangedEventManager.AddHandler(Timer, TimerPropertyChanged, string.Empty);
         PropertyChangedEventManager.AddHandler(Options, TimerOptionsPropertyChanged, string.Empty);
 
@@ -1482,6 +1488,12 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         Timer.Expired -= TimerExpired;
         Timer.Tick -= TimerTick;
 
+        Timer.Started -= TimerStartedRunApp;
+        Timer.Paused -= TimerPausedRunApp;
+        Timer.Resumed -= TimerResumedRunApp;
+        Timer.Stopped -= TimerStoppedRunApp;
+        Timer.Expired -= TimerExpiredRunApp;
+
         PropertyChangedEventManager.RemoveHandler(Timer, TimerPropertyChanged, string.Empty);
         PropertyChangedEventManager.RemoveHandler(Options, TimerOptionsPropertyChanged, string.Empty);
 
@@ -1506,6 +1518,21 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         UpdateTimeToolTip();
         UpdateNotificationAreaIcon();
     }
+
+    private void TimerStartedRunApp(object sender, EventArgs e) =>
+        TimerEventAppManager.Run(nameof(TimerBase.Started), Timer);
+
+    private void TimerPausedRunApp(object sender, EventArgs e) =>
+        TimerEventAppManager.Run(nameof(TimerBase.Paused), Timer);
+
+    private void TimerResumedRunApp(object sender, EventArgs e) =>
+        TimerEventAppManager.Run(nameof(TimerBase.Resumed), Timer);
+
+    private void TimerStoppedRunApp(object sender, EventArgs e) =>
+        TimerEventAppManager.Run(nameof(TimerBase.Stopped), Timer);
+
+    private void TimerExpiredRunApp(object sender, EventArgs e) =>
+        TimerEventAppManager.Run(nameof(TimerBase.Expired), Timer);
 
     /// <summary>
     /// Invoked when the timer expires.
@@ -2276,7 +2303,23 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         {
             BringToFrontAndActivate();
         }
+
+        ThemeManagerWindow?.OnTimerWindowVisibilityChanged();
     }
+
+    /// <summary>
+    /// Invoked when the window's IsVisible property changes.
+    /// </summary>
+    /// <param name="sender">The <see cref="TimerWindow"/>.</param>
+    /// <param name="e">The event data.</param>
+    private void WindowIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) =>
+        ThemeManagerWindow?.OnTimerWindowVisibilityChanged();
+
+    /// <summary>
+    /// Gets the open <see cref="Windows.ThemeManagerWindow"/>, if any.
+    /// </summary>
+    private static ThemeManagerWindow? ThemeManagerWindow =>
+        Application.Current?.Windows.OfType<ThemeManagerWindow>().FirstOrDefault();
 
     private void UpdateShowTimeToolTip()
     {
@@ -2411,6 +2454,8 @@ public sealed partial class TimerWindow : INotifyPropertyChanged, IRestorableWin
         using IDisposable _ = _updateShellIntegration;
 
         LastActivatedID = ID;
+
+        ThemeManagerWindow?.OnTimerWindowActivated(this);
 
         this.ForceUpdateLayout();
 

@@ -34,4 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Hourglass\Hourglass.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
 </Project>

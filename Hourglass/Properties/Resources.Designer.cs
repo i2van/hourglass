@@ -836,6 +836,15 @@ namespace Hourglass.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to R_un app on timer events....
+        /// </summary>
+        public static string ContextMenuTimerEventAppMenuItem {
+            get {
+                return ResourceManager.GetString("ContextMenuTimerEventAppMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ti_mer title · Elapsed time.
         /// </summary>
         public static string ContextMenuTimerTitlePlusElapsedTimeWindowTitleMenuItem {
@@ -2287,6 +2296,123 @@ namespace Hourglass.Properties {
         public static string ThemeManagerYellowLightTheme {
             get {
                 return ResourceManager.GetString("ThemeManagerYellowLightTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app is not found.
+        /// </summary>
+        public static string TimerEventAppWindowAppNotFoundText {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowAppNotFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Browse....
+        /// </summary>
+        public static string TimerEventAppWindowBrowseButtonContent {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowBrowseButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Programs (*.exe;*.com)|*.exe;*.com|Scripts (*.bat;*.cmd)|*.bat;*.cmd|All files (*.*)|*.*.
+        /// </summary>
+        public static string TimerEventAppWindowBrowseDialogFilter {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowBrowseDialogFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select App.
+        /// </summary>
+        public static string TimerEventAppWindowBrowseDialogTitle {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowBrowseDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string TimerEventAppWindowCancelButtonContent {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowCancelButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the app to run on timer events.
+        /// </summary>
+        public static string TimerEventAppWindowDefaultMessageText {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowDefaultMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Disable app.
+        /// </summary>
+        public static string TimerEventAppWindowDisabledCheckBoxContent {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowDisabledCheckBoxContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app is disabled.
+        /// </summary>
+        public static string TimerEventAppWindowDisabledIconToolTip {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowDisabledIconToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app runs when any timer is started, paused, resumed, stopped or expired. The timer data is passed to the app as the first command line argument in the JSON format. A relative path is relative to the Hourglass folder, and a path within the Hourglass folder is saved as relative..
+        /// </summary>
+        public static string TimerEventAppWindowHintText {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowHintText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string TimerEventAppWindowOkButtonContent {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowOkButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _App path:.
+        /// </summary>
+        public static string TimerEventAppWindowPathLabel {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowPathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run _silently (no console window, other apps are started minimized).
+        /// </summary>
+        public static string TimerEventAppWindowSilentCheckBoxContent {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowSilentCheckBoxContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run App on Timer Events.
+        /// </summary>
+        public static string TimerEventAppWindowTitle {
+            get {
+                return ResourceManager.GetString("TimerEventAppWindowTitle", resourceCulture);
             }
         }
         

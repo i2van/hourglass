@@ -24,9 +24,9 @@ public sealed class KeepAwakeManager : Manager
     private readonly HashSet<int> _idsToKeepAwakeFor = [];
 
     /// <summary>
-    /// The <see cref="ExecutionState"/> before the manager started keeping the system awake.
+    /// The <see cref="EXECUTION_STATE"/> before the manager started keeping the system awake.
     /// </summary>
-    private ExecutionState _previousExecutionState = ExecutionState.EsNull;
+    private EXECUTION_STATE _previousExecutionState;
 
     /// <summary>
     /// Prevents a default instance of the <see cref="KeepAwakeManager"/> class from being created.
@@ -99,7 +99,7 @@ public sealed class KeepAwakeManager : Manager
             return;
         }
 
-        ExecutionState executionState = ExecutionState.EsContinuous | ExecutionState.EsDisplayRequired | ExecutionState.EsSystemRequired;
+        EXECUTION_STATE executionState = EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED;
         _previousExecutionState = NativeMethods.SetThreadExecutionState(executionState);
 
         IsKeepingSystemAwake = true;
@@ -115,7 +115,7 @@ public sealed class KeepAwakeManager : Manager
             return;
         }
 
-        if (_previousExecutionState != ExecutionState.EsNull)
+        if (_previousExecutionState != 0)
         {
             NativeMethods.SetThreadExecutionState(_previousExecutionState);
         }

@@ -1118,6 +1118,14 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
         _shutDownWhenExpiredMenuItem.Click += CheckableMenuItemClick;
         advancedOptionsMenuItem.Items.Add(_shutDownWhenExpiredMenuItem);
 
+        // Run app on timer events
+        MenuItem timerEventAppMenuItem = new()
+        {
+            Header = Properties.Resources.ContextMenuTimerEventAppMenuItem
+        };
+        timerEventAppMenuItem.Click += TimerEventAppMenuItemClick;
+        advancedOptionsMenuItem.Items.Add(timerEventAppMenuItem);
+
         advancedOptionsMenuItem.Items.Add(new Separator());
 
         // Save timers report
@@ -2030,6 +2038,9 @@ public sealed class ContextMenu : System.Windows.Controls.ContextMenu
 
     private static void OpenSettingsFileLocationMenuItemClick(object sender, RoutedEventArgs e) =>
         ShellExtensions.OpenFileLocation(SettingsManager.GetSettingsFilePath());
+
+    private static void TimerEventAppMenuItemClick(object sender, RoutedEventArgs e) =>
+        TimerEventAppWindow.ShowOrActivate();
 
     private void ExitFullScreen()
     {

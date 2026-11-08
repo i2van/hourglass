@@ -10,6 +10,7 @@
         Loaded="WindowLoaded"
         SizeChanged="WindowSizeChanged"
         StateChanged="WindowStateChanged"
+        IsVisibleChanged="WindowIsVisibleChanged"
         Closing="WindowClosing"
         Closed="WindowClosed"
         MouseDown="WindowMouseDown"

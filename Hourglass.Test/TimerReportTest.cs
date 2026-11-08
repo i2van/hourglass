@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
 
 using Hourglass.Serialization;
 using Hourglass.Timing;
@@ -179,6 +180,70 @@ public sealed class TimerReportTest
 
     #endregion
 
+    #region ToJson
+
+    /// <summary>
+    /// Tests that <see cref="TimerReport.ToJson"/> returns the JSON object with the event property followed by the
+    /// timers report fields, where Yes/No values are booleans, numbers are numbers and missing values are null.
+    /// </summary>
+    [TestMethod]
+    public void ToJsonReturnsEventFollowedByReportFields()
+    {
+        // Arrange
+        TimerReport.Entry entry = new(new TimerInfo
+        {
+            State = TimerState.Running,
+            StartTime = new DateTime(2024, 3, 13, 10, 0, 0),
+            TotalTime = TimeSpan.FromMinutes(5),
+            Iteration = 2,
+            Options = new TimerOptionsInfo { Title = "Tea", AlwaysOnTop = true, Opacity = 80 }
+        }, "5 minutes left");
+
+        // Act
+        string actual = TimerReport.ToJson("Expired", entry);
+
+        // Assert
+        Dictionary<string, object?> json = ParseJson(actual);
+        string[] header = ParseCsv(TimerReport.ToCsv([]))[0];
+
+        CollectionAssert.AreEqual(new[] { TimerReport.EventPropertyName }.Concat(header).ToArray(), json.Keys.ToArray());
+        Assert.AreEqual("Expired", json["Event"]);
+        Assert.AreEqual("Tea", json["Title"]);
+        Assert.AreEqual("5 minutes left", json["Status"]);
+        Assert.AreEqual("Running", json["State"]);
+        Assert.AreEqual("2024-03-13T10:00:00", json["StartTime"]);
+        Assert.IsNull(json["EndTime"]);
+        Assert.AreEqual("00:05:00", json["TotalTime"]);
+        Assert.AreEqual(2, json["Iteration"]);
+        Assert.AreEqual(true, json["AlwaysOnTop"]);
+        Assert.AreEqual(false, json["LoopTimer"]);
+        Assert.AreEqual(80, json["Opacity"]);
+        Assert.IsNull(json["RestoreBoundsX"]);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="TimerReport.ToJson"/> escapes the characters JSON requires to escape and the characters
+    /// special to the command processor, the JSON is ASCII only, and the values round-trip.
+    /// </summary>
+    [TestMethod]
+    public void ToJsonEscapesSpecialCharacters()
+    {
+        // Arrange
+        const string title = "a&b|c<d>e^f%g!h\"i\\j\r\n\t\u0001 \u007f\u00C9\u65E5\U0001F600~";
+        TimerReport.Entry entry = new(new TimerInfo { Options = new TimerOptionsInfo { Title = title } }, string.Empty);
+
+        // Act
+        string actual = TimerReport.ToJson("Started", entry);
+
+        // Assert
+        Assert.IsTrue(actual.All(static c => c is >= ' ' and <= '~'), actual);
+        Assert.AreEqual(-1, actual.IndexOfAny(['&', '|', '<', '>', '^', '%', '!']));
+        Assert.IsTrue(actual.Contains(@"""a\u0026b\u007cc\u003cd\u003ee\u005ef\u0025g\u0021h\""i\\j\r\n\t\u0001 \u007f\u00c9\u65e5\ud83d\ude00~"""), actual);
+        Assert.AreEqual(title, ParseJson(actual)["Title"]);
+    }
+
+    #endregion
+
     #region Save
 
     /// <summary>
@@ -209,6 +274,14 @@ public sealed class TimerReportTest
     }
 
     #endregion
+
+    /// <summary>
+    /// Parses the JSON object.
+    /// </summary>
+    /// <param name="json">The JSON object.</param>
+    /// <returns>The JSON object properties.</returns>
+    private static Dictionary<string, object?> ParseJson(string json) =>
+        (Dictionary<string, object?>)new JavaScriptSerializer().DeserializeObject(json);
 
     /// <summary>
     /// Parses the CSV strictly according to RFC 4180: each record must end with CRLF, and each field containing a

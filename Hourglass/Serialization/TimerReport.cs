@@ -13,7 +13,8 @@ using Hourglass.Timing;
 namespace Hourglass.Serialization;
 
 /// <summary>
-/// Creates the timers report in the <see href="https://www.rfc-editor.org/rfc/rfc4180">RFC 4180</see> CSV format.
+/// Creates the timers report in the <see href="https://www.rfc-editor.org/rfc/rfc4180">RFC 4180</see> CSV format, or
+/// the timer report in the JSON format.
 /// </summary>
 public static class TimerReport
 {
@@ -21,6 +22,11 @@ public static class TimerReport
     /// The timers report file extension.
     /// </summary>
     public const string FileExtension = ".csv";
+
+    /// <summary>
+    /// The name of the JSON property containing the timer event name.
+    /// </summary>
+    public const string EventPropertyName = "Event";
 
     private const string FieldSeparator = ",";
     private const string LineBreak = "\r\n";
@@ -152,8 +158,96 @@ public static class TimerReport
             ? field ?? string.Empty
             : $"{Quote}{field.Replace(Quote, EscapedQuote)}{Quote}";
 
+    /// <summary>
+    /// Returns the timer as a compact JSON object: the <c>Event</c> property followed by the property for each
+    /// timers report field.
+    /// </summary>
+    /// <param name="eventName">The timer event name, e.g. <c>Expired</c>.</param>
+    /// <param name="entry">The timer.</param>
+    /// <returns>The timer as a JSON object.</returns>
+    public static string ToJson(string eventName, Entry entry)
+    {
+        StringBuilder json = new("{");
+
+        AppendJsonProperty(json, EventPropertyName, eventName);
+
+        foreach (Column column in Columns)
+        {
+            json.Append(',');
+            AppendJsonProperty(json, column.Name, column.GetValue(entry));
+        }
+
+        return json.Append('}').ToString();
+    }
+
     private static void AppendRecord(StringBuilder csv, IEnumerable<string?> fields) =>
         csv.Append(string.Join(FieldSeparator, fields.Select(EscapeField))).Append(LineBreak);
+
+    private static void AppendJsonProperty(StringBuilder json, string name, object? value)
+    {
+        AppendJsonString(json, name);
+        json.Append(':');
+
+        switch (value)
+        {
+            case bool flag:
+                json.Append(flag ? "true" : "false");
+                break;
+
+            case sbyte or byte or short or ushort or int or uint or long or ulong or double or decimal:
+                json.Append(Format(value) ?? "null");
+                break;
+
+            default:
+                string? text = Format(value);
+
+                if (text is null)
+                {
+                    json.Append("null");
+                }
+                else
+                {
+                    AppendJsonString(json, text);
+                }
+
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Appends the JSON string. Besides the characters JSON requires to escape, the characters special to the
+    /// command processor are escaped too, so the JSON can be safely passed via the command line to batch files.
+    /// Non-ASCII characters are escaped as well, so the JSON survives the conversion to the ANSI code page by the
+    /// apps that read the command line as ANSI.
+    /// </summary>
+    /// <param name="json">The JSON.</param>
+    /// <param name="value">The string.</param>
+    private static void AppendJsonString(StringBuilder json, string value)
+    {
+        json.Append('"');
+
+        foreach (char c in value)
+        {
+            switch (c)
+            {
+                case '"':  json.Append("\\\""); break;
+                case '\\': json.Append(@"\\");  break;
+                case '\b': json.Append(@"\b");  break;
+                case '\f': json.Append(@"\f");  break;
+                case '\n': json.Append(@"\n");  break;
+                case '\r': json.Append(@"\r");  break;
+                case '\t': json.Append(@"\t");  break;
+                case < ' ' or > '~' or '&' or '|' or '<' or '>' or '^' or '%' or '!':
+                    json.Append(@"\u").Append(((int)c).ToString("x4", CultureInfo.InvariantCulture));
+                    break;
+                default:
+                    json.Append(c);
+                    break;
+            }
+        }
+
+        json.Append('"');
+    }
 
     private static string? Format(object? value) => value switch
     {

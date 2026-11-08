@@ -24,7 +24,7 @@ public sealed partial class TimerWindow
     /// <summary>
     /// The <c>WS_OVERLAPPEDWINDOW</c> style of a resizable window with a title bar.
     /// </summary>
-    private const int WsOverlappedWindow = 0x00CF0000;
+    private const int WS_OVERLAPPEDWINDOW = 0x00CF0000;
 
     /// <summary>
     /// The <see cref="System.Windows.Shell.WindowChrome"/> applied to the window while its title bar is hidden.
@@ -162,7 +162,7 @@ public sealed partial class TimerWindow
     {
         RECT frameRect = default;
 
-        return AdjustWindowRectEx(ref frameRect, WsOverlappedWindow, false, 0)
+        return AdjustWindowRectEx(ref frameRect, WS_OVERLAPPEDWINDOW, false, 0)
             ? GetDeviceIndependentSize(frameRect)
             : new(0, 0);
     }

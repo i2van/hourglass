@@ -15,7 +15,7 @@ namespace Hourglass.Extensions;
 /// </remarks>
 internal static class TypefaceExtensions
 {
-    private const int DWriteFontSimulationsNone = 0;
+    private const int DWRITE_FONT_SIMULATIONS_NONE = 0;
 
     private static IDWriteFactory? _factory;
 
@@ -59,14 +59,14 @@ internal static class TypefaceExtensions
             return null;
         }
 
-        factory.CreateFontFace(fontFaceType, 1, [fontFile], GetFaceIndex(fontUri), DWriteFontSimulationsNone, out IDWriteFontFace fontFace);
+        factory.CreateFontFace(fontFaceType, 1, [fontFile], GetFaceIndex(fontUri), DWRITE_FONT_SIMULATIONS_NONE, out IDWriteFontFace fontFace);
         return fontFace;
     }
 
     private static IDWriteFactory CreateFactory()
     {
         Guid iid = typeof(IDWriteFactory).GUID;
-        NativeMethods.DWriteCreateFactory(DWriteFactoryType.Shared, ref iid, out object factory);
+        NativeMethods.DWriteCreateFactory(DWRITE_FACTORY_TYPE.DWRITE_FACTORY_TYPE_SHARED, ref iid, out object factory);
         return (IDWriteFactory)factory;
     }
 

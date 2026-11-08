@@ -65,9 +65,9 @@ public static class WindowExtensions
             return;
         }
 
-        DwmWindowAttribute attribute = EnvironmentExtensions.IsWindows10BuildOrNewer(18985)
-            ? DwmWindowAttribute.UseImmersiveDarkMode
-            : DwmWindowAttribute.UseImmersiveDarkModeBefore20H1;
+        DWMWINDOWATTRIBUTE attribute = EnvironmentExtensions.IsWindows10BuildOrNewer(18985)
+            ? DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE
+            : DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
 
         if (NativeMethods.DwmGetWindowAttribute(handle, attribute, out bool prevUseImmersiveDarkMode, sizeof(int)) != 0)
         {
@@ -515,7 +515,7 @@ public static class WindowExtensions
             return false;
         }
 
-        if (NativeMethods.DwmGetWindowAttribute(hwnd, DwmWindowAttribute.ExtendedFrameBounds, out visibleBounds, Marshal.SizeOf(typeof(RECT))) != 0)
+        if (NativeMethods.DwmGetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out visibleBounds, Marshal.SizeOf(typeof(RECT))) != 0)
         {
             visibleBounds = bounds;
         }
@@ -610,7 +610,7 @@ public static class WindowExtensions
                 .First();
 
             return NativeMethods.SetWindowPos(handle, IntPtr.Zero, position.X - insetLeft, position.Y - insetTop, 0, 0,
-                SetWindowPosFlags.NoSize | SetWindowPosFlags.NoZOrder | SetWindowPosFlags.NoActivate);
+                SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER | SetWindowPosFlags.SWP_NOACTIVATE);
 
             static int Clamp(int value, int min, int max) =>
                 Math.Max(min, Math.Min(value, max));
@@ -708,16 +708,16 @@ public static class WindowExtensions
             {
                 switch (msg)
                 {
-                    case NativeMethods.WmStyleChanging:
+                    case NativeMethods.WM_STYLECHANGING:
                         STYLESTRUCT styleStruct = Marshal.PtrToStructure<STYLESTRUCT>(lParam);
 
-                        if (wParam == (IntPtr)NativeMethods.GwlStyle)
+                        if (wParam == (IntPtr)NativeMethods.GWL_STYLE)
                         {
                             styleStruct.styleNew &= ~MinimizeMaximizeBoxes;
                         }
-                        else if (wParam == (IntPtr)NativeMethods.GwlExStyle)
+                        else if (wParam == (IntPtr)NativeMethods.GWL_EXSTYLE)
                         {
-                            styleStruct.styleNew |= NativeMethods.WsExContextHelp;
+                            styleStruct.styleNew |= NativeMethods.WS_EX_CONTEXTHELP;
                         }
                         else
                         {
@@ -727,8 +727,8 @@ public static class WindowExtensions
                         Marshal.StructureToPtr(styleStruct, lParam, false);
                         break;
 
-                    case NativeMethods.WmSysCommand when IsContextHelpCommand(wParam):
-                    case NativeMethods.WmHelp:
+                    case NativeMethods.WM_SYSCOMMAND when IsContextHelpCommand(wParam):
+                    case NativeMethods.WM_HELP:
                         NavigateToHelp(helpUri);
                         handled = true;
                         break;
@@ -759,7 +759,7 @@ public static class WindowExtensions
                 return;
             }
 
-            uint[] disabledCommands = [..GetDisabledCommands(NativeMethods.GetWindowLong(handle, NativeMethods.GwlStyle))];
+            uint[] disabledCommands = [..GetDisabledCommands(NativeMethods.GetWindowLong(handle, NativeMethods.GWL_STYLE))];
 
             if (disabledCommands.Length == 0)
             {
@@ -768,34 +768,34 @@ public static class WindowExtensions
 
             foreach (uint command in disabledCommands)
             {
-                DeleteMenu(systemMenu, command, MfByCommand);
+                DeleteMenu(systemMenu, command, MF_BYCOMMAND);
             }
 
             RemoveMenuSeparators(systemMenu);
 
             static IEnumerable<uint> GetDisabledCommands(int style)
             {
-                bool noMinimizeBox = (style & NativeMethods.WsMinimizeBox) == 0;
-                bool noMaximizeBox = (style & NativeMethods.WsMaximizeBox) == 0;
+                bool noMinimizeBox = (style & NativeMethods.WS_MINIMIZEBOX) == 0;
+                bool noMaximizeBox = (style & NativeMethods.WS_MAXIMIZEBOX) == 0;
 
                 if (noMinimizeBox && noMaximizeBox)
                 {
-                    yield return ScRestore;
+                    yield return SC_RESTORE;
                 }
 
-                if ((style & NativeMethods.WsThickFrame) == 0)
+                if ((style & NativeMethods.WS_THICKFRAME) == 0)
                 {
-                    yield return ScSize;
+                    yield return SC_SIZE;
                 }
 
                 if (noMinimizeBox)
                 {
-                    yield return ScMinimize;
+                    yield return SC_MINIMIZE;
                 }
 
                 if (noMaximizeBox)
                 {
-                    yield return ScMaximize;
+                    yield return SC_MAXIMIZE;
                 }
             }
         }
@@ -1095,30 +1095,31 @@ public static class WindowExtensions
             return;
         }
 
-        int style = NativeMethods.GetWindowLong(handle, NativeMethods.GwlStyle);
+        int style = NativeMethods.GetWindowLong(handle, NativeMethods.GWL_STYLE);
 
         if ((style & MinimizeMaximizeBoxes) != 0)
         {
-            NativeMethods.SetWindowLong(handle, NativeMethods.GwlStyle, style & ~MinimizeMaximizeBoxes);
+            NativeMethods.SetWindowLong(handle, NativeMethods.GWL_STYLE, style & ~MinimizeMaximizeBoxes);
         }
 
-        int exStyle = NativeMethods.GetWindowLong(handle, NativeMethods.GwlExStyle);
-        NativeMethods.SetWindowLong(handle, NativeMethods.GwlExStyle, exStyle | NativeMethods.WsExContextHelp);
+        int exStyle = NativeMethods.GetWindowLong(handle, NativeMethods.GWL_EXSTYLE);
+        NativeMethods.SetWindowLong(handle, NativeMethods.GWL_EXSTYLE, exStyle | NativeMethods.WS_EX_CONTEXTHELP);
 
         NativeMethods.SetWindowPos(handle, IntPtr.Zero, 0, 0, 0, 0,
-            SetWindowPosFlags.NoSize | SetWindowPosFlags.NoMove | SetWindowPosFlags.NoZOrder |
-            SetWindowPosFlags.NoActivate | SetWindowPosFlags.FrameChanged);
+            SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOMOVE | SetWindowPosFlags.SWP_NOZORDER |
+            SetWindowPosFlags.SWP_NOACTIVATE | SetWindowPosFlags.SWP_FRAMECHANGED);
     }
 
     /// <summary>
-    /// Returns a value indicating whether the <see cref="NativeMethods.WmSysCommand"/> message parameter is the
+    /// Returns a value indicating whether the <see cref="NativeMethods.WM_SYSCOMMAND"/> message parameter is the
     /// command sent when the help button in the title bar is clicked.
     /// </summary>
-    /// <param name="wParam">The <see cref="NativeMethods.WmSysCommand"/> message wParam value.</param>
+    /// <param name="wParam">The <see cref="NativeMethods.WM_SYSCOMMAND"/> message wParam value.</param>
     /// <returns><see langword="true"/> if the help button in the title bar is clicked, or <see langword="false"/>
     /// otherwise.</returns>
     private static bool IsContextHelpCommand(IntPtr wParam) =>
-        (wParam.ToInt64() & NativeMethods.ScCommandMask) == NativeMethods.ScContextHelp;
+        // The four low-order bits of the wParam are used internally by the system.
+        (wParam.ToInt64() & 0xFFF0) == NativeMethods.SC_CONTEXTHELP;
 
     /// <summary>
     /// Opens the help page in the default web browser.
@@ -1137,9 +1138,9 @@ public static class WindowExtensions
     }
 
     /// <summary>
-    /// The <see cref="NativeMethods.WsMinimizeBox"/> and <see cref="NativeMethods.WsMaximizeBox"/> styles.
+    /// The <see cref="NativeMethods.WS_MINIMIZEBOX"/> and <see cref="NativeMethods.WS_MAXIMIZEBOX"/> styles.
     /// </summary>
-    private const int MinimizeMaximizeBoxes = NativeMethods.WsMinimizeBox | NativeMethods.WsMaximizeBox;
+    private const int MinimizeMaximizeBoxes = NativeMethods.WS_MINIMIZEBOX | NativeMethods.WS_MAXIMIZEBOX;
 
     /// <summary>
     /// Removes the separators from the specified menu if it has no more than two other items.
@@ -1155,8 +1156,8 @@ public static class WindowExtensions
         [
             ..Enumerable.Range(0, Math.Max(itemCount, 0)).Where(position =>
             {
-                uint state = GetMenuState(menu, (uint)position, MfByPosition);
-                return state != uint.MaxValue && (state & MfSeparator) != 0;
+                uint state = GetMenuState(menu, (uint)position, MF_BYPOSITION);
+                return state != uint.MaxValue && (state & MF_SEPARATOR) != 0;
             })
         ];
 
@@ -1168,44 +1169,44 @@ public static class WindowExtensions
         // Deleting an item shifts the positions of the items following it, so the separators are deleted backwards.
         foreach (int position in separatorPositions.AsEnumerable().Reverse())
         {
-            DeleteMenu(menu, (uint)position, MfByPosition);
+            DeleteMenu(menu, (uint)position, MF_BYPOSITION);
         }
     }
 
     /// <summary>
     /// The <c>MF_BYCOMMAND</c> flag indicating that a menu item is identified by its command.
     /// </summary>
-    private const uint MfByCommand = 0x00000000;
+    private const uint MF_BYCOMMAND = 0x00000000;
 
     /// <summary>
     /// The <c>MF_BYPOSITION</c> flag indicating that a menu item is identified by its zero-based position.
     /// </summary>
-    private const uint MfByPosition = 0x00000400;
+    private const uint MF_BYPOSITION = 0x00000400;
 
     /// <summary>
     /// The <c>MF_SEPARATOR</c> flag indicating that a menu item is a separator.
     /// </summary>
-    private const uint MfSeparator = 0x00000800;
+    private const uint MF_SEPARATOR = 0x00000800;
 
     /// <summary>
     /// The <c>SC_SIZE</c> command of the "Size" system menu item.
     /// </summary>
-    private const uint ScSize = 0xF000;
+    private const uint SC_SIZE = 0xF000;
 
     /// <summary>
     /// The <c>SC_MINIMIZE</c> command of the "Minimize" system menu item.
     /// </summary>
-    private const uint ScMinimize = 0xF020;
+    private const uint SC_MINIMIZE = 0xF020;
 
     /// <summary>
     /// The <c>SC_MAXIMIZE</c> command of the "Maximize" system menu item.
     /// </summary>
-    private const uint ScMaximize = 0xF030;
+    private const uint SC_MAXIMIZE = 0xF030;
 
     /// <summary>
     /// The <c>SC_RESTORE</c> command of the "Restore" system menu item.
     /// </summary>
-    private const uint ScRestore = 0xF120;
+    private const uint SC_RESTORE = 0xF120;
 
     [DllImport("user32.dll", ExactSpelling = true)]
     private static extern int GetSystemMetrics(int nIndex);

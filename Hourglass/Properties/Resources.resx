@@ -1490,6 +1490,62 @@ $</value>
     <value>Open settings file _location</value>
     <comment>The text for the open settings file location menu item, where the character following the optional underscore (_) is the access key</comment>
   </data>
+  <data name="ContextMenuTimerEventAppMenuItem" xml:space="preserve">
+    <value>R_un app on timer events...</value>
+    <comment>The text for the run app on timer events menu item, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerEventAppWindowTitle" xml:space="preserve">
+    <value>Run App on Timer Events</value>
+    <comment>The window title for the run app on timer events window</comment>
+  </data>
+  <data name="TimerEventAppWindowPathLabel" xml:space="preserve">
+    <value>_App path:</value>
+    <comment>The label for the app path text box in the run app on timer events window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerEventAppWindowBrowseButtonContent" xml:space="preserve">
+    <value>_Browse...</value>
+    <comment>The text for the browse button in the run app on timer events window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerEventAppWindowDisabledCheckBoxContent" xml:space="preserve">
+    <value>_Disable app</value>
+    <comment>The text for the disable app check box in the run app on timer events window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerEventAppWindowDisabledIconToolTip" xml:space="preserve">
+    <value>The app is disabled</value>
+    <comment>The tool tip for the icon displayed in the header of the run app on timer events window when the app is disabled</comment>
+  </data>
+  <data name="TimerEventAppWindowSilentCheckBoxContent" xml:space="preserve">
+    <value>Run _silently (no console window, other apps are started minimized)</value>
+    <comment>The text for the run silently check box in the run app on timer events window, where the character following the optional underscore (_) is the access key</comment>
+  </data>
+  <data name="TimerEventAppWindowHintText" xml:space="preserve">
+    <value>The app runs when any timer is started, paused, resumed, stopped or expired. The timer data is passed to the app as the first command line argument in the JSON format. A relative path is relative to the Hourglass folder, and a path within the Hourglass folder is saved as relative.</value>
+    <comment>The hint text in the run app on timer events window</comment>
+  </data>
+  <data name="TimerEventAppWindowAppNotFoundText" xml:space="preserve">
+    <value>The app is not found</value>
+    <comment>The error message displayed in the run app on timer events window when the OK button is pressed and the app path does not point to an existing file</comment>
+  </data>
+  <data name="TimerEventAppWindowDefaultMessageText" xml:space="preserve">
+    <value>Select the app to run on timer events</value>
+    <comment>The default message displayed in the run app on timer events window</comment>
+  </data>
+  <data name="TimerEventAppWindowOkButtonContent" xml:space="preserve">
+    <value>OK</value>
+    <comment>The text for the OK button in the run app on timer events window</comment>
+  </data>
+  <data name="TimerEventAppWindowCancelButtonContent" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>The text for the cancel button in the run app on timer events window</comment>
+  </data>
+  <data name="TimerEventAppWindowBrowseDialogTitle" xml:space="preserve">
+    <value>Select App</value>
+    <comment>The title of the dialog shown to select the app to run on timer events</comment>
+  </data>
+  <data name="TimerEventAppWindowBrowseDialogFilter" xml:space="preserve">
+    <value>Programs (*.exe;*.com)|*.exe;*.com|Scripts (*.bat;*.cmd)|*.bat;*.cmd|All files (*.*)|*.*</value>
+    <comment>The file type filter of the dialog shown to select the app to run on timer events, where each file type description is followed by the vertical bar (|) and the file name pattern</comment>
+  </data>
   <data name="License" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\License.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
