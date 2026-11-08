@@ -92,6 +92,7 @@ public sealed partial class AboutDialog
     protected override void OnSourceInitialized(EventArgs e)
     {
         this.RemoveDisabledSystemMenuItems();
+        DialogZOrderManager.Instance.Register(this);
 
         base.OnSourceInitialized(e);
     }

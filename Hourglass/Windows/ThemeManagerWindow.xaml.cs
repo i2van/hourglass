@@ -156,6 +156,7 @@ public sealed partial class ThemeManagerWindow
     protected override void OnSourceInitialized(EventArgs e)
     {
         this.RemoveDisabledSystemMenuItems();
+        DialogZOrderManager.Instance.Register(this);
 
         base.OnSourceInitialized(e);
     }

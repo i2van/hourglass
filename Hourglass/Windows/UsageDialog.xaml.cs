@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 
 using Hourglass.Extensions;
+using Hourglass.Managers;
 
 namespace Hourglass.Windows;
 
@@ -87,6 +88,7 @@ public sealed partial class UsageDialog
     protected override void OnSourceInitialized(EventArgs e)
     {
         this.RemoveDisabledSystemMenuItems();
+        DialogZOrderManager.Instance.Register(this);
 
         base.OnSourceInitialized(e);
     }

@@ -24,6 +24,7 @@ public sealed class AppManager : Manager
     private static readonly Manager[] Managers =
     [
         VirtualDesktopManager.Instance,
+        DialogZOrderManager.Instance,
         TaskDialogManager.Instance,
         ErrorManager.Instance,
         SettingsManager.Instance,
