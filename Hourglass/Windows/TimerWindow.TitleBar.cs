@@ -132,7 +132,7 @@ public sealed partial class TimerWindow
     {
         IntPtr handle = new WindowInteropHelper(this).Handle;
 
-        if (handle == IntPtr.Zero || !GetClientRect(handle, out RECT clientRect))
+        if (handle == IntPtr.Zero || !NativeMethods.GetClientRect(handle, out RECT clientRect))
         {
             return Rect.Empty;
         }
@@ -140,7 +140,7 @@ public sealed partial class TimerWindow
         POINT topLeft     = new() { x = clientRect.left,  y = clientRect.top    };
         POINT bottomRight = new() { x = clientRect.right, y = clientRect.bottom };
 
-        if (!ClientToScreen(handle, ref topLeft) || !ClientToScreen(handle, ref bottomRight))
+        if (!NativeMethods.ClientToScreen(handle, ref topLeft) || !NativeMethods.ClientToScreen(handle, ref bottomRight))
         {
             return Rect.Empty;
         }
@@ -187,31 +187,7 @@ public sealed partial class TimerWindow
     private Matrix GetTransformFromDevice() =>
         PresentationSource.FromVisual(this)?.CompositionTarget?.TransformFromDevice ?? Matrix.Identity;
 
-    [StructLayout(LayoutKind.Sequential)]
-    private struct RECT
-    {
-        public int left;
-        public int top;
-        public int right;
-        public int bottom;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct POINT
-    {
-        public int x;
-        public int y;
-    }
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
-
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool AdjustWindowRectEx(ref RECT lpRect, int dwStyle, bool bMenu, int dwExStyle);
 }

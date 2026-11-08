@@ -328,7 +328,7 @@ public sealed class CommandLineArguments
             return false;
         }
 
-        SendMessage(StringToIntPtr(args[1]), JumpListMsg, StringToIntPtr(args[2]), IntPtr.Zero);
+        NativeMethods.SendMessage(StringToIntPtr(args[1]), JumpListMsg, StringToIntPtr(args[2]), IntPtr.Zero);
 
         return true;
 
@@ -336,9 +336,6 @@ public sealed class CommandLineArguments
             IntPtr.Size == 8
                 ? new(long.Parse(arg, NumberStyles.HexNumber))
                 : new IntPtr(int.Parse(arg, NumberStyles.HexNumber));
-
-        [DllImport("user32.dll")]
-        static extern IntPtr SendMessage(IntPtr hWnd, uint wMsg, IntPtr wParam, IntPtr lParam);
     }
 
     /// <summary>

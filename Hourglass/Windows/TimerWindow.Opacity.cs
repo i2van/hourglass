@@ -85,7 +85,7 @@ public sealed partial class TimerWindow
         _isTranslucent = Options.Opacity < TimerOptions.MaxOpacity;
 
         IntPtr hwnd = hwndSource.Handle;
-        int exStyle = GetWindowLong(hwnd, GwlExStyle);
+        int exStyle = NativeMethods.GetWindowLong(hwnd, GwlExStyle);
         bool isLayered = (exStyle & WsExLayered) != 0;
 
         if (_isTranslucent)
@@ -144,17 +144,14 @@ public sealed partial class TimerWindow
         public int styleNew;
     }
 
-    [DllImport("user32.dll", EntryPoint = "GetWindowLongW")]
-    private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-    [DllImport("user32.dll", EntryPoint = "SetWindowLongW")]
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool SetLayeredWindowAttributes(IntPtr hwnd, int crKey, byte bAlpha, int dwFlags);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, int flags);
 }

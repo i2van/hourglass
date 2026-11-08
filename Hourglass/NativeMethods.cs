@@ -8,6 +8,7 @@ using System;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 
 namespace Hourglass;
 
@@ -82,6 +83,92 @@ internal enum ExecutionState : uint
 }
 
 /// <summary>
+/// Specifies the window station, desktop, standard handles, and appearance of the main window for a process at
+/// creation time.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+internal struct StartupInfo
+{
+    public int cb;
+    public string? lpReserved;
+    public string? lpDesktop;
+    public string? lpTitle;
+    public int dwX;
+    public int dwY;
+    public int dwXSize;
+    public int dwYSize;
+    public int dwXCountChars;
+    public int dwYCountChars;
+    public int dwFillAttribute;
+    public int dwFlags;
+    public short wShowWindow;
+    public short cbReserved2;
+    public IntPtr lpReserved2;
+    public IntPtr hStdInput;
+    public IntPtr hStdOutput;
+    public IntPtr hStdError;
+}
+
+/// <summary>
+/// Contains information about a newly created process and its primary thread.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct ProcessInformation
+{
+    public IntPtr hProcess;
+    public IntPtr hThread;
+    public int dwProcessId;
+    public int dwThreadId;
+}
+
+/// <summary>
+/// Defines the x- and y-coordinates of a point.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct POINT
+{
+    public int x;
+    public int y;
+}
+
+/// <summary>
+/// Defines a rectangle by the coordinates of its upper-left and lower-right corners.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct RECT
+{
+    public int left;
+    public int top;
+    public int right;
+    public int bottom;
+}
+
+/// <summary>
+/// Contains information about a window's maximized size and position and its minimum and maximum tracking size.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct MINMAXINFO
+{
+    public POINT ptReserved;
+    public POINT ptMaxSize;
+    public POINT ptMaxPosition;
+    public POINT ptMinTrackSize;
+    public POINT ptMaxTrackSize;
+}
+
+/// <summary>
+/// Contains information about a display monitor.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct MONITORINFO
+{
+    public int cbSize;
+    public RECT rcMonitor;
+    public RECT rcWork;
+    public uint dwFlags;
+}
+
+/// <summary>
 /// Wrapper class for calling Win32 and other unmanaged APIs.
 /// </summary>
 internal static class NativeMethods
@@ -98,7 +185,7 @@ internal static class NativeMethods
     /// name="pvAttribute"/> parameter. The type of the retrieved value, and therefore its size in bytes, depends
     /// on the value of the <paramref name="dwAttribute"/> parameter.</param>
     /// <returns>0 if the successful, or nonzero otherwise.</returns>
-    [DllImport("dwmapi.dll")]
+    [DllImport("dwmapi.dll", ExactSpelling = true)]
     public static extern int DwmGetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, out bool pvAttribute, int cbAttribute);
 
     /// <summary>
@@ -112,7 +199,7 @@ internal static class NativeMethods
     /// name="pvAttribute"/> parameter. The type of the value set, and therefore its size in bytes, depends on the
     /// value of the <paramref name="dwAttribute"/> parameter.</param>
     /// <returns>0 if the successful, or nonzero otherwise.</returns>
-    [DllImport("dwmapi.dll", PreserveSig = true)]
+    [DllImport("dwmapi.dll", ExactSpelling = true, PreserveSig = true)]
     public static extern int DwmSetWindowAttribute(IntPtr hwnd, DwmWindowAttribute dwAttribute, ref bool pvAttribute, int cbAttribute);
 
     /// <summary>
@@ -120,19 +207,60 @@ internal static class NativeMethods
     /// </summary>
     /// <param name="hTimer">A handle to the timer object.</param>
     /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
     public static extern bool CancelWaitableTimer(IntPtr hTimer);
+
+    /// <summary>
+    /// Converts the client-area coordinates of a specified point to screen coordinates.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose client area is used for the conversion.</param>
+    /// <param name="lpPoint">The client coordinates to be converted, which receives the screen coordinates.</param>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
 
     /// <summary>
     /// Closes an open object handle.
     /// </summary>
     /// <param name="hObject">A valid handle to an open object.</param>
     /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
     [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
     [SuppressUnmanagedCodeSecurity]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool CloseHandle(IntPtr hObject);
+
+    /// <summary>
+    /// Creates a new process and its primary thread.
+    /// </summary>
+    /// <param name="lpApplicationName">The name of the module to be executed, or <see langword="null"/> to use the
+    /// first white space-delimited token of the <paramref name="lpCommandLine"/>.</param>
+    /// <param name="lpCommandLine">The command line to be executed. The buffer may be modified.</param>
+    /// <param name="lpProcessAttributes">A pointer to a SECURITY_ATTRIBUTES structure for the process.</param>
+    /// <param name="lpThreadAttributes">A pointer to a SECURITY_ATTRIBUTES structure for the thread.</param>
+    /// <param name="bInheritHandles">A value indicating whether the inheritable handles are inherited.</param>
+    /// <param name="dwCreationFlags">The flags that control the priority class and the creation of the process.
+    /// </param>
+    /// <param name="lpEnvironment">A pointer to the environment block, or <see cref="IntPtr.Zero"/> to use the
+    /// environment of the calling process.</param>
+    /// <param name="lpCurrentDirectory">The full path to the current directory for the process.</param>
+    /// <param name="lpStartupInfo">The <see cref="StartupInfo"/> structure.</param>
+    /// <param name="lpProcessInformation">Receives identification information about the new process.</param>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool CreateProcess(
+        string? lpApplicationName,
+        StringBuilder lpCommandLine,
+        IntPtr lpProcessAttributes,
+        IntPtr lpThreadAttributes,
+        [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
+        uint dwCreationFlags,
+        IntPtr lpEnvironment,
+        string? lpCurrentDirectory,
+        [In] ref StartupInfo lpStartupInfo,
+        out ProcessInformation lpProcessInformation);
 
     /// <summary>
     /// Creates or opens a timer object.
@@ -153,8 +281,91 @@ internal static class NativeMethods
     /// </param>
     /// <param name="iid">A GUID value that identifies the DirectWrite factory interface.</param>
     /// <param name="factory">An address of a pointer to the newly created DirectWrite factory object.</param>
-    [DllImport("dwrite.dll", PreserveSig = false)]
+    [DllImport("dwrite.dll", ExactSpelling = true, PreserveSig = false)]
     public static extern void DWriteCreateFactory(DWriteFactoryType factoryType, ref Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object factory);
+
+    /// <summary>
+    /// Retrieves the coordinates of a window's client area.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose client coordinates are to be retrieved.</param>
+    /// <param name="lpRect">Receives the client coordinates. The left and top members are zero.</param>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+    /// <summary>
+    /// Retrieves information about a display monitor.
+    /// </summary>
+    /// <param name="hMonitor">A handle to the display monitor of interest.</param>
+    /// <param name="lpmi">The <see cref="MONITORINFO"/> structure that receives information about the display
+    /// monitor. The <see cref="MONITORINFO.cbSize"/> member must be set before calling the function.</param>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+    /// <summary>
+    /// Retrieves information about the specified window.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="nIndex">The zero-based offset to the value to be retrieved, such as <c>GWL_EXSTYLE</c>.</param>
+    /// <returns>The requested value, or zero if the call fails.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+    /// <summary>
+    /// Retrieves the dimensions of the bounding rectangle of the specified window in screen coordinates.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="lpRect">Receives the screen coordinates of the upper-left and lower-right corners of the window.
+    /// </param>
+    /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+    /// <summary>
+    /// Determines whether a window is maximized.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <returns><see langword="true"/> if the window is maximized, or <see langword="false"/> otherwise.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool IsZoomed(IntPtr hWnd);
+
+    /// <summary>
+    /// Retrieves a handle to the display monitor that has the largest area of intersection with the bounding
+    /// rectangle of a specified window.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window of interest.</param>
+    /// <param name="dwFlags">Determines the function's return value if the window does not intersect any display
+    /// monitor.</param>
+    /// <returns>A handle to the display monitor, or <see cref="IntPtr.Zero"/> if none is found.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+    /// <summary>
+    /// Sends the specified message to a window and does not return until the window procedure has processed the
+    /// message.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose window procedure will receive the message.</param>
+    /// <param name="Msg">The message to be sent.</param>
+    /// <param name="wParam">Additional message-specific information.</param>
+    /// <param name="lParam">Additional message-specific information.</param>
+    /// <returns>The result of the message processing, which depends on the message sent.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    /// <summary>
+    /// Brings the thread that created the specified window into the foreground and activates the window.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window that should be activated and brought to the foreground.</param>
+    /// <returns><see langword="true"/> if the window was brought to the foreground, or <see langword="false"/>
+    /// otherwise.</returns>
+    [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
 
     /// <summary>
     /// Enables an application to inform the system that it is in use, thereby preventing the system from entering
@@ -163,7 +374,7 @@ internal static class NativeMethods
     /// <param name="esFlags">The thread's execution requirements.</param>
     /// <returns>If the function succeeds, the return value is the previous thread execution state. If the function
     /// fails, the return value is <see cref="ExecutionState.EsNull"/>.</returns>
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
     public static extern ExecutionState SetThreadExecutionState(ExecutionState esFlags);
 
     /// <summary>
@@ -180,6 +391,6 @@ internal static class NativeMethods
     /// <param name="fResume">If this parameter is <see langword="true"/>, restores a system in suspended power conservation
     /// mode when the timer state is set to signaled. Otherwise, the system is not restored.</param>
     /// <returns><see langword="true"/> if the call succeeds, or <see langword="false"/> otherwise.</returns>
-    [DllImport("kernel32.dll", SetLastError = true)]
+    [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
     public static extern bool SetWaitableTimer(IntPtr hTimer, [In] ref long pDueTime, int lPeriod, IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine, bool fResume);
 }

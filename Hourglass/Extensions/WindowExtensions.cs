@@ -414,6 +414,90 @@ public static class WindowExtensions
         return offsetRect;
     }
 
+    /// <summary>
+    /// Sets the maximized position and size in the <c>WM_GETMINMAXINFO</c> message data to the work area of the
+    /// monitor nearest to the window, so the maximized window does not overlap the taskbar.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window.</param>
+    /// <param name="lParam">A pointer to the <see cref="MINMAXINFO"/> structure of the <c>WM_GETMINMAXINFO</c>
+    /// message.</param>
+    /// <param name="horizontalOnly">A value indicating whether the window is maximized horizontally only, keeping its
+    /// vertical position and height.</param>
+    /// <returns><see langword="true"/> if the maximized position and size are set, or <see langword="false"/>
+    /// otherwise.</returns>
+    internal static bool SetMaximizedBoundsToWorkArea(IntPtr hwnd, IntPtr lParam, bool horizontalOnly = false)
+    {
+        IntPtr hMonitor = NativeMethods.MonitorFromWindow(hwnd, 0x00000002 /* MONITOR_DEFAULTTONEAREST */);
+        if (hMonitor == IntPtr.Zero)
+        {
+            return false;
+        }
+
+        MONITORINFO monitorInfo = new()
+        {
+            cbSize = Marshal.SizeOf(typeof(MONITORINFO))
+        };
+        if (!NativeMethods.GetMonitorInfo(hMonitor, ref monitorInfo))
+        {
+            return false;
+        }
+
+        RECT rcWork = monitorInfo.rcWork;
+        RECT rcMonitor = monitorInfo.rcMonitor;
+
+        MINMAXINFO mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
+
+        if (horizontalOnly)
+        {
+            POINT clientBottomRight = new();
+
+            if (!NativeMethods.GetWindowRect(hwnd, out RECT rcWindow) ||
+                !NativeMethods.GetClientRect(hwnd, out RECT rcClient))
+            {
+                return false;
+            }
+
+            clientBottomRight.x = rcClient.right;
+            clientBottomRight.y = rcClient.bottom;
+
+            if (!NativeMethods.ClientToScreen(hwnd, ref clientBottomRight))
+            {
+                return false;
+            }
+
+            // The resize frame is hidden outside the work area when the window is maximized. The default maximized
+            // position is not used for the frame size, as it is replaced by the previous maximized position.
+            int frameX = rcWindow.right - clientBottomRight.x;
+            int frameY = rcWindow.bottom - clientBottomRight.y;
+
+            int left = rcWork.left - frameX;
+            int width = rcWork.right - rcWork.left + 2 * frameX;
+            int height = rcWindow.bottom - rcWindow.top;
+
+            // The window keeps its vertical position, moved into the work area if needed. The window is maximized
+            // already if it has the maximized bounds, as it is reported as maximized before it is resized.
+            bool maximized = NativeMethods.IsZoomed(hwnd) && rcWindow.left == left && rcWindow.right - rcWindow.left == width;
+            int top = maximized ? rcWindow.top + frameY : rcWindow.top;
+            top = Math.Max(rcWork.top, Math.Min(top, rcWork.bottom - height + 2 * frameY));
+
+            mmi.ptMaxPosition.x = left - rcMonitor.left;
+            mmi.ptMaxPosition.y = top - frameY - rcMonitor.top;
+            mmi.ptMaxSize.x = width;
+            mmi.ptMaxSize.y = height;
+        }
+        else
+        {
+            mmi.ptMaxPosition.x = Math.Abs(rcWork.left - rcMonitor.left);
+            mmi.ptMaxPosition.y = Math.Abs(rcWork.top - rcMonitor.top);
+            mmi.ptMaxSize.x = Math.Abs(rcWork.right - rcWork.left);
+            mmi.ptMaxSize.y = Math.Abs(rcWork.bottom - rcWork.top);
+        }
+
+        Marshal.StructureToPtr(mmi, lParam, true);
+
+        return true;
+    }
+
     /// <param name="window">A window.</param>
     extension(Window window)
     {
@@ -698,7 +782,7 @@ public static class WindowExtensions
     {
         if (_taskDialogInstance is not null)
         {
-            SetForegroundWindow(_taskDialogInstance.Handle);
+            NativeMethods.SetForegroundWindow(_taskDialogInstance.Handle);
             return MessageBoxResult.Cancel;
         }
 
@@ -744,10 +828,6 @@ public static class WindowExtensions
             dialog.Shown -= OnShown;
             _taskDialogInstance = dialog;
         }
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 
     public static void Clean()
@@ -825,19 +905,19 @@ public static class WindowExtensions
     /// </summary>
     private const uint ScRestore = 0xF120;
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     private static extern int GetSystemMetrics(int nIndex);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     private static extern int GetMenuItemCount(IntPtr hMenu);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     private static extern uint GetMenuState(IntPtr hMenu, uint uId, uint uFlags);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool DeleteMenu(IntPtr hMenu, uint uPosition, uint uFlags);
 }
